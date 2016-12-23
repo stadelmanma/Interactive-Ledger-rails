@@ -1,6 +1,11 @@
-<tr>
+<tr id="row-<%= transaction_counter %>"
     <% @column_names.each do |col| %>
-      <td>
+    data-<%= col %>="<%=transaction[col] %>"
+    <% end %>
+    >
+    
+    <% @column_names.each do |col| %>
+      <td id="row-<%= transaction_counter.to_s + '-' + col %>">
         <%= transaction[col] %>
       </td>
     <% end %>
