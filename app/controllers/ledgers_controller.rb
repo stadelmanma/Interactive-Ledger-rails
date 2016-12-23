@@ -6,10 +6,7 @@ class LedgersController < ApplicationController
   
   def show
     @ledger = Ledger.find(params[:id])
-    path = Rails.root.to_s + '/' + @ledger.data_source
-    @data = File.read(path).split(/\n/)
-    @header = @data.shift
-    @data.map! {|trans| trans.split(/\t/)}
+    @header, @data = @ledger.load_data
   end
   
   def new
