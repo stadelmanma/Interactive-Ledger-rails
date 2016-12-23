@@ -1,0 +1,2 @@
+module InteractiveFinancialLedgerHelper
+end
