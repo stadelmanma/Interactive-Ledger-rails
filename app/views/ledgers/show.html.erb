@@ -8,18 +8,18 @@
     <%= @ledger.data_source%>
 </span>
 
-<div>
-  <div> #convert back to a table later
-    <h3><%= @header %></h3>
-    <% @data.each do |trans| %>
-      <span>
-        <%= trans %>
-      </span>
-      <hr>
-      <Br>
+<table>
+  <tr>
+    <% @column_names.each do |col| %>
+      <th>
+        <%= col %>
+      </th>
     <% end %>
-  </div>
-</div>
+  </tr>
+  
+  <%= render partial: 'transactions/transaction', collection: @data %>
+
+</table>
 
 <br>
 <br>

@@ -6,7 +6,7 @@ class LedgersController < ApplicationController
   
   def show
     @ledger = Ledger.find(params[:id])
-    @header, @data = @ledger.load_data
+    @column_names, @data = @ledger.load_data
   end
   
   def new

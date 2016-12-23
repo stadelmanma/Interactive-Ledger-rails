@@ -5,6 +5,8 @@ class Transaction < ApplicationRecord
   def self.process_transaction_data(column_names, data)
     data = data.split(/\t/)
     data = Hash[column_names.zip data]
+    data['date'] = Date.strptime(data['date'].strip, '%m/%d/%y').to_s
+    #
     return data
   end
 end
