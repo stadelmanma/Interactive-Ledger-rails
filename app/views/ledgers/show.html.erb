@@ -8,6 +8,18 @@
     <%= @ledger.data_source%>
 </span>
 
+<div>
+  <div> #convert back to a table later
+    <% @data.each do |trans| %>
+      <span>
+        <%= trans %>
+      </span>
+      <hr>
+      <Br>
+    <% end %>
+  </div>
+</div>
+
 <br>
 <br>
 <%= link_to 'Back', ledgers_path %>

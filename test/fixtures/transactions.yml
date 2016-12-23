@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ledger: one
+  date: 2016-12-23
+  description: MyString
+  amount: 1.5
+  validated: false
+  category: MyString
+  subcategory: MyString
+  comments: MyText
+
+two:
+  ledger: two
+  date: 2016-12-23
+  description: MyString
+  amount: 1.5
+  validated: false
+  category: MyString
+  subcategory: MyString
+  comments: MyText
