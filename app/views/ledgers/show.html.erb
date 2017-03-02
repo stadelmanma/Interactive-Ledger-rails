@@ -12,11 +12,11 @@
   <tr>
     <% @column_names.each do |col| %>
       <th>
-        <%= col %>
+        <%= col.titlecase() %>
       </th>
     <% end %>
   </tr>
-  
+
   <%= render partial: 'transactions/transaction', collection: @data %>
 
 </table>
