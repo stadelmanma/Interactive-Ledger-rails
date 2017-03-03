@@ -35,6 +35,12 @@ tr[data-validated="YES"] td[id*="validated"] {
 tr[data-account="Discover"] {
     background-color: rgba(255, 195, 90, 0.7);
 }
+td[id*="amount"] {
+    text-align: right
+}
+td[id*="balance"] {
+    text-align: right
+}
 /*
 */
 #table-header {
