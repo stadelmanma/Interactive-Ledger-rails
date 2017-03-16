@@ -10,30 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161223182200) do
+ActiveRecord::Schema.define(version: 20170316001455) do
 
-  create_table "ledgers", force: :cascade do |t|
+  create_table "ledgers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
-    t.string   "data_source"
-    t.string   "string"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "transactions", force: :cascade do |t|
+  create_table "transactions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "ledger_id"
     t.date     "date"
     t.string   "description"
-    t.float    "amount"
+    t.float    "amount",      limit: 24
     t.boolean  "validated"
     t.string   "category"
     t.string   "subcategory"
-    t.text     "comments"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.float    "balance"
+    t.text     "comments",    limit: 65535
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.float    "balance",     limit: 24
     t.string   "account"
-    t.index ["ledger_id"], name: "index_transactions_on_ledger_id"
+    t.index ["ledger_id"], name: "index_transactions_on_ledger_id", using: :btree
   end
 
 end
