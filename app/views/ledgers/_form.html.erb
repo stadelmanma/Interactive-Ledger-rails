@@ -1,31 +1,36 @@
 <%= form_for @ledger do |f| %>
- 
-  <% if @ledger.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-        <%= pluralize(@ledger.errors.count, "error") %> prohibited
-        this article from being saved:
-      </h2>
-      <ul>
-        <% @ledger.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
+
+    <% if @ledger.errors.any? %>
+        <div id="error_explanation">
+            <h2>
+                <%= pluralize(@ledger.errors.count, "error") %> prohibited
+                this article from being saved:
+            </h2>
+            <ul>
+                <% @ledger.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <p>
+        <%= f.label :name %>
+        <br>
+        <%= f.text_field :name %>
+    </p>
+
+    <p>
+        <%= f.fields_for :ledger_uploads_attributes do |upload| %>
+            <%= upload.label :data_source %>
+            <br>
+            <%= upload.text_field :data_source, required: true %>
+            <br>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
- 
-  <p>
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </p>
- 
-  <p>
-    <%= f.label :data_source %><br>
-    <%= f.text_field :data_source %>
-  </p>
- 
-  <p>
-    <%= f.submit %>
-  </p>
- 
+    </p>
+
+    <p>
+        <%= f.submit %>
+    </p>
+
 <% end %>
