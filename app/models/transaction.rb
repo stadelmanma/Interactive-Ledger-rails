@@ -1,5 +1,6 @@
 class Transaction < ApplicationRecord
   belongs_to :ledger
+  belongs_to :ledger_upload
 
   # processes a tab delimited record string into a hash
   def self.process_transaction_data(column_names, data)
