@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170316001455) do
+ActiveRecord::Schema.define(version: 20170316002707) do
+
+  create_table "ledger_uploads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "ledger_id"
+    t.string   "data_source"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["ledger_id"], name: "index_ledger_uploads_on_ledger_id", using: :btree
+  end
 
   create_table "ledgers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
@@ -22,16 +30,19 @@ ActiveRecord::Schema.define(version: 20170316001455) do
     t.integer  "ledger_id"
     t.date     "date"
     t.string   "description"
-    t.float    "amount",      limit: 24
+    t.float    "amount",           limit: 24
     t.boolean  "validated"
     t.string   "category"
     t.string   "subcategory"
-    t.text     "comments",    limit: 65535
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-    t.float    "balance",     limit: 24
+    t.text     "comments",         limit: 65535
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.float    "balance",          limit: 24
     t.string   "account"
+    t.integer  "ledger_upload_id"
     t.index ["ledger_id"], name: "index_transactions_on_ledger_id", using: :btree
+    t.index ["ledger_upload_id"], name: "index_transactions_on_ledger_upload_id", using: :btree
   end
 
+  add_foreign_key "ledger_uploads", "ledgers"
 end
