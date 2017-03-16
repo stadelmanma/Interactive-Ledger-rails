@@ -1,7 +1,7 @@
 class Transaction < ApplicationRecord
   belongs_to :ledger
 
-  # processes a tb delimited string
+  # processes a tab delimited record string into a hash
   def self.process_transaction_data(column_names, data)
     data = data.split(/\t/)
     data = Hash[column_names.zip data]
@@ -13,8 +13,23 @@ class Transaction < ApplicationRecord
     if !data['balance'].empty?
         data['balance'] = '%.2f' % Float(data['balance'].gsub(',', ''))
     end
-    data['validated'] = data['validated'] == 'OK' ? 'YES' : 'NO'
+    data['validated'] = data['validated'] == 'OK' ? true : false
     #
     return data
+  end
+
+  # returns an array of column names to display in order
+  def self.display_columns
+    [
+      'date',
+      'description',
+      'amount',
+      'balance',
+      'account',
+      'validated',
+      'category',
+      'subcategory',
+      'comments'
+    ]
   end
 end
