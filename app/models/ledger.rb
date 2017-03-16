@@ -5,5 +5,6 @@ class Ledger < ApplicationRecord
   accepts_nested_attributes_for :ledger_uploads,
     :reject_if => proc { |attributes| attributes['data_source'].blank? }
 
+  validates_associated :ledger_uploads
   validates :name, presence: true
 end

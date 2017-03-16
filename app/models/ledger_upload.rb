@@ -3,7 +3,8 @@ class LedgerUpload < ApplicationRecord
   has_many :transactions, dependent: :destroy
 
   validates :ledger, presence: true
-  validates :data_source, presence: true
+  validates :data_source, presence: true, on: :create
+  validate :data_path_exists, on: :create
 
   def upload_data
     # process and upload new data
@@ -15,6 +16,13 @@ class LedgerUpload < ApplicationRecord
   end
 
   private
+
+  def data_path_exists
+    if !File.file? data_source
+      path = File.absolute_path(data_source)
+      errors[:base] << "Error: The requested file does not exist: '#{path}'"
+    end
+  end
 
   def load_data
     # loading raw data and splitting by new lines
