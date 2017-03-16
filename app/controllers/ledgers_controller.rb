@@ -21,7 +21,7 @@ class LedgersController < ApplicationController
     @ledger = Ledger.new(ledger_params)
 
     if @ledger.save
-      upload_data
+      @ledger.ledger_uploads.last.upload_data
       redirect_to @ledger
     else
       render 'new'
@@ -32,7 +32,7 @@ class LedgersController < ApplicationController
     @ledger = Ledger.find(params[:id])
 
     if @ledger.update(ledger_params)
-      upload_data
+      @ledger.ledger_uploads.last.upload_data
       redirect_to @ledger
     else
       render 'edit'
@@ -48,20 +48,15 @@ class LedgersController < ApplicationController
 
   private
 
-  def upload_data
-    # pull out data source param and return if it's not set
-    @ledger.data_source = params.require(:ledger)[:data_source]
-    return if @ledger.data_source.blank?
-
-    # process and upload new data
-    transactions = @ledger.load_data
-    Transaction.import transactions
-    if @ledger.persisted?
-      @ledger.touch
-    end
-  end
-
   def ledger_params
-    params.require(:ledger).permit(:name, :data_source)
+    #
+    lp = params.require(:ledger).permit(
+      :name,
+      :data_source,
+      :ledger_uploads_attributes => [:data_source]
+    )
+    lp[:ledger_uploads_attributes] = {0 => lp[:ledger_uploads_attributes]}
+    #
+    return lp
   end
 end
