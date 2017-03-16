@@ -1,5 +1,5 @@
 class LedgerUpload < ApplicationRecord
-  belongs_to :ledger
+  belongs_to :ledger, inverse_of: :ledger_uploads
   has_many :transactions, dependent: :destroy
 
   validates :ledger, presence: true
@@ -22,7 +22,7 @@ class LedgerUpload < ApplicationRecord
     data = File.read(path).split(/\n/)
 
     # processing header row
-     column_names = Ledger.headers_to_column_names(data.shift)
+     column_names = headers_to_column_names(data.shift)
 
     # processing transaction data
     data.map! do |row|
@@ -36,7 +36,7 @@ class LedgerUpload < ApplicationRecord
   end
 
   # processes header row to create valid attribute keys
-  def self.headers_to_column_names(header)
+  def headers_to_column_names(header)
     header = header.split(/\t/)
     column_names = header.map {|name| name.downcase.strip}
     column_names.map! {|name| name.sub /\s+/, '_'}
