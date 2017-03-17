@@ -1,18 +1,19 @@
 <h1>Listing Available Ledgers</h1>
- 
+
 <table>
   <tr>
     <th>Name</th>
-    <th>Data Source</th>
+    <th>Last Data Upload</th>
+    <th colSpan="3"></th>
   </tr>
- 
+
   <% @ledgers.each do |ledger| %>
     <tr>
       <td><%= ledger.name %></td>
-      <td><%= ledger.data_source %></td>
+      <td><%= ledger.updated_at.localtime %></td>
       <td><%= link_to 'Show', ledger_path(ledger) %></td>
       <td><%= link_to 'Edit', edit_ledger_path(ledger) %></td>
-      <td><%= link_to 'Destory', ledger_path(ledger), 
+      <td><%= link_to 'Delete', ledger_path(ledger),
               method: :delete,
               data: { confirm: 'Confirm deletion of ledger' } %></td>
     </tr>

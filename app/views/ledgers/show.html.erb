@@ -1,12 +1,15 @@
-<span>
+<span style="width: 10em">
     <strong>Name:</strong>
     <%= @ledger.name%>
 </span>
-
-<span>
-    <strong>Data Source:</strong>
-    <%= @ledger.data_source%>
+<span style="width: 10em">
+    <strong>Last Updated:</strong>
+    <%= @ledger.updated_at.localtime%>
 </span>
+<br>
+<%= link_to 'Back', ledgers_path %>
+<br>
+<br>
 
 <table>
   <tr>
@@ -17,7 +20,7 @@
     <% end %>
   </tr>
 
-  <%= render partial: 'transactions/transaction', collection: @data %>
+  <%= render partial: 'transactions/transaction', collection: @ledger.transactions %>
 
 </table>
 

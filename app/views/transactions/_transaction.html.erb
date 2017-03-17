@@ -1,12 +1,12 @@
 <tr id="row-<%= transaction_counter %>"
     <% @column_names.each do |col| %>
-    data-<%= col %>="<%=transaction[col] %>"
+        data-<%= col %>="<%=transaction[col] %>"
     <% end %>
     >
-    
+    <% transaction.gen_display_hash %>
     <% @column_names.each do |col| %>
-      <td id="row-<%= transaction_counter.to_s + '-' + col %>">
-        <%= transaction[col] %>
-      </td>
+        <td id="row-<%= transaction_counter.to_s + '-' + col %>">
+            <%= transaction.display_data[col] %>
+        </td>
     <% end %>
 </tr>
