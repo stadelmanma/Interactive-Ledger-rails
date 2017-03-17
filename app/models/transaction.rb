@@ -1,6 +1,10 @@
 class Transaction < ApplicationRecord
+  include ActionView::Helpers::NumberHelper
+
   belongs_to :ledger
   belongs_to :ledger_upload
+
+  attr_accessor :display_data
 
   # processes a tab delimited record string into a hash
   def self.process_transaction_data(column_names, data)
@@ -33,4 +37,17 @@ class Transaction < ApplicationRecord
       'comments'
     ]
   end
+
+  # returns a formatted hash for display
+  def gen_display_hash
+    @display_data = attributes.to_h()
+    @display_data['amount'] = number_with_precision(amount,
+                                                    :delimiter => ',',
+                                                    :precision => 2)
+    @display_data['balance'] = number_with_precision(balance,
+                                                     :delimiter => ',',
+                                                     :precision => 2)
+    @display_data['validated'] = validated ? 'YES' : 'NO'
+  end
+
 end
