@@ -35,14 +35,15 @@ tr[data-validated="true"] td[id*="validated"] {
 tr[data-account="Discover"] {
     background-color: rgba(255, 195, 90, 0.7);
 }
+td[id*="description"]:hover {
+    text-decoration: underline;
+}
 td[id*="amount"] {
-    text-align: right
+    text-align: right;
 }
 td[id*="balance"] {
-    text-align: right
+    text-align: right;
 }
-/*
-*/
-#table-header {
-    color: black;
+td[id*="validated"] {
+    text-align: center;
 }
