@@ -26,10 +26,10 @@ tr.active:active {
     box-shadow: 0rem 0rem 0.3rem 0.1rem rgb(75,155,215);
     transition: box-shadow 0s;
 }
-tr[data-validated="NO"] td[id*="validated"] {
+tr[data-validated="false"] td[id*="validated"] {
     background-color: rgba(240, 128, 128, 0.7);
 }
-tr[data-validated="YES"] td[id*="validated"] {
+tr[data-validated="true"] td[id*="validated"] {
     background-color: rgba(144, 238, 144, 0.7);
 }
 tr[data-account="Discover"] {
