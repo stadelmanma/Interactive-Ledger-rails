@@ -24,7 +24,7 @@
         <%= f.fields_for :ledger_uploads_attributes do |upload| %>
             <%= upload.label :data_source %>
             <br>
-            <%= upload.text_field :data_source, required: true %>
+            <%= upload.text_field :data_source %>
             <br>
         <% end %>
     </p>

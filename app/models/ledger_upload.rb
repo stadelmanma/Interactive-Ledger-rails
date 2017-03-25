@@ -7,6 +7,10 @@ class LedgerUpload < ApplicationRecord
   validate :data_path_exists, on: :create
 
   def upload_data
+    # check if data has already been uploaded
+    if uploaded then
+      return
+    end
     # process and upload new data
     transactions = load_data
     Transaction.import transactions
