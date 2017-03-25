@@ -35,7 +35,7 @@
     </p>
 
     <p>
-        <%= f.fields_for :ledger_uploads do |upload| %>
+        <%= f.fields_for :ledger_uploads,  @ledger.ledger_uploads.build do |upload| %>
             <%= upload.label :data_source %>
             <br>
             <%= upload.text_field :data_source %>

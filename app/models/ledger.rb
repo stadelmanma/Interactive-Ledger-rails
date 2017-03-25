@@ -7,4 +7,10 @@ class Ledger < ApplicationRecord
 
   validates_associated :ledger_uploads
   validates :name, presence: true
+
+  def upload_data
+    if ledger_uploads.last then
+      ledger_uploads.last.upload_data
+    end
+  end
 end
