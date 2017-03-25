@@ -10,6 +10,7 @@ class LedgerUpload < ApplicationRecord
     # process and upload new data
     transactions = load_data
     Transaction.import transactions
+    update!(uploaded: true)
     if ledger.persisted?
       ledger.touch
     end
