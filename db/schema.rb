@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170316002707) do
+ActiveRecord::Schema.define(version: 20170325152236) do
 
   create_table "ledger_uploads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "ledger_id"
     t.string   "data_source"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.boolean  "uploaded"
     t.index ["ledger_id"], name: "index_ledger_uploads_on_ledger_id", using: :btree
   end
 
