@@ -1,3 +1,17 @@
+<div id="previous-uploads">
+    <h4>Previous Uploads</h4>
+    <ul>
+        <% @ledger.ledger_uploads.each do |upload| %>
+            <li>
+                <span>Data Source:</span><%= upload.data_source %>
+                <br>
+                <span>Uploaded on:</span><%= upload.created_at.localtime %>
+                <hr>
+            </li>
+        <% end %>
+    </ul>
+</div>
+
 <%= form_for @ledger do |f| %>
 
     <% if @ledger.errors.any? %>
@@ -21,7 +35,7 @@
     </p>
 
     <p>
-        <%= f.fields_for :ledger_uploads_attributes do |upload| %>
+        <%= f.fields_for :ledger_uploads do |upload| %>
             <%= upload.label :data_source %>
             <br>
             <%= upload.text_field :data_source %>
@@ -32,5 +46,4 @@
     <p>
         <%= f.submit %>
     </p>
-
 <% end %>
