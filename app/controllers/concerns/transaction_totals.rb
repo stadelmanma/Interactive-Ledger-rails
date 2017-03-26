@@ -35,8 +35,10 @@ module TransactionTotals
       #
       # increment totals
       update_week_total(transaction, totals[cur_total])
+      update_category_totals(transaction, totals[cur_total])
     end
     #
+    format_totals(totals)
     return totals
   end
 
@@ -45,19 +47,34 @@ module TransactionTotals
     totals[:total_deficit] += transaction.amount
   end
 
-  def update_category_totals(transaction)
+  def update_category_totals(transaction, totals)
+    if totals[:category_totals][transaction.category]
+      totals[:category_totals][transaction.category] += transaction.amount
+    else
+      totals[:category_totals][transaction.category] = transaction.amount
+    end
   end
 
   # test if a date pair crosses a week boundary
   def new_week?(transactions, i)
     # return early if at beginning or end of list
     return true if i == 0
-    return false if i + 1 >= transactions.length
+    return false if i == transactions.length
     #
     curr_wk = transactions[i][:date].strftime("%U").to_i
-    test_wk = transactions[i + 1][:date].strftime("%U").to_i
+    test_wk = transactions[i - 1][:date].strftime("%U").to_i
     # return true if week numbers are different
     return curr_wk != test_wk
   end
 
+  def format_totals(totals)
+    totals.each do |key, value|
+      if value.class == Hash
+        totals[key] = format_totals(value)
+      end
+      totals[key] = Transaction.display_number(value)
+    end
+    #
+    return totals
+  end
 end
