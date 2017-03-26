@@ -3,6 +3,15 @@ module TransactionTotals
 
   included do
     helper_method :create_totals_hash
+    helper_method :totals_column_names
+  end
+
+  def totals_column_names
+    [
+      'week_total',
+      'total_deficit',
+      'category_totals'
+    ]
   end
 
   def create_totals_hash(ledger)
