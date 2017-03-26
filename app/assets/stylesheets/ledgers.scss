@@ -44,6 +44,16 @@ td[id*="validated"] {
     text-align: center;
 }
 
+td ul {
+    display: inline;
+    list-style-type: none;
+}
+
+td ul span{
+    padding-right: 1em;
+    font-weight: bold;
+}
+
 /* Interactive styles (placed last so the override the others) */
 tr:hover {
     background-color: rgb(235,235,235);
