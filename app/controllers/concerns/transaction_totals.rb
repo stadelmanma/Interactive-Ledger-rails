@@ -33,6 +33,9 @@ module TransactionTotals
       end
       totals[cur_total][:rowspan] += 1
       #
+      # preventing totals from being incremented in some cases
+      next if skip_transaction?(transaction)
+      #
       # increment totals
       update_week_total(transaction, totals[cur_total])
       update_category_totals(transaction, totals[cur_total])
@@ -65,6 +68,10 @@ module TransactionTotals
     test_wk = transactions[i - 1][:date].strftime("%U").to_i
     # return true if week numbers are different
     return curr_wk != test_wk
+  end
+
+  def skip_transaction?(transaction)
+    return transaction.category.match(/discover/i) ? true : false
   end
 
   def format_totals(totals)
