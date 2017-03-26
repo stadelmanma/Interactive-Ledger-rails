@@ -57,6 +57,9 @@ td ul span{
     padding-right: 1em;
     font-weight: bold;
 }
+.totals-cell {
+    background-color: white;
+}
 
 /* Interactive styles (placed last so the override the others) */
 tr:hover {
