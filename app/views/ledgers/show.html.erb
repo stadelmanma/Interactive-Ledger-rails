@@ -20,7 +20,7 @@
     <% end %>
   </tr>
 
-  <%= render partial: 'transactions/transaction', collection: @ledger.transactions %>
+  <%= render partial: 'transactions/transaction', collection: @ledger.transactions, locals: {totals: @totals} %>
 
 </table>
 
