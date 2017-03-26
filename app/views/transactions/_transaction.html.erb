@@ -9,4 +9,20 @@
             <%= transaction.display_data[col] %>
         </td>
     <% end %>
+    <% if @totals[transaction_counter] %>
+        <% rowspan = @totals[transaction_counter][:rowspan] %>
+        <td id="row-<%= transaction_counter.to_s + '-week_total' %>" rowSpan="<%= rowspan %>" class="totals-cell">
+            <%= @totals[transaction_counter][:week_total] %>
+        </td>
+        <td id="row-<%= transaction_counter.to_s + '-total_deficit' %>" rowSpan="<%= rowspan %>" class="totals-cell">
+            <%= @totals[transaction_counter][:total_deficit] %>
+        </td>
+        <td id="row-<%= transaction_counter.to_s + '-category_totals' %>" rowSpan="<%= rowspan %>" class="totals-cell">
+            <ul>
+                <% @totals[transaction_counter][:category_totals].each do |cat, amt| %>
+                    <li><span><%= cat + ':' %></span><%= amt %></li>
+                <% end %>
+            </ul>
+        </td>
+    <% end %>
 </tr>

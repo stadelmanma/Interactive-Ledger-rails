@@ -1,4 +1,5 @@
 class LedgersController < ApplicationController
+  include TransactionTotals
 
   def index
     @ledgers = Ledger.all
@@ -7,6 +8,8 @@ class LedgersController < ApplicationController
   def show
     @ledger = Ledger.find(params[:id])
     @column_names = Transaction.display_columns
+    @totals = create_totals_hash(@ledger)
+    @totals_column_names = totals_column_names
   end
 
   def new

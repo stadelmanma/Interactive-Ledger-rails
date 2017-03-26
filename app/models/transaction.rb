@@ -41,13 +41,15 @@ class Transaction < ApplicationRecord
   # returns a formatted hash for display
   def gen_display_hash
     @display_data = attributes.to_h()
-    @display_data['amount'] = number_with_precision(amount,
-                                                    :delimiter => ',',
-                                                    :precision => 2)
-    @display_data['balance'] = number_with_precision(balance,
-                                                     :delimiter => ',',
-                                                     :precision => 2)
+    @display_data['amount'] = Transaction.display_number(amount)
+    @display_data['balance'] = Transaction.display_number(balance)
     @display_data['validated'] = validated ? 'YES' : 'NO'
+  end
+
+
+  def self.display_number(number)
+    helper = Object.new.extend(ActionView::Helpers::NumberHelper)
+    helper.number_with_precision(number, :delimiter => ',', :precision => 2)
   end
 
 end

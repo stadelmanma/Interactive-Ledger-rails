@@ -43,6 +43,23 @@ td[id*="balance"] {
 td[id*="validated"] {
     text-align: center;
 }
+td[id*="week_total"] {
+    text-align: right;
+}
+td[id*="total_deficit"] {
+    text-align: right;
+}
+td ul {
+    display: inline;
+    list-style-type: none;
+}
+td ul span{
+    padding-right: 1em;
+    font-weight: bold;
+}
+.totals-cell {
+    background-color: white;
+}
 
 /* Interactive styles (placed last so the override the others) */
 tr:hover {
