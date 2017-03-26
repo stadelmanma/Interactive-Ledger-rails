@@ -18,14 +18,14 @@
         <%= col.titlecase() %>
       </th>
     <% end %>
-    <% @totals_columns.each do |col| %>
+    <% @totals_column_names.each do |col| %>
       <th>
         <%= col.titlecase() %>
       </th>
     <% end %>
   </tr>
 
-  <%= render partial: 'transactions/transaction', collection: @ledger.transactions, locals: {totals: @totals} %>
+  <%= render partial: 'transactions/transaction', collection: @ledger.transactions %>
 
 </table>
 

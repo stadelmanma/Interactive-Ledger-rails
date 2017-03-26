@@ -19,11 +19,9 @@ module TransactionTotals
     {
       0 => {
         rowspan: transactions.length,
-        totals: {
-          week_total: 0,
-          total_deficit: 0,
-          category_totals: 0
-        }
+        week_total: 1,
+        total_deficit: 2,
+        category_totals: {'Test' => 0}
       }
     }
   end
