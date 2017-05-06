@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get 'interactive_financial_ledger/index'
 
   resources :ledgers do
-    resources :transactions
+    resources :ledger_uploads
   end
 
   root 'ledgers#index'
