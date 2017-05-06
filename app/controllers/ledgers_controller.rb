@@ -1,3 +1,4 @@
+# Manages ledger views and user interactions
 class LedgersController < ApplicationController
   include TransactionTotals
 
@@ -13,7 +14,7 @@ class LedgersController < ApplicationController
   end
 
   def new
-      @ledger = Ledger.new()
+    @ledger = Ledger.new
   end
 
   def edit
@@ -55,7 +56,7 @@ class LedgersController < ApplicationController
     params.require(:ledger).permit(
       :name,
       :data_source,
-      :ledger_uploads_attributes => [:data_source]
+      ledger_uploads_attributes: [:data_source]
     )
   end
 end
