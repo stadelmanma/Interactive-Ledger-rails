@@ -1,3 +1,4 @@
+# Manages an upload from a data source and sends it to the database
 class LedgerUpload < ApplicationRecord
   belongs_to :ledger, inverse_of: :ledger_uploads
   has_many :transactions, dependent: :destroy
@@ -8,25 +9,21 @@ class LedgerUpload < ApplicationRecord
 
   def upload_data
     # check if data has already been uploaded
-    if uploaded then
-      return
-    end
+    return if uploaded
     # process and upload new data
     transactions = load_data
     Transaction.import transactions
     update!(uploaded: true)
-    if ledger.persisted?
-      ledger.touch
-    end
+    ledger.touch if ledger.persisted?
   end
 
   private
 
   def data_path_exists
-    if !File.file? data_source
-      path = File.absolute_path(data_source)
-      errors[:base] << "Error: The requested file does not exist: '#{path}'"
-    end
+    return unless File.file? data_source
+    #
+    path = File.absolute_path(data_source)
+    errors[:base] << "Error: The requested file does not exist: '#{path}'"
   end
 
   def load_data
@@ -35,23 +32,23 @@ class LedgerUpload < ApplicationRecord
     data = File.read(path).split(/\n/)
 
     # processing header row
-     column_names = headers_to_column_names(data.shift)
+    column_names = headers_to_column_names(data.shift)
 
     # processing transaction data
     data.map! do |row|
       trans_data = Transaction.process_transaction_data(column_names, row)
-      trans_data[:ledger_id] = self.ledger.id
-      trans_data[:ledger_upload_id] = self.id
+      trans_data[:ledger_id] = ledger.id
+      trans_data[:ledger_upload_id] = id
       Transaction.new(trans_data)
     end
     #
-    return data
+    data
   end
 
   # processes header row to create valid attribute keys
   def headers_to_column_names(header)
     header = header.split(/\t/)
-    column_names = header.map {|name| name.downcase.strip}
-    column_names.map! {|name| name.sub /\s+/, '_'}
+    column_names = header.map { |name| name.downcase.strip }
+    column_names.map! { |name| name.sub(/\s+/, '_') }
   end
 end
