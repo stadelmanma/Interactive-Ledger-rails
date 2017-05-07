@@ -2,6 +2,7 @@
 class LedgerUpload < ApplicationRecord
   belongs_to :ledger, inverse_of: :ledger_uploads
   has_many :transactions, dependent: :destroy
+  accepts_nested_attributes_for :transactions
 
   validates :ledger, presence: true
   validates :data_source, presence: true, on: :create
