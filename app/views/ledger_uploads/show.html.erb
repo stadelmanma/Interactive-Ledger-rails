@@ -8,12 +8,14 @@
 </span>
 <span style="width: 10em">
     <strong>Last Updated:</strong>
-    <%= @ledger.updated_at.localtime%>
+    <%= @upload.updated_at.localtime%>
 </span>
 <br>
 <%= link_to 'View Ledger', @ledger %>
 <br>
 <%= link_to 'View All Uploads', [@ledger, :ledger_uploads] %>
+<br>
+<%= link_to 'Edit Upload', [:edit, @ledger, @upload] %>
 <br>
 <br>
 
