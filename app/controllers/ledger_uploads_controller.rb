@@ -23,5 +23,9 @@ class LedgerUploadsController < ApplicationController
   end
 
   def destroy
+    @ledger = Ledger.find(params[:ledger_id])
+    @upload = LedgerUpload.find(params[:id])
+    @upload.destroy
+    redirect_to [@ledger, :ledger_uploads]
   end
 end
