@@ -1,0 +1,30 @@
+<%= form_for [@ledger, @upload] do |f| %>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Balance</th>
+            <th>Account</th>
+            <th>Validated</th>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th>Comments</th>
+        </tr>
+        <%= f.fields_for(:transactions) do |trans| %>
+            <tr>
+                <td><%= trans.text_field :date, class: 'small'%></td>
+                <td><%= trans.text_field :description %></td>
+                <td><%= trans.text_field :amount, class: 'medium' %></td>
+                <td><%= trans.text_field :balance, class: 'medium' %></td>
+                <td><%= trans.text_field :account, class: 'medium' %></td>
+                <td style="text-align: center"><%= trans.check_box :validated %></td>
+                <td><%= trans.text_field :category, class: 'medium' %></td>
+                <td><%= trans.text_field :subcategory, class: 'medium' %></td>
+                <td><%= trans.text_field :comments, class: 'medium' %></td>
+            </tr>
+        <% end %>
+    </table>
+    <br>
+    <%= f.submit %>
+<% end %>
