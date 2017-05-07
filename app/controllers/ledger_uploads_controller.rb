@@ -20,6 +20,14 @@ class LedgerUploadsController < ApplicationController
   end
 
   def update
+    @ledger = Ledger.find(params[:ledger_id])
+    @upload = LedgerUpload.find(params[:id])
+
+    if @upload.update(upload_params)
+      redirect_to [@ledger, @upload]
+    else
+      render 'edit'
+    end
   end
 
   def destroy
@@ -27,5 +35,14 @@ class LedgerUploadsController < ApplicationController
     @upload = LedgerUpload.find(params[:id])
     @upload.destroy
     redirect_to [@ledger, :ledger_uploads]
+  end
+
+  private
+
+  def upload_params
+    params.require(:ledger_upload).permit(
+      transactions_attributes: %i[date description amount balance account
+                                  validated category subcategory comments id]
+    )
   end
 end
