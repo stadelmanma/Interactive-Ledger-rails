@@ -12,10 +12,7 @@
     <tr>
       <td><%= upload.data_source %></td>
       <td><%= upload.created_at.localtime %></td>
-      <td><%# link_to 'Edit', edit_ledger_path(ledger) %></td>
-      <td><%# link_to 'Delete', ledger_path(ledger),
-              method: :delete,
-              data: { confirm: 'Confirm deletion of ledger' } %></td>
+      <td><%= link_to 'Edit', [:edit, @ledger, upload] %></td>
     </tr>
   <% end %>
 </table>
