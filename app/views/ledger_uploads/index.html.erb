@@ -12,6 +12,7 @@
     <tr>
       <td><%= upload.data_source %></td>
       <td><%= upload.created_at.localtime %></td>
+      <td><%= link_to 'Show', [@ledger, upload] %></td>
       <td><%= link_to 'Edit', [:edit, @ledger, upload] %></td>
     </tr>
   <% end %>
