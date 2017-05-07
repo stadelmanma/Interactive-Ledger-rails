@@ -6,6 +6,8 @@
                 <span>Data Source:</span><%= upload.data_source %>
                 <br>
                 <span>Uploaded on:</span><%= upload.created_at.localtime %>
+                <br>
+                <%= link_to 'Modify Transactions', [:edit, @ledger, upload] %>
                 <hr>
             </li>
         <% end %>
