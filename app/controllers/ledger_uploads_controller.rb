@@ -8,15 +8,15 @@ class LedgerUploadsController < ApplicationController
   end
 
   def show
-  end
-
-  def new
+    @ledger = Ledger.find(params[:ledger_id])
+    @upload = LedgerUpload.find(params[:id])
+    @totals = {}
+    @column_names = Transaction.display_columns
   end
 
   def edit
-  end
-
-  def create
+    @ledger = Ledger.find(params[:ledger_id])
+    @upload = LedgerUpload.find(params[:id])
   end
 
   def update
