@@ -1,3 +1,4 @@
+# Logic to handle calculation of category and weekly totals
 module TransactionTotals
   extend ActiveSupport::Concern
 
@@ -6,43 +7,41 @@ module TransactionTotals
     helper_method :totals_column_names
   end
 
+  # Column names used to report totals in ledger#show
   def totals_column_names
-    [
-      'week_total',
-      'total_deficit',
-      'category_totals'
-    ]
+    %w[week_total total_deficit category_totals]
   end
 
+  # Returns a hash where the key's are indicies to output week totals
+  # the rowspan is set so totals cells will span an entire week
   def create_totals_hash(ledger)
-    totals = {0 => {total_deficit: 0}}
-    cur_total = 0
+    totals = { 0 => { total_deficit: 0 } }
+    current_total = 0
     #
     # loop over all transactions
     ledger.transactions.each_with_index do |transaction, i|
       #
       # create new entry for each week
       if new_week?(ledger.transactions, i)
-        totals[i] = {
-          rowspan: 0,
-          week_total: 0,
-          total_deficit: totals[cur_total][:total_deficit],
-          category_totals: {}
-        }
-        cur_total = i
+        initialize_week_total(totals, current_total, i)
+        current_total = i
       end
-      totals[cur_total][:rowspan] += 1
-      #
-      # preventing totals from being incremented in some cases
-      next if skip_transaction?(transaction)
-      #
-      # increment totals
-      update_week_total(transaction, totals[cur_total])
-      update_category_totals(transaction, totals[cur_total])
+      update_totals(totals, current_total, transaction)
     end
     #
     format_totals(totals)
-    return totals
+  end
+
+  # Increment the provided totals hash with transaction data
+  def update_totals(totals, current_total, transaction)
+    totals[current_total][:rowspan] += 1
+
+    # preventing totals from being incremented in some cases
+    return if skip_transaction?(transaction)
+
+    # increment totals
+    update_week_total(transaction, totals[current_total])
+    update_category_totals(transaction, totals[current_total])
   end
 
   def update_week_total(transaction, totals)
@@ -61,27 +60,42 @@ module TransactionTotals
   # test if a date pair crosses a week boundary
   def new_week?(transactions, i)
     # return early if at beginning or end of list
-    return true if i == 0
+    return true if i.zero?
     return false if i == transactions.length
     #
-    curr_wk = transactions[i][:date].strftime("%U").to_i
-    test_wk = transactions[i - 1][:date].strftime("%U").to_i
+    curr_wk = transactions[i][:date].strftime('%U').to_i
+    test_wk = transactions[i - 1][:date].strftime('%U').to_i
+
     # return true if week numbers are different
-    return curr_wk != test_wk
+    curr_wk != test_wk
   end
 
+  # Sets the inital values for weekly totals
+  def initialize_week_total(totals, current_total, i)
+    totals[i] = {
+      rowspan: 0,
+      week_total: 0,
+      total_deficit: totals[current_total][:total_deficit],
+      category_totals: {}
+    }
+  end
+
+  # Returns 'true' is criteria are met to exclude the transaction from
+  # incrementing the totals hash
   def skip_transaction?(transaction)
-    return transaction.category.match(/discover/i) ? true : false
+    transaction.category =~ /discover/i ? true : false
   end
 
+  # Formats the numbers in the totals hash for ledger display
   def format_totals(totals)
     totals.each do |key, value|
-      if value.class == Hash
-        totals[key] = format_totals(value)
-      end
-      totals[key] = Transaction.display_number(value)
+      totals[key] = if value.class == Hash
+                      format_totals(value)
+                    else
+                      Transaction.display_number(value)
+                    end
     end
     #
-    return totals
+    totals
   end
 end
