@@ -2,6 +2,7 @@
     <h4>Previous Uploads</h4>
     <ul>
         <% @ledger.ledger_uploads.each do |upload| %>
+            <% next unless upload.id %>
             <li>
                 <span>Data Source:</span><%= upload.data_source %>
                 <br>
@@ -30,22 +31,37 @@
         </div>
     <% end %>
 
-    <p>
+    <div>
         <%= f.label :name %>
         <br>
         <%= f.text_field :name %>
-    </p>
+    </div>
 
-    <p>
+    <br>
+    <div>
         <%= f.fields_for :ledger_uploads,  @ledger.ledger_uploads.build do |upload| %>
-            <%= upload.label :data_source %>
+            <%= upload.label :account do %>
+                Account Name:
+                <br>
+                <%= upload.text_field :account %>
+            <% end %>
             <br>
-            <%= upload.text_field :data_source %>
             <br>
+            <%= upload.label :data_source do %>
+                Data Source:
+                <br>
+                <%= upload.text_field :data_source %>
+            <% end %>
+            <br>
+            <br>
+            <%= upload.label :upload_format do %>
+                Data Format:
+                <br>
+                <%= upload.select :upload_format, options_for_select([['Default', 'default'], ['Discover', 'discover']]) %>
+            <% end %>
         <% end %>
-    </p>
+    </div>
 
-    <p>
-        <%= f.submit %>
-    </p>
+    <br>
+    <%= f.submit %>
 <% end %>
