@@ -4,3 +4,6 @@ AllCops:
     - db/**
   Rails:
     Enabled: true
+
+Metrics:
+  MethodLenth: 15
