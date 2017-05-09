@@ -16,14 +16,15 @@ class LedgerUpload < ApplicationRecord
     Transaction.import transactions
     update!(uploaded: true)
     ledger.touch if ledger.persisted?
+    self
   end
 
   private
 
   def data_path_exists
-    return unless File.file? data_source
-    #
     path = File.absolute_path(data_source)
+    return if File.file? path
+    #
     errors[:base] << "Error: The requested file does not exist: '#{path}'"
   end
 
