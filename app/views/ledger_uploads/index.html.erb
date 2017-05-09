@@ -1,5 +1,8 @@
 <h1>Listing Uploads For Ledger <%= @ledger.name %></h1>
-<span><%= link_to 'Back to Ledger', @ledger %></span>
+<span><%= link_to 'Show Ledger', @ledger %></span>
+<br>
+<span><%= link_to 'Upload Data', [:edit, @ledger] %></span>
+
 
 <table>
   <tr>
