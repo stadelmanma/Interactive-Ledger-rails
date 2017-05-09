@@ -11,6 +11,7 @@ class LedgerUpload < ApplicationRecord
   validate :data_path_exists, on: :create
 
   attr_accessor :upload_format
+  attr_accessor :account
 
   def upload_data
     # check if data has already been uploaded
@@ -37,7 +38,8 @@ class LedgerUpload < ApplicationRecord
     path = Rails.root.to_s + '/' + data_source
 
     # processing transaction data
-    upload_from_format(path, 'standard') do |trans_data|
+    upload_from_format(path, @upload_format) do |trans_data|
+      trans_data[:account] = @account
       trans_data[:ledger_id] = ledger.id
       trans_data[:ledger_upload_id] = id
       Transaction.new(trans_data.to_h)
