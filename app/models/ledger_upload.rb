@@ -8,6 +8,8 @@ class LedgerUpload < ApplicationRecord
   validates :data_source, presence: true, on: :create
   validate :data_path_exists, on: :create
 
+  attr_accessor :upload_format
+
   def upload_data
     # check if data has already been uploaded
     return if uploaded
