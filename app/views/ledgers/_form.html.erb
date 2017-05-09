@@ -2,6 +2,7 @@
     <h4>Previous Uploads</h4>
     <ul>
         <% @ledger.ledger_uploads.each do |upload| %>
+            <% next unless upload.id %>
             <li>
                 <span>Data Source:</span><%= upload.data_source %>
                 <br>
