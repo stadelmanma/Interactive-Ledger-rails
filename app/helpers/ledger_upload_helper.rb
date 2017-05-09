@@ -60,11 +60,8 @@ module LedgerUploadHelper
   # Different column name mappings and delimiter for each upload_format
   def discover #  this would be best stored in the database eventually
     mapping = {
-      'Trans. Date' => :date,
-      'Post Date' => nil,
-      'Description' => :description,
-      'Amount' => :amount,
-      'Category' => :category
+      trans_date: :date,
+      post_date: nil
     }
     #
     return ',', '%m/%d/%Y', mapping
