@@ -7,23 +7,6 @@ class Transaction < ApplicationRecord
 
   attr_accessor :display_data
 
-  # processes a tab delimited record string into a hash
-  def self.process_transaction_data(column_names, data)
-    data = data.split(/\t/)
-    data = Hash[column_names.zip data]
-    #
-    # process data values
-    data['date'] = Date.strptime(data['date'].strip, '%m/%d/%y').to_s
-    data['amount'] = format('%.2f', Float(data['amount'].delete(',')))
-    data['balance'].gsub!(/[[:space:]]/, '')
-    unless data['balance'].empty?
-      data['balance'] = format('%.2f', Float(data['balance'].delete(',')))
-    end
-    data['validated'] = data['validated'] == 'OK' ? true : false
-    #
-    data
-  end
-
   # returns an array of column names to display in order
   def self.display_columns
     %w[date description amount balance account validated
