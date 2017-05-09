@@ -61,7 +61,7 @@ class LedgersController < ApplicationController
     params.require(:ledger).permit(
       :name,
       :data_source,
-      ledger_uploads_attributes: [:data_source]
+      ledger_uploads_attributes: %i[data_source upload_format account]
     )
   end
 end
