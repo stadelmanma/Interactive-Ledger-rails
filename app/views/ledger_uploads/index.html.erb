@@ -8,7 +8,7 @@
   <tr>
     <th>Data Source</th>
     <th>Upload Date</th>
-    <th colSpan="2"></th>
+    <th colSpan="3"></th>
   </tr>
 
   <% @uploads.each do |upload| %>
@@ -17,6 +17,7 @@
       <td><%= upload.created_at.localtime %></td>
       <td><%= link_to 'Show', [@ledger, upload] %></td>
       <td><%= link_to 'Edit', [:edit, @ledger, upload] %></td>
+      <td><%= link_to 'Delete', [@ledger, upload], method: :delete %></td>
     </tr>
   <% end %>
 </table>
