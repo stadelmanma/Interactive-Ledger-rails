@@ -89,7 +89,7 @@ namespace :deploy do
   end
 
   desc 'Load database schema'
-  task :load_schema, roles: :app do
+  task :load_schema, roles(:app) do
     run "cd #{current_path}; rake db:schema:load"
   end
 
