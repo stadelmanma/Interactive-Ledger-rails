@@ -82,6 +82,17 @@ namespace :deploy do
     end
   end
 
+  task :cold do       # Overriding the default deploy:cold
+    update
+    load_schema       # My own step, replacing migrations.
+    start
+  end
+
+  desc 'Load database schema'
+  task :load_schema, roles: :app do
+    run "cd #{current_path}; rake db:schema:load"
+  end
+
   before :starting,     :check_revision
   after  :finishing,    :compile_assets
   after  :finishing,    :cleanup
