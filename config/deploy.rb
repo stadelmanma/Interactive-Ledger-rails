@@ -71,7 +71,7 @@ namespace :deploy do
   task :initial do
     on roles(:app) do
       before 'deploy:restart', 'puma:start'
-      invoke 'deploy'
+      invoke 'deploy:cold'
     end
   end
 
@@ -82,15 +82,30 @@ namespace :deploy do
     end
   end
 
-  task :cold do       # Overriding the default deploy:cold
-    update
-    load_schema       # My own step, replacing migrations.
-    start
+  desc 'Deploy app for first time'
+  task :cold do
+    invoke 'deploy:starting'
+    invoke 'deploy:started'
+    invoke 'deploy:updating'
+    invoke 'bundler:install'
+    invoke 'deploy:db_setup'
+    invoke 'deploy:compile_assets'
+    invoke 'deploy:normalize_assets'
+    invoke 'deploy:publishing'
+    invoke 'deploy:published'
+    invoke 'deploy:finishing'
+    invoke 'deploy:finished'
   end
 
-  desc 'Load database schema'
-  task :load_schema, roles(:app) do
-    run "cd #{current_path}; rake db:schema:load"
+  desc 'Setup database'
+  task :db_setup do
+    on roles(:db) do
+      within release_path do
+        with rails_env: (fetch(:rails_env) || fetch(:stage)) do
+          execute :rake, 'db:setup'
+        end
+      end
+    end
   end
 
   before :starting,     :check_revision
