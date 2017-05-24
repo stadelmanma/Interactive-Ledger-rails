@@ -12,7 +12,7 @@ class Ledger < ApplicationRecord
   validates :name, presence: true
 
   def upload_data
-    return unless ledger_uploads.last
+    return unless ledger_uploads.last && !ledger_uploads.last.uploaded
     ledger_uploads.last.upload_data
   end
 end
