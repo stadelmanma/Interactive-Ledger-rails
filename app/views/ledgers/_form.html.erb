@@ -49,14 +49,12 @@
             <br>
             <%= upload.label :data_source do %>
                 Data Source:
-                <br>
-                <%= upload.text_field :data_source %>
+                <%= upload.file_field :data_source %>
             <% end %>
             <br>
             <br>
             <%= upload.label :upload_format do %>
                 Data Format:
-                <br>
                 <%= upload.select :upload_format, options_for_select([['Native', 'default'], ['Chessie', 'chessie'], ['Discover', 'discover']]) %>
             <% end %>
         <% end %>
