@@ -25,8 +25,13 @@ class LedgersController < ApplicationController
     @ledger = Ledger.new(ledger_params)
 
     if @ledger.save
-      @ledger.upload_data
-      redirect_to @ledger
+      # upload any new data and if so, go to the upload#edit view
+      upload = @ledger.upload_data
+      if upload
+        redirect_to [:edit, @ledger, upload]
+      else
+        redirect_to @ledger
+      end
     else
       render 'new'
     end
