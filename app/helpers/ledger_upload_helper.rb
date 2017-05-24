@@ -1,17 +1,18 @@
 require 'csv'
 
-# Handles uploading data from different formats
+# Handles uploading data from different download formats
 module LedgerUploadHelper
-  # Uploads the data from a file using a block as the last arg to build
-  # each Transaction object.
-  def upload_from_format(data_file, data_format)
+  #
+  # Uploads the data from an ActionDispatch tempfile using a block as
+  # the last arg to build each Transaction object.
+  def upload_from_format(user_upload, data_format)
     #
     # determine data upload format
     formatter = get_formatter(data_format)
 
     # processing the data file
     transactions = []
-    CSV.foreach(data_file, formatter.csv_kwargs) do |row|
+    CSV.foreach(user_upload.tempfile, formatter.csv_kwargs) do |row|
       row = formatter.map_columns(row)
       transactions.push(yield(row))
     end
@@ -79,7 +80,7 @@ module LedgerUploadHelper
         rescue ArgumentError
           s
         end
-        }
+      }
 
       # handle date parsing gracefully
       date_conversion = lambda { |s|
