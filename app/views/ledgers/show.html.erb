@@ -9,6 +9,10 @@
 <br>
 <%= link_to 'Back', ledgers_path %>
 <br>
+<%= link_to 'Upload Data', [:edit, @ledger] %>
+<br>
+<%= link_to 'View All Uploads',  [@ledger, :ledger_uploads] %>
+<br>
 <br>
 
 <table id="ledger">
@@ -32,3 +36,7 @@
 <br>
 <br>
 <%= link_to 'Back', ledgers_path %>
+<br>
+<%= link_to 'Upload Data', [:edit, @ledger] %>
+<br>
+<%= link_to 'View All Uploads',  [@ledger, :ledger_uploads] %>
