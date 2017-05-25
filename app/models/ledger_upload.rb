@@ -9,7 +9,7 @@ class LedgerUpload < ApplicationRecord
   # need to catch the uploaded file ActionDispatch before type casting
   before_create do
     @uploaded_file = @attributes['data_source'].value_before_type_cast
-    @data_source = @uploaded_file.original_filename
+    self.data_source = @uploaded_file.original_filename
   end
 
   validates :ledger, presence: true
