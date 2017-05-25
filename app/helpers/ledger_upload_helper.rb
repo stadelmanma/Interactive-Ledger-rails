@@ -46,9 +46,14 @@ module LedgerUploadHelper
 
     def initialize
       @date_fmt = '%m/%d/%Y'
-      @csv_kwargs = DEFAULT_KWARGS.merge(converters: add_converters)
+      @csv_kwargs = DEFAULT_KWARGS.merge(converters: @converters)
       @column_name_mapping = {}
       @column_value_mapping = {}
+    end
+
+    def register_converter(symbol, conv_proc)
+      CSV::Converters[symbol] = conv_proc
+      @converters << symbol
     end
 
     def map_columns(data)
@@ -70,9 +75,15 @@ module LedgerUploadHelper
 
     private
 
-    # adds converts to the list and returns a list of symbols to use
     def add_converters
-      # add converter for commma separated numbers
+      @converters = %i[all]
+      register_account_numbers
+      register_date_conversion
+    end
+
+    # add converter for commma separated numbers and makes parentheized
+    # values negative
+    def register_account_numbers
       account_numbers = lambda { |s|
         begin
           val = Float(s.gsub(/[$,()]/, ''))
@@ -81,8 +92,12 @@ module LedgerUploadHelper
           s
         end
       }
+      #
+      register_converter(:account_numbers, account_numbers)
+    end
 
-      # handle date parsing gracefully
+    # handle date parsing gracefully
+    def register_date_conversion
       date_conversion = lambda { |s|
         begin
           Date.strptime(s, @date_fmt)
@@ -91,9 +106,7 @@ module LedgerUploadHelper
         end
       }
       #
-      CSV::Converters[:account_numbers] = account_numbers
-      CSV::Converters[:date_conversion] = date_conversion
-      %i[all account_numbers date_conversion]
+      register_converter(:date_conversion, date_conversion)
     end
 
     def process_column_names(column)

@@ -2,7 +2,7 @@
 class LedgerUpload < ApplicationRecord
   include LedgerUploadHelper
 
-  belongs_to :ledger, inverse_of: :ledger_uploads
+  belongs_to :ledger, inverse_of: :ledger_uploads, touch: true
   has_many :transactions, dependent: :destroy
   accepts_nested_attributes_for :transactions
 
@@ -26,7 +26,6 @@ class LedgerUpload < ApplicationRecord
     transactions = load_data
     Transaction.import transactions
     update!(uploaded: true)
-    ledger.touch if ledger.persisted?
     # change data_source attribute to just be the filename
     @data_source = @uploaded_file.original_filename
     # return the upload object

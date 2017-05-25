@@ -1,6 +1,8 @@
 <div id="previous-uploads">
     <h4>Previous Uploads</h4>
-    <%= link_to 'View All', [ @ledger, :ledger_uploads] %>
+    <% if @ledger.persisted? %>
+        <%= link_to 'View All', [ @ledger, :ledger_uploads] %>
+    <% end %>
     <ul>
         <% @ledger.ledger_uploads.each do |upload| %>
             <% next unless upload.id %>
