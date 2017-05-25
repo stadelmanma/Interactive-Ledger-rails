@@ -7,6 +7,14 @@ AllCops:
 Rails:
   Enabled: true
 
+Rails/Output:
+  Exclude:
+    - config/deploy.rb
+
+Rails/Exit:
+  Exclude:
+    - config/deploy.rb
+
 Metrics/LineLength:
     Exclude:
       - config/**
@@ -16,3 +24,7 @@ Metrics/LineLength:
 
 Metrics/MethodLength:
     Max: 15
+
+Metrics/BlockLength:
+  Exclude:
+    - config/deploy.rb
