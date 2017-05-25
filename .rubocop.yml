@@ -1,6 +1,18 @@
 AllCops:
   Excludes:
-    - config/unicorn.rb
     - db/**
-  Rails:
-    Enabled: true
+    - db/migrate/*
+    - test/**
+
+Rails:
+  Enabled: true
+
+Metrics/LineLength:
+    Exclude:
+      - config/**
+      - config/deploy/**
+      - config/environments/**
+      - config/initializers/**
+
+Metrics/MethodLength:
+    Max: 15
