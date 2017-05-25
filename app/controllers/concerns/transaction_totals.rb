@@ -14,15 +14,15 @@ module TransactionTotals
 
   # Returns a hash where the key's are indicies to output week totals
   # the rowspan is set so totals cells will span an entire week
-  def create_totals_hash(ledger)
+  def create_totals_hash(transactions)
     totals = { 0 => { total_deficit: 0 } }
     current_total = 0
     #
     # loop over all transactions
-    ledger.transactions.each_with_index do |transaction, i|
+    transactions.each_with_index do |transaction, i|
       #
       # create new entry for each week
-      if new_week?(ledger.transactions, i)
+      if new_week?(transactions, i)
         initialize_week_total(totals, current_total, i)
         current_total = i
       end

@@ -8,8 +8,9 @@ class LedgersController < ApplicationController
 
   def show
     @ledger = Ledger.find(params[:id])
+    @transactions = Transaction.where(ledger_id: @ledger.id).order(date: :asc)
     @column_names = Transaction.display_columns
-    @totals = create_totals_hash(@ledger)
+    @totals = create_totals_hash(@transactions)
     @totals_column_names = totals_column_names
   end
 
