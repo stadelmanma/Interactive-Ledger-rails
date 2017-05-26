@@ -4,5 +4,5 @@
 
 require_relative 'config/application'
 
-# get all rails
+# get all rails tasks
 Rails.application.load_tasks
