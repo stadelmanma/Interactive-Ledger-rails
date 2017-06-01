@@ -17,7 +17,7 @@
       <td><%= upload.created_at.localtime %></td>
       <td><%= link_to 'Show', [@ledger, upload] %></td>
       <td><%= link_to 'Edit', [:edit, @ledger, upload] %></td>
-      <td><%= link_to 'Delete', [@ledger, upload], method: :delete %></td>
+      <td><%= link_to 'Delete', [@ledger, upload], method: :delete, data: { confirm: 'Confirm deletion of upload' } %></td>
     </tr>
   <% end %>
 </table>
