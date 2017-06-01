@@ -22,6 +22,7 @@
                 <td><%= trans.text_field :category, class: 'medium' %></td>
                 <td><%= trans.text_field :subcategory, class: 'medium' %></td>
                 <td><%= trans.text_field :comments, class: 'medium' %></td>
+                <td style="border: none">Delete: <%= trans.check_box :_destroy %></td>
             </tr>
         <% end %>
     </table>
