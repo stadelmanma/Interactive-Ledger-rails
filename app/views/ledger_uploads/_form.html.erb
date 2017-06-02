@@ -22,10 +22,11 @@
                 <td><%= trans.text_field :category, class: 'medium' %></td>
                 <td><%= trans.text_field :subcategory, class: 'medium' %></td>
                 <td><%= trans.text_field :comments, class: 'medium' %></td>
+                <td style="border: none">Delete: <%= trans.check_box :_destroy %></td>
             </tr>
         <% end %>
     </table>
     <br>
     <%= f.submit %>
-    <%= link_to 'Delete Ledger Upload', [@ledger, @upload], method: :delete, data: { confirm: 'Confirm deletion of ledger' } %>
+    <%= link_to 'Delete Ledger Upload', [@ledger, @upload], method: :delete, data: { confirm: 'Confirm deletion of upload' } %>
 <% end %>

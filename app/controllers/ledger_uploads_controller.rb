@@ -42,7 +42,8 @@ class LedgerUploadsController < ApplicationController
   def upload_params
     params.require(:ledger_upload).permit(
       transactions_attributes: %i[date description amount balance account
-                                  validated category subcategory comments id]
+                                  validated category subcategory comments
+                                  id _destroy]
     )
   end
 end
