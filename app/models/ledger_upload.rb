@@ -37,7 +37,7 @@ class LedgerUpload < ApplicationRecord
   def load_data
     # processing transaction data
     upload_from_format(@uploaded_file, @upload_format) do |trans_data|
-      trans_data[:account] = @account
+      trans_data[:account] = @account if @account.present?
       trans_data[:ledger_id] = ledger.id
       trans_data[:ledger_upload_id] = id
       Transaction.new(trans_data.to_h)
