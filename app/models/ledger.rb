@@ -15,4 +15,13 @@ class Ledger < ApplicationRecord
     return unless ledger_uploads.last && !ledger_uploads.last.uploaded
     ledger_uploads.last.upload_data
   end
+
+  def to_tab_delim
+    keys = %w[date description amount balance account validated category
+              subcategory comments]
+    data = transactions.map do |trans|
+      keys.map { |k| trans.attributes[k].to_s }.join("\t")
+    end
+    "#{keys.join("\t")}\n#{data.join("\n")}"
+  end
 end
