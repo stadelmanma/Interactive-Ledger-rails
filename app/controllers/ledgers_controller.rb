@@ -61,6 +61,11 @@ class LedgersController < ApplicationController
     redirect_to ledgers_path
   end
 
+  def download
+    @ledger = Ledger.find(params[:id])
+    send_data @ledger.to_tab_delim, filename: "#{@ledger.name}.txt"
+  end
+
   private
 
   def ledger_params
