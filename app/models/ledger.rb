@@ -19,9 +19,10 @@ class Ledger < ApplicationRecord
   def to_tab_delim
     keys = %w[date description amount balance account validated category
               subcategory comments]
-    data = transactions.map do |trans|
-      keys.map { |k| trans.attributes[k].to_s }.join("\t")
+    CSV.new(StringIO.new, quote_char: '"', col_sep: "\t") do |csv|
+      transactions.each do |trans|
+        csv << keys.map { |k| trans.attributes[k].to_s }
+      end
     end
-    "#{keys.join("\t")}\n#{data.join("\n")}"
   end
 end
