@@ -63,7 +63,7 @@ class LedgersController < ApplicationController
 
   def download
     @ledger = Ledger.find(params[:id])
-    send_data @ledger.to_tab_delim, filename: "#{@ledger.name}.txt"
+    send_data @ledger.download_data, filename: "#{@ledger.name}.txt"
   end
 
   private
