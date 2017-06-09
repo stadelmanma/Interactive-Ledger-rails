@@ -17,6 +17,8 @@
 <br>
 <%= link_to 'Edit Upload', [:edit, @ledger, @upload] %>
 <br>
+<%= link_to 'Download Data', [:download, @ledger, @upload], method: 'get', data: { turbolinks: false } %>
+<br>
 <br>
 
 <table id="ledger">

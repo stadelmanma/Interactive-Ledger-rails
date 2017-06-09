@@ -1,5 +1,6 @@
 # Manages an upload from a data source and sends it to the database
 class LedgerUpload < ApplicationRecord
+  include LedgerDownloadHelper
   include LedgerUploadHelper
 
   belongs_to :ledger, inverse_of: :ledger_uploads, touch: true
@@ -30,6 +31,10 @@ class LedgerUpload < ApplicationRecord
     @data_source = @uploaded_file.original_filename
     # return the upload object
     self
+  end
+
+  def download_data
+    to_tab_delim(transactions)
   end
 
   private

@@ -37,6 +37,14 @@ class LedgerUploadsController < ApplicationController
     redirect_to [@ledger, :ledger_uploads]
   end
 
+  def download
+    @ledger = Ledger.find(params[:ledger_id])
+    @upload = LedgerUpload.find(params[:id])
+    #
+    filename = "#{@ledger.name}-#{@upload.data_source}.txt"
+    send_data @upload.download_data, filename: filename
+  end
+
   private
 
   def upload_params
