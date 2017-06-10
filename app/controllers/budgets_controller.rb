@@ -1,5 +1,6 @@
+# Manages the view-model interface for Budgets
 class BudgetsController < ApplicationController
-  before_action :set_budget, only: [:show, :edit, :update, :destroy]
+  before_action :set_budget, only: %i[show edit update destroy]
 
   # GET /budgets
   # GET /budgets.json
@@ -9,8 +10,7 @@ class BudgetsController < ApplicationController
 
   # GET /budgets/1
   # GET /budgets/1.json
-  def show
-  end
+  def show; end
 
   # GET /budgets/new
   def new
@@ -18,8 +18,7 @@ class BudgetsController < ApplicationController
   end
 
   # GET /budgets/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /budgets
   # POST /budgets.json
@@ -28,11 +27,15 @@ class BudgetsController < ApplicationController
 
     respond_to do |format|
       if @budget.save
-        format.html { redirect_to @budget, notice: 'Budget was successfully created.' }
+        format.html do
+          redirect_to @budget, notice: 'Budget was successfully created.'
+        end
         format.json { render :show, status: :created, location: @budget }
       else
         format.html { render :new }
-        format.json { render json: @budget.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @budget.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -42,11 +45,15 @@ class BudgetsController < ApplicationController
   def update
     respond_to do |format|
       if @budget.update(budget_params)
-        format.html { redirect_to @budget, notice: 'Budget was successfully updated.' }
+        format.html do
+          redirect_to @budget, notice: 'Budget was successfully updated.'
+        end
         format.json { render :show, status: :ok, location: @budget }
       else
         format.html { render :edit }
-        format.json { render json: @budget.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @budget.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -56,7 +63,9 @@ class BudgetsController < ApplicationController
   def destroy
     @budget.destroy
     respond_to do |format|
-      format.html { redirect_to budgets_url, notice: 'Budget was successfully destroyed.' }
+      format.html do
+        redirect_to budgets_url, notice: 'Budget was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end
