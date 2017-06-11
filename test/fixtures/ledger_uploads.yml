@@ -4,8 +4,10 @@ one:
   ledger_id: 1
   ledger: one
   data_source: MyString
+  uploaded: true
 
 two:
   ledger_id: 1
   ledger: two
   data_source: MyString
+  uploaded: true
