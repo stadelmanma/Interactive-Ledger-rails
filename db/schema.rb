@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170611175530) do
+ActiveRecord::Schema.define(version: 20170611204427) do
 
   create_table "budget_expenses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.date     "date"
@@ -21,6 +21,13 @@ ActiveRecord::Schema.define(version: 20170611175530) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.index ["budget_id"], name: "index_budget_expenses_on_budget_id", using: :btree
+  end
+
+  create_table "budget_ledgers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "budget_id"
+    t.integer "ledger_id"
+    t.index ["budget_id"], name: "index_budget_ledgers_on_budget_id", using: :btree
+    t.index ["ledger_id"], name: "index_budget_ledgers_on_ledger_id", using: :btree
   end
 
   create_table "budgets", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -64,5 +71,7 @@ ActiveRecord::Schema.define(version: 20170611175530) do
   end
 
   add_foreign_key "budget_expenses", "budgets"
+  add_foreign_key "budget_ledgers", "budgets"
+  add_foreign_key "budget_ledgers", "ledgers"
   add_foreign_key "ledger_uploads", "ledgers"
 end
