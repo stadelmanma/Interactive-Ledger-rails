@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2017-06-11
+  description: MyString
+  amount: 1.5
+  comments: MyText
+  budget_id: 1
+  budget: one
+
+two:
+  date: 2017-06-11
+  description: MyString
+  amount: 1.5
+  comments: MyText
+  budget_id: 1
+  budget: two
