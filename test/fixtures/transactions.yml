@@ -1,7 +1,10 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  ledger_id: 1
   ledger: one
+  ledger_upload_id: 1
+  ledger_upload: one
   date: 2016-12-23
   description: MyString
   amount: 1.5
@@ -11,7 +14,10 @@ one:
   comments: MyText
 
 two:
+  ledger_id: 1
   ledger: two
+  ledger_upload_id: 1
+  ledger_upload: one
   date: 2016-12-23
   description: MyString
   amount: 1.5

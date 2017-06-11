@@ -1,9 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  ledger_id: 1
   ledger: one
   data_source: MyString
 
 two:
+  ledger_id: 1
   ledger: two
   data_source: MyString
