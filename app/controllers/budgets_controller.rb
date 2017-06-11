@@ -77,6 +77,10 @@ class BudgetsController < ApplicationController
   end
 
   def budget_params
-    params.require(:budget)
+    params.require(:budget).permit(
+      :name,
+      :description,
+      budget_expenses_attributes: %i[data_source upload_format account]
+    )
   end
 end
