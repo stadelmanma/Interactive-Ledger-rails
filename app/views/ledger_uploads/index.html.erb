@@ -1,4 +1,4 @@
-<h1>Listing Uploads For Ledger <%= @ledger.name %></h1>
+<% @page_heading =  "Listing Uploads For Ledger #{@ledger.name}"%>
 <%= link_to 'Show Ledger', @ledger %>
 <br>
 <%= link_to 'Upload Data', [:edit, @ledger] %>
