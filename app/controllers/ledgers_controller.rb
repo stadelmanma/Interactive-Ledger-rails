@@ -5,10 +5,22 @@ class LedgersController < ApplicationController
   before_action :set_ledger
 
   def index
+    @page_heading = 'Listing Available Ledgers'
+    @page_links = [
+      { name: 'New Ledger', url: new_ledger_path }
+    ]
     @ledgers = Ledger.all
   end
 
   def show
+    @page_heading = "Ledger: #{@ledger.name}"
+    @page_links = [
+      { name: 'Back', url: ledgers_path },
+      { name: 'Upload Data', url: [:edit, @ledger] },
+      { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
+      { name: 'Download Ledger', url: "#{ledger_path}/download",
+        options: { method: 'get', data: { turbolinks: false } } }
+    ]
     @transactions = Transaction.where(ledger_id: @ledger.id).order(date: :asc)
     @column_names = Transaction.display_columns
     @totals = create_totals_hash(@transactions)
@@ -16,10 +28,19 @@ class LedgersController < ApplicationController
   end
 
   def new
+    @page_heading = 'New Ledger'
+    @page_links = [
+      { name: 'Back', url: ledgers_path }
+    ]
     @ledger = Ledger.new
   end
 
-  def edit; end
+  def edit
+    @page_heading = 'Edit Ledger'
+    @page_links = [
+      { name: 'Back', url: ledgers_path }
+    ]
+  end
 
   def create
     @ledger = Ledger.new(ledger_params)

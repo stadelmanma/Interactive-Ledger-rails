@@ -1,20 +1,3 @@
-<span style="width: 10em">
-    <strong>Name:</strong>
-    <%= @ledger.name%>
-</span>
-<span style="width: 10em">
-    <strong>Last Updated:</strong>
-    <%= @ledger.updated_at.localtime%>
-</span>
-<br>
-<%= link_to 'Back', ledgers_path %>
-<br>
-<%= link_to 'Upload Data', [:edit, @ledger] %>
-<br>
-<%= link_to 'View All Uploads',  [@ledger, :ledger_uploads] %>
-<br>
-<%= link_to 'Download Ledger', "#{ledger_path}/download", method: 'get', data: { turbolinks: false } %>
-<br>
 <br>
 
 <table id="ledger">
@@ -37,10 +20,3 @@
 
 <br>
 <br>
-<%= link_to 'Back', ledgers_path %>
-<br>
-<%= link_to 'Upload Data', [:edit, @ledger] %>
-<br>
-<%= link_to 'View All Uploads',  [@ledger, :ledger_uploads] %>
-<br>
-<%= link_to 'Download Ledger', "#{ledger_path}/download", method: 'get', data: { turbolinks: false } %>
