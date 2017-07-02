@@ -2,12 +2,13 @@
 class LedgersController < ApplicationController
   include TransactionTotals
 
+  before_action :set_ledger
+
   def index
     @ledgers = Ledger.all
   end
 
   def show
-    @ledger = Ledger.find(params[:id])
     @transactions = Transaction.where(ledger_id: @ledger.id).order(date: :asc)
     @column_names = Transaction.display_columns
     @totals = create_totals_hash(@transactions)
@@ -18,9 +19,7 @@ class LedgersController < ApplicationController
     @ledger = Ledger.new
   end
 
-  def edit
-    @ledger = Ledger.find(params[:id])
-  end
+  def edit; end
 
   def create
     @ledger = Ledger.new(ledger_params)
@@ -39,8 +38,6 @@ class LedgersController < ApplicationController
   end
 
   def update
-    @ledger = Ledger.find(params[:id])
-
     if @ledger.update(ledger_params)
       # upload any new data and if so, go to the upload#edit view
       upload = @ledger.upload_data
@@ -55,18 +52,19 @@ class LedgersController < ApplicationController
   end
 
   def destroy
-    @ledger = Ledger.find(params[:id])
     @ledger.destroy
-
     redirect_to ledgers_path
   end
 
   def download
-    @ledger = Ledger.find(params[:id])
     send_data @ledger.download_data, filename: "#{@ledger.name}.txt"
   end
 
   private
+
+  def set_ledger
+    @ledger = Ledger.find(params[:id]) if params[:id].present?
+  end
 
   def ledger_params
     params.require(:ledger).permit(
