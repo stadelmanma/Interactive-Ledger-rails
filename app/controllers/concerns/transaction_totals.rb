@@ -83,7 +83,11 @@ module TransactionTotals
   # Returns 'true' is criteria are met to exclude the transaction from
   # incrementing the totals hash
   def skip_transaction?(transaction)
-    transaction.category =~ /discover/i ? true : false
+    if transaction.amount.blank?
+      true
+    elsif transaction.category =~ /discover/i
+      true
+    end
   end
 
   # Formats the numbers in the totals hash for ledger display
