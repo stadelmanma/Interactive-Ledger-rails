@@ -1,18 +1,13 @@
-<% @page_heading = 'Edit Ledger Upload' %>
 <br>
 <span style="font-weight: bold">Data Source: </span><%= @upload.data_source %>
 |
 <span style="font-weight: bold">Date Uploaded: </span><%= @upload.created_at.localtime %>
 |
 <span style="font-weight: bold">Last Updated: </span><%= @upload.updated_at.localtime %>
-<br>
-<%= link_to 'View Ledger',  @ledger %>
-<br>
-<%= link_to 'View All Uploads',  [@ledger, :ledger_uploads] %>
-<br>
-<%= link_to 'View Upload',  [@ledger, @upload] %>
 
 <br>
 <br>
 
 <%= render 'form' %>
+
+<br>

@@ -1,8 +1,4 @@
 <span style="width: 10em">
-    <strong>Data Source:</strong>
-    <%= @upload.data_source%>
-</span>
-<span style="width: 10em">
     <strong>Date Uploaded:</strong>
     <%= @upload.created_at.localtime%>
 </span>
@@ -10,14 +6,7 @@
     <strong>Last Updated:</strong>
     <%= @upload.updated_at.localtime%>
 </span>
-<br>
-<%= link_to 'View Ledger', @ledger %>
-<br>
-<%= link_to 'View All Uploads', [@ledger, :ledger_uploads] %>
-<br>
-<%= link_to 'Edit Upload', [:edit, @ledger, @upload] %>
-<br>
-<%= link_to 'Download Data', [:download, @ledger, @upload], method: 'get', data: { turbolinks: false } %>
+
 <br>
 <br>
 
@@ -33,3 +22,5 @@
   <%= render partial: 'transactions/transaction', collection: @upload.transactions %>
 
 </table>
+
+<br>

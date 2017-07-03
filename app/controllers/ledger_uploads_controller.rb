@@ -2,27 +2,40 @@
 class LedgerUploadsController < ApplicationController
   include TransactionTotals
 
+  before_action :set_upload
+
   def index
-    @ledger = Ledger.find(params[:ledger_id])
+    @page_heading = "Listing Uploads For Ledger #{@ledger.name}"
+    @page_links = [
+      { name: 'Show Ledger', url: @ledger },
+      { name: 'Upload Data', url: [:edit, @ledger] }
+    ]
     @uploads = @ledger.ledger_uploads
   end
 
   def show
-    @ledger = Ledger.find(params[:ledger_id])
-    @upload = LedgerUpload.find(params[:id])
+    @page_heading = "Data Upload From: #{@upload.data_source}"
+    @page_links = [
+      { name: 'View Ledger', url: @ledger },
+      { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
+      { name: 'Edit Upload', url: [:edit, @ledger, @upload] },
+      { name: 'Download Data', url: [:download, @ledger, @upload],
+        options: { method: 'get', data: { turbolinks: false } } }
+    ]
     @totals = {}
     @column_names = Transaction.display_columns
   end
 
   def edit
-    @ledger = Ledger.find(params[:ledger_id])
-    @upload = LedgerUpload.find(params[:id])
+    @page_heading = 'Edit Ledger Upload'
+    @page_links = [
+      { name: 'View Ledger', url: @ledger },
+      { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
+      { name: 'View Upload', url: [@ledger, @upload] }
+    ]
   end
 
   def update
-    @ledger = Ledger.find(params[:ledger_id])
-    @upload = LedgerUpload.find(params[:id])
-
     if @upload.update(upload_params)
       redirect_to [@ledger, @upload]
     else
@@ -31,21 +44,21 @@ class LedgerUploadsController < ApplicationController
   end
 
   def destroy
-    @ledger = Ledger.find(params[:ledger_id])
-    @upload = LedgerUpload.find(params[:id])
     @upload.destroy
     redirect_to [@ledger, :ledger_uploads]
   end
 
   def download
-    @ledger = Ledger.find(params[:ledger_id])
-    @upload = LedgerUpload.find(params[:id])
-    #
     filename = "#{@ledger.name}-#{@upload.data_source}.txt"
     send_data @upload.download_data, filename: filename
   end
 
   private
+
+  def set_upload
+    @ledger = Ledger.find(params[:ledger_id]) if params[:ledger_id].present?
+    @upload = LedgerUpload.find(params[:id]) if params[:id].present?
+  end
 
   def upload_params
     params.require(:ledger_upload).permit(
