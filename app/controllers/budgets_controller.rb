@@ -3,7 +3,7 @@ class BudgetsController < ApplicationController
   before_action :set_budget, only: %i[show edit update destroy]
 
   def index
-    @page_header = 'Budgets'
+    @page_heading = 'Budgets'
     @page_links = [
       { name: 'New Budget', url: new_budget_path }
     ]
@@ -18,7 +18,7 @@ class BudgetsController < ApplicationController
   end
 
   def new
-    @page_header = 'New Budget'
+    @page_heading = 'New Budget'
     @page_links = [
       { name: 'Back', url: budgets_path }
     ]
@@ -26,7 +26,7 @@ class BudgetsController < ApplicationController
   end
 
   def edit
-    @page_header = 'Editing Budget'
+    @page_heading = 'Editing Budget'
     @page_links = [
       { name: 'Show', url: @budget },
       { name: 'Back', url: budgets_path }
