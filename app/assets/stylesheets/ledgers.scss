@@ -74,15 +74,17 @@ tr:active {
 #previous-uploads {
     position: relative;
     float: right;
-    border: solid 1px;
-    padding-right: 1em;
-}
+    border-left: solid 1px;
+    padding: 0em 1em;
 
-#previous-uploads ul {
-    list-style-type: none;
-}
+    ul {
+        margin: 1em;
+        padding-left: 0em;
+        list-style-type: none;
+    }
 
-#previous-uploads ul li span {
-    font-weight: bold;
-    padding-right: 1em;
+    li span {
+        font-weight: bold;
+        padding-right: 1em;
+    }
 }

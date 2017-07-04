@@ -81,7 +81,12 @@ div {
 }
 
 label {
-  display: block;
+  display: inline-block;
+
+  span {
+      display: inline-block;
+      width: 7em;
+  }
 }
 
 #notice {
