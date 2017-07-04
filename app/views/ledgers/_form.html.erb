@@ -35,29 +35,29 @@
     <% end %>
 
     <div>
-        <%= f.label :name %>
-        <br>
-        <%= f.text_field :name %>
+        <%= f.label :name do %>
+            <span>Name:</span>
+            <%= f.text_field :name %>
+         <% end %>
     </div>
 
     <br>
     <div>
         <%= f.fields_for :ledger_uploads,  @ledger.ledger_uploads.build do |upload| %>
             <%= upload.label :account do %>
-                Account Name:
-                <br>
+                <span>Account Name:</span>
                 <%= upload.text_field :account %>
             <% end %>
             <br>
             <br>
             <%= upload.label :data_source do %>
-                Data Source:
+                <span>Data Source:</span>
                 <%= upload.file_field :data_source %>
             <% end %>
             <br>
             <br>
             <%= upload.label :upload_format do %>
-                Data Format:
+                <span>Data Format:</span>
                 <%= upload.select :upload_format, options_for_select([['Native', 'default'], ['Chessie', 'chessie'], ['Discover', 'discover']]) %>
             <% end %>
         <% end %>
@@ -66,3 +66,5 @@
     <br>
     <%= f.submit %>
 <% end %>
+
+<br>
