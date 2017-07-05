@@ -6,6 +6,7 @@ class Budget < ApplicationRecord
 
   has_many :budget_ledgers, inverse_of: :budget, dependent: :destroy
   has_many :ledgers, through: :budget_ledgers
+  has_many :transactions, through: :ledgers
   accepts_nested_attributes_for :budget_ledgers, allow_destroy: true,
                                                  reject_if: :all_blank
 
