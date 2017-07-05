@@ -2,7 +2,7 @@
 # Calls functions after page has completely loaded
 $(document).on 'turbolinks:load', ->
     #
-    # adds an onclick event delegator to watch to clicks in description
+    # adds an onclick event delegator to watch for clicks in description
     $("#ledger").on("click", "td[id*=-description]", (event) ->
         toggleText(this, 30);
     );
