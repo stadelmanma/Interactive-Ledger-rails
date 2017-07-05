@@ -55,6 +55,13 @@ class BudgetsController < ApplicationController
     redirect_to budgets_url, notice: 'Budget was successfully destroyed.'
   end
 
+  def add_budget_ledger_select
+    render partial: 'ledger_select',
+           locals: { budget: Budget.new,
+                     budget_ledgers: [BudgetLedger.new],
+                     child_index: params[:child_index] }
+  end
+
   private
 
   def set_budget
