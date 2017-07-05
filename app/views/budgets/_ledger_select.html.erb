@@ -1,0 +1,12 @@
+<%= fields_for budget do |f| %>
+    <%= f.fields_for :budget_ledgers, budget_ledgers, child_index: child_index do |bl| %>
+      <li>
+          <div>
+              <%= bl.collection_select :ledger_id, Ledger.all.order(name: :asc), :id, :name, prompt: "Select a Ledger"%>
+              <% if bl.object.persisted? %>
+                  Delete: <%= bl.check_box :_destroy%>
+              <% end %>
+          </div>
+      </li>
+    <% end %>
+<% end %>
