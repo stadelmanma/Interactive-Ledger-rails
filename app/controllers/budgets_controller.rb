@@ -72,7 +72,10 @@ class BudgetsController < ApplicationController
     params.require(:budget).permit(
       :name,
       :description,
-      budget_expenses_attributes: %i[date description amount comments id]
+      budget_ledgers_attributes:
+        %i[ledger_id id _destroy],
+      budget_expenses_attributes:
+        %i[date description amount comments id _destroy]
     )
   end
 end
