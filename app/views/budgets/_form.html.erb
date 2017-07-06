@@ -29,6 +29,25 @@
     </div>
 
     <br>
+
+    <div>
+        <%= f.label :budget_expenses do %>
+            <span>Expenses:</span>
+            <table id="budget-expenses-container">
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Comments</th>
+                    <th></th>
+                </tr>
+                <%= render 'budget_expense', budget: budget, budget_expenses: budget.budget_expenses.order(date: :asc), child_index: nil %>
+            </table>
+            <a id="add-budget-expense">Add Expense</a>
+        <% end %>
+    </div>
+
+    <br>
     <div class="actions">
         <%= f.submit %>
     </div>

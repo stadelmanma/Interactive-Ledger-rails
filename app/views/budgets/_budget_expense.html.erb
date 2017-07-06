@@ -1,0 +1,25 @@
+<%= fields_for budget do |f| %>
+    <%= f.fields_for :budget_expenses, budget_expenses, child_index: child_index do |exp| %>
+        <tr>
+            <td>
+                <%= exp.date_select :date %>
+            </td>
+            <td>
+                <%= exp.text_field :description, class: 'medium' %>
+            </td>
+            <td>
+                <%= exp.text_field :amount, class: 'small' %>
+            </td>
+            <td>
+                <%= exp.text_field :comments %>
+            </td>
+            <td>
+                <% if exp.object.persisted? %>
+                    Delete: <%= exp.check_box :_destroy%>
+                <% else %>
+                    <a onclick="this.parentNode.parentNode.remove()">X</a>
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+<% end %>
