@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :budgets do
     get 'add-budget-ledger-select' => 'budgets#add_budget_ledger_select',
         on: :collection
+    get 'add-budget-expense' => 'budgets#add_budget_expense',
+        on: :collection
   end
 
   resources :ledgers do
