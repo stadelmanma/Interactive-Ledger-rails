@@ -62,6 +62,13 @@ class BudgetsController < ApplicationController
                      child_index: params[:child_index] }
   end
 
+  def add_budget_expense
+    render partial: 'budget_expense',
+           locals: { budget: Budget.new,
+                     budget_expenses: [BudgetExpense.new],
+                     child_index: params[:child_index] }
+  end
+
   private
 
   def set_budget
