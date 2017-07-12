@@ -1,1 +1,29 @@
 <p id="notice"><%= notice %></p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Week</th>
+            <th>Description</th>
+            <th>Original Amount</th>
+            <th>Actual Amount</th>
+            <th>Comments</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% @totals.each do |i, total| %>
+            <% rows = convert_totals_to_rows(@budget, total) %>
+                <% rows.each do |row| %>
+                <tr>
+                    <% if row == rows.first %>
+                        <%= content_tag :td, total[:date_range].join(' - '), rowspan: rows.length %>
+                    <% end %>
+                    <% row.each do |data| %>
+                        <%= content_tag :td, data %>
+                    <% end %>
+                </tr>
+            <% end %>
+        <% end %>
+    </tbody>
+</table>
