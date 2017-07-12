@@ -9,7 +9,7 @@ class Ledger < ApplicationRecord
                                   attributes['data_source'].blank?
                                 }
 
-  has_many :budget_ledgers
+  has_many :budget_ledgers, inverse_of: :ledger, dependent: :destroy
   has_many :budgets, through: :budget_ledgers
 
   validates_associated :ledger_uploads
