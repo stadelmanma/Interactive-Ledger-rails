@@ -1,0 +1,23 @@
+/* General styles that apply to a budget table*/
+.budget {
+    td {
+        &.week {
+            transform: rotate(45deg);
+            font-weight: bold;
+        }
+
+        &.description {
+        }
+
+        &.original-amount {
+            text-align: right;
+        }
+
+        &.actual-amount {
+            text-align: right;
+        }
+
+        &.comments {
+        }
+    }
+}
