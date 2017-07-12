@@ -1,13 +1,13 @@
 <p id="notice"><%= notice %></p>
 
-<table>
+<% headers = %w[week description original-amount actual-amount comments] %>
+
+<table class="budget">
     <thead>
         <tr>
-            <th>Week</th>
-            <th>Description</th>
-            <th>Original Amount</th>
-            <th>Actual Amount</th>
-            <th>Comments</th>
+            <% headers.each do |text| %>
+                <%= content_tag :th, text.titleize %>
+            <% end %>
         </tr>
     </thead>
 
@@ -17,10 +17,10 @@
                 <% rows.each do |row| %>
                 <tr>
                     <% if row == rows.first %>
-                        <%= content_tag :td, total[:date_range].join(' - '), rowspan: rows.length %>
+                        <%= content_tag :td, total[:date_range].join(' - '), rowspan: rows.length, class: headers[0] %>
                     <% end %>
-                    <% row.each do |data| %>
-                        <%= content_tag :td, data %>
+                    <% row.each_with_index do |data, i| %>
+                        <%= content_tag :td, data, class: headers[i + 1] %>
                     <% end %>
                 </tr>
             <% end %>
