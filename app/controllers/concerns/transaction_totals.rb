@@ -23,7 +23,7 @@ module TransactionTotals
       #
       # create new entry for each week
       if new_week?(transactions, i)
-        initialize_week_total(totals, current_total, i)
+        initialize_week_total(transactions, totals, current_total, i)
         current_total = i
       end
       update_totals(totals, current_total, transaction)
@@ -45,15 +45,22 @@ module TransactionTotals
   end
 
   def update_week_total(transaction, totals)
+    # add budgeted expenses to the list
+    if transaction.category.casecmp('budgeted').zero?
+      totals[:budgeted_expenses] << transaction
+    end
+
+    # increment total deficits
     totals[:week_total] += transaction.amount
     totals[:total_deficit] += transaction.amount
   end
 
   def update_category_totals(transaction, totals)
-    if totals[:category_totals][transaction.category]
-      totals[:category_totals][transaction.category] += transaction.amount
+    category = transaction.category.blank? ? 'UNKNOWN' : transaction.category
+    if totals[:category_totals][category]
+      totals[:category_totals][category] += transaction.amount
     else
-      totals[:category_totals][transaction.category] = transaction.amount
+      totals[:category_totals][category] = transaction.amount
     end
   end
 
@@ -71,13 +78,19 @@ module TransactionTotals
   end
 
   # Sets the inital values for weekly totals
-  def initialize_week_total(totals, current_total, i)
+  def initialize_week_total(transactions, totals, current_total, i)
     totals[i] = {
       rowspan: 0,
+      date_range: week_date_range(transactions[i]),
       week_total: 0,
       total_deficit: totals[current_total][:total_deficit],
-      category_totals: {}
+      category_totals: {},
+      budgeted_expenses: []
     }
+  end
+
+  def week_date_range(transaction)
+    [transaction.date.beginning_of_week, transaction.date.end_of_week]
   end
 
   # Returns 'true' is criteria are met to exclude the transaction from
