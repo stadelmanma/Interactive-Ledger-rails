@@ -1,5 +1,6 @@
 # Manages the view-model interface for Budgets
 class BudgetsController < ApplicationController
+  include TransactionTotals
   before_action :set_budget, only: %i[show edit update destroy]
 
   def index
@@ -11,10 +12,13 @@ class BudgetsController < ApplicationController
   end
 
   def show
+    @page_heading = "Budget: #{@budget.name}"
     @page_links = [
       { name: 'Edit', url: edit_budget_path(@budget) },
       { name: 'Back', url: budgets_path }
     ]
+    @transactions = @budget.transactions.order(date: :asc)
+    @totals = create_totals_hash(@transactions)
   end
 
   def new
