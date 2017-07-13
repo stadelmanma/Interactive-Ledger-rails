@@ -1,0 +1,18 @@
+table {
+    margin: auto;
+    border-collapse: collapse;
+    font-size: 12px;
+
+    th {
+        border: 1px solid rgb(0,0,0);
+        padding: 5px;
+        font-size: 14px;
+    }
+
+    td {
+        border: 1px solid rgb(0,0,0);
+        padding-bottom: 7px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+}
