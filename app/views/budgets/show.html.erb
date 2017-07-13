@@ -13,6 +13,7 @@
 
     <tbody>
         <% @totals.each do |i, total| %>
+            <tr class="section section--start"><td colspan="5"></td></tr>
             <% rows = convert_totals_to_rows(@budget, total) %>
                 <% rows.each do |row| %>
                 <tr>
@@ -24,6 +25,7 @@
                     <% end %>
                 </tr>
             <% end %>
+            <tr class="section section--end"><td colspan="5"></td></tr>
         <% end %>
     </tbody>
 </table>

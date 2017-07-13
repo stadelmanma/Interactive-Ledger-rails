@@ -1,5 +1,21 @@
 /* General styles that apply to a budget table*/
 .budget {
+
+    tr {
+        &.section {
+            td {
+                padding: 0;
+            }
+
+            &--start {
+            }
+
+            &--end {
+                display: none;
+            }
+        }
+    }
+
     td {
         &.week {
             font-weight: bold;
