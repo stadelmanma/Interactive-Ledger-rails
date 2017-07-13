@@ -1,0 +1,43 @@
+body {
+  background-color: #fff;
+  color: #333;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  margin: 33px;
+}
+
+nav {
+    height: 5em;
+
+    h1 {
+        display: inline-block;
+        width: 49%;
+    }
+    div {
+        display: inline-block;
+        width: 49%;
+
+        &.right {
+            float: right;
+            text-align: right;
+        }
+        &.left {
+            float: left;
+            text-align: left;
+        }
+
+        a {
+            margin: 0em 1em;
+        }
+    }
+}
+
+footer {
+    @extend nav;
+    height: auto;
+}
+
+#main {
+    min-height: calc(100vh - 10.5em);
+}
