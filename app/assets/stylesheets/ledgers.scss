@@ -1,73 +1,71 @@
 /* General ledger table styles */
-table {
-    margin: auto;
-    border-collapse: collapse;
-    font-size: 12px;
-}
-tr {
-    box-shadow: none;
-    transition: box-shadow 3s;
-    transition-delay: 1s;
-}
-th {
-    position: relative;
-    border: 1px solid rgb(0,0,0);
-    padding: 5px;
-    font-size: 14px;
-}
-td {
-    border: 1px solid rgb(0,0,0);
-    padding: 5px;
-    white-space: nowrap;
-}
 
-/* Syles for specific cells and their content */
-tr[data-validated="false"] td[id*="validated"] {
-    background-color: rgba(240, 128, 128, 0.7);
-}
-tr[data-validated="true"] td[id*="validated"] {
-    background-color: rgba(144, 238, 144, 0.7);
-}
-tr[data-account="Discover"] {
-    background-color: rgba(255, 195, 90, 0.7);
-}
-td[id*="description"]:hover {
-    text-decoration: underline;
-}
-td[id*="amount"] {
-    text-align: right;
-}
-td[id*="balance"] {
-    text-align: right;
-}
-td[id*="validated"] {
-    text-align: center;
-}
-td[id*="week_total"] {
-    text-align: right;
-}
-td[id*="total_deficit"] {
-    text-align: right;
-}
-td ul {
-    display: inline;
-    list-style-type: none;
-}
-td ul span{
-    padding-right: 1em;
-    font-weight: bold;
-}
-.totals-cell {
-    background-color: white;
-}
+.ledger {
+    tr {
+        box-shadow: none;
+        transition: box-shadow 3s;
+        transition-delay: 1s;
+    }
+    th {
+        position: relative;
+        border: 1px solid rgb(0,0,0);
+        padding: 5px;
+        font-size: 14px;
+    }
+    td {
+        white-space: nowrap;
+    }
 
-/* Interactive styles (placed last so the override the others) */
-tr:hover {
-    background-color: rgb(235,235,235);
-}
-tr:active {
-    box-shadow: 0rem 0rem 0.3rem 0.1rem rgb(75,155,215);
-    transition: box-shadow 0s;
+    /* Syles for specific cells and their content */
+    tr[data-validated="false"] td[id*="validated"] {
+        background-color: rgba(240, 128, 128, 0.7);
+    }
+    tr[data-validated="true"] td[id*="validated"] {
+        background-color: rgba(144, 238, 144, 0.7);
+    }
+    tr[data-account="Discover"] {
+        background-color: rgba(255, 195, 90, 0.7);
+    }
+    td[id*="description"]:hover {
+        text-decoration: underline;
+    }
+    td[id*="amount"] {
+        text-align: right;
+    }
+    td[id*="balance"] {
+        text-align: right;
+    }
+    td[id*="validated"] {
+        text-align: center;
+    }
+    td[id*="week_total"] {
+        text-align: right;
+    }
+    td[id*="total_deficit"] {
+        text-align: right;
+    }
+
+    /* Styles for totals cells */
+    td ul {
+        display: inline;
+        list-style-type: none;
+    }
+    td ul span{
+        padding-right: 1em;
+        font-weight: bold;
+    }
+    .totals-cell {
+        background-color: white;
+    }
+
+    /* Interactive styles (placed last so the override the others) */
+    tr:hover {
+        background-color: rgb(235,235,235);
+    }
+    tr:active {
+        box-shadow: 0rem 0rem 0.3rem 0.1rem rgb(75,155,215);
+        transition: box-shadow 0s;
+    }
 }
 
 /* Styles for ledger uploads div */
