@@ -9,11 +9,11 @@
     <tr>
       <td><%= ledger.name %></td>
       <td><%= ledger.updated_at.localtime %></td>
-      <td><%= link_to 'Show', ledger_path(ledger) %></td>
-      <td><%= link_to 'Edit', edit_ledger_path(ledger) %></td>
-      <td><%= link_to 'Delete', ledger_path(ledger),
-              method: :delete,
-              data: { confirm: 'Confirm deletion of ledger' } %></td>
+      <td><%= link_to 'Show', ledger %></td>
+      <td><%= link_to 'Edit', [:edit, ledger] %></td>
+      <td><%= link_to 'Delete', ledger,
+                       method: :delete,
+                       data: { confirm: 'Confirm deletion of ledger' } %></td>
     </tr>
   <% end %>
 </table>
