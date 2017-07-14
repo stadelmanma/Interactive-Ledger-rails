@@ -1,19 +1,5 @@
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Last Data Upload</th>
-    <th colSpan="3"></th>
-  </tr>
+<p id="notice"><%= notice %></p>
 
-  <% @ledgers.each do |ledger| %>
-    <tr>
-      <td><%= ledger.name %></td>
-      <td><%= ledger.updated_at.localtime %></td>
-      <td><%= link_to 'Show', ledger_path(ledger) %></td>
-      <td><%= link_to 'Edit', edit_ledger_path(ledger) %></td>
-      <td><%= link_to 'Delete', ledger_path(ledger),
-              method: :delete,
-              data: { confirm: 'Confirm deletion of ledger' } %></td>
-    </tr>
-  <% end %>
-</table>
+<%= render 'ledgers_index', ledgers: @ledgers %>
+
+<br>
