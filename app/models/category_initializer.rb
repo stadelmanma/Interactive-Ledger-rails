@@ -1,0 +1,2 @@
+class CategoryInitializer < ApplicationRecord
+end
