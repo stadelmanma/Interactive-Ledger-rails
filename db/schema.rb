@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170714001511) do
+ActiveRecord::Schema.define(version: 20170714012758) do
 
   create_table "budget_expenses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.date     "date"
@@ -38,11 +38,12 @@ ActiveRecord::Schema.define(version: 20170714001511) do
   end
 
   create_table "category_initializers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.string   "pattern",     null: false
+    t.string   "pattern",                 null: false
     t.string   "category"
     t.string   "subcategory"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "priority",    default: 0
   end
 
   create_table "ledger_uploads", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
