@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   resources :category_initializers, only: %i[index destroy] do
     collection do
       get :edit
-      post :update
+      post :edit, action: :update
       get 'add-category-intializer'
     end
   end
