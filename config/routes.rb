@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
+  root 'home#home'
+
   resources :budgets do
-    get 'add-budget-ledger-select' => 'budgets#add_budget_ledger_select',
-        on: :collection
-    get 'add-budget-expense' => 'budgets#add_budget_expense',
-        on: :collection
+    collection do
+      get 'add-budget-ledger-select'
+      get 'add-budget-expense'
+    end
   end
 
   resources :ledgers do
@@ -15,5 +17,11 @@ Rails.application.routes.draw do
     get 'download', on: :member
   end
 
-  root 'home#home'
+  resources :category_initializers, only: %i[index destroy] do
+    collection do
+      get :edit
+      post :update
+      get 'add-category-intializer'
+    end
+  end
 end
