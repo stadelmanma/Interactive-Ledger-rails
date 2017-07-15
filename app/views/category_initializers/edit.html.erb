@@ -1,0 +1,19 @@
+<%= form_tag edit_category_initializers_path, :method => :post do %>
+
+    <table>
+        <tr>
+            <th>Pattern</th>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th>Priority</th>
+            <th></th>
+        </tr>
+        <% @initializers.each do |initializer|  %>
+            <%= render 'form', initializer: initializer %>
+        <% end %>
+    </table>
+
+    <div class="actions">
+        <%= submit_tag "Submit" %>
+    </div>
+<% end %>

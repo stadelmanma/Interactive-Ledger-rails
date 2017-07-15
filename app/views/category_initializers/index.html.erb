@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Pattern</th>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th>Priority</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% @initializers.each do |initializer| %>
+            <tr>
+                <td>/<%= initializer.pattern %>/</td>
+                <td><%= initializer.category %></td>
+                <td><%= initializer.subcategory %></td>
+                <td><%= initializer.priority %></td>
+                <td><%= link_to 'Delete', initializer,
+                                 method: :delete,
+                                 data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<br>
