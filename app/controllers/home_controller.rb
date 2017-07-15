@@ -2,7 +2,7 @@
 class HomeController < ApplicationController
   def home
     @page_links = [
-      { name: 'Edit Initializers', url: edit_category_initializers_path }
+      { name: 'Show Initializers', url: category_initializers_path }
     ]
   end
 end
