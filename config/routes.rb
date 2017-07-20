@@ -21,7 +21,7 @@ Rails.application.routes.draw do
     collection do
       get :edit
       post :edit, action: :update
-      get 'add-category-intializer'
+      get 'add-category-initializer'
     end
   end
 end
