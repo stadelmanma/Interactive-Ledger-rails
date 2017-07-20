@@ -1,6 +1,6 @@
 <%= form_tag edit_category_initializers_path, :method => :post do %>
 
-    <table>
+    <table id="category-initializers-container">
         <tr>
             <th>Pattern</th>
             <th>Category</th>
@@ -12,6 +12,8 @@
             <%= render 'form', initializer: initializer %>
         <% end %>
     </table>
+
+    <a id="add-category-initializer" style="float: right;">Add Initializer</a>
 
     <div class="actions">
         <%= submit_tag "Submit" %>
