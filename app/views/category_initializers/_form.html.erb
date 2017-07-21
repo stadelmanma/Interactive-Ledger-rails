@@ -6,7 +6,7 @@
         <td><%= f.number_field :priority, class: 'small' %></td>
         <td>
             <% if initializer.persisted? %>
-                Delete: <%= f.check_box :_destroy, {}, '1', '' %>
+                Delete: <%= check_box_tag 'category_initializers[][_destroy]', '1', initializer._destroy.present? %>
             <% else %>
                 <a onclick="this.parentNode.parentNode.remove()">X</a>
             <% end %>
