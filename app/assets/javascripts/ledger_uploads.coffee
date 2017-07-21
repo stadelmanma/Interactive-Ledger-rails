@@ -11,4 +11,7 @@ $(document).on 'turbolinks:load', ->
 # this function disables all child input elements except the checkbox used to toggle
 @disable_inputs = (row, checkbox) ->
     disable = checkbox.checked;
-    $(row).find('input').not('[name*=destroy]').prop('disabled', disable);
+    if disable
+        $(row).find('input').not('[name*=destroy]').addClass('disabled');
+    else
+        $(row).find('input').not('[name*=destroy]').removeClass('disabled');
