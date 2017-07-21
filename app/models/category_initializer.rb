@@ -2,4 +2,6 @@
 class CategoryInitializer < ApplicationRecord
   validates :pattern, presence: true
   validates :category, presence: true
+
+  attr_accessor :_destroy
 end
