@@ -8,14 +8,13 @@ $(document).on 'turbolinks:load', ->
     #
     # strip out the number from the params name so a simple array is submitted
     # instead of a hash with the id as the key
-    $('#category-initializers-container').find('tr').each ->
-        $(this).find('input').each ->
-            name = $(this).attr('name');
-            $(this).attr('name', name.replace(/\[\d+\]/, '[]'));
+    $('#category-initializers-container').find('input').each ->
+        name = $(this).attr('name');
+        $(this).attr('name', name.replace(/\[\d+\]/, '[]'));
 #
 # this function handles sending and receiving an AJAX response to add a
 # set of initializer fields field to the form
-@addCategoryInitializer = () ->
+addCategoryInitializer = () ->
     url = '/category_initializers/add-category-initializer';
     #
     success = (html) ->
