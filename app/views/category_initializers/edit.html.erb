@@ -1,5 +1,19 @@
 <%= form_tag edit_category_initializers_path, :method => :post do %>
 
+    <% @initializers.each do |initializer| %>
+        <% if initializer.errors.any? %>
+            <div id="error_explanation">
+                <h2><%= pluralize(initializer.errors.count, "error") %> prohibited this initializer from being saved:</h2>
+
+                <ul>
+                    <% initializer.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                    <% end %>
+                </ul>
+            </div>
+        <% end %>
+    <% end %>
+
     <table id="category-initializers-container">
         <tr>
             <th>Pattern</th>
