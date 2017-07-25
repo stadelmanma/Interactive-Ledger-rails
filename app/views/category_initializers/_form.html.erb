@@ -1,0 +1,18 @@
+<%= fields_for "category_initializers[]", initializer, include_id: false do |f| %>
+    <tr>
+        <td>/<%= f.text_field :pattern %>/</td>
+        <td><%= f.text_field :category, class: 'medium' %></td>
+        <td><%= f.text_field :subcategory, class: 'medium' %></td>
+        <td><%= f.number_field :priority, class: 'small' %></td>
+        <td>
+            <% if initializer.persisted? %>
+                Delete: <%= check_box_tag 'category_initializers[][_destroy]', '1', initializer._destroy.present? %>
+            <% else %>
+                <a onclick="this.parentNode.parentNode.remove()">X</a>
+            <% end %>
+        </td>
+    </tr>
+    <% if initializer.persisted? %>
+        <%= f.hidden_field :id %>
+    <% end %>
+<% end %>

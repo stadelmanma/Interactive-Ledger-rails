@@ -30,6 +30,11 @@ input, select {
     &.large {
         width: 10em;
     }
+
+    &.disabled {
+        color: rgba(0, 0, 0, 0.5);
+        pointer-events: none;
+    }
 }
 
 #notice {
