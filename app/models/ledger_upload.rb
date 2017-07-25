@@ -43,6 +43,13 @@ class LedgerUpload < ApplicationRecord
     # processing transaction data
     upload_from_format(@uploaded_file, @upload_format) do |trans_data|
       trans_data[:account] = @account if @account.present?
+      # find initializer and set category and subcategory
+      if trans_data[:category].blank?
+        ci = CategoryInitializer.find_initializer(trans_data[:description])
+        trans_data[:category] = ci.category
+        trans_data[:subcategory] = ci.subcategory
+      end
+      #
       trans_data[:ledger_id] = ledger.id
       trans_data[:ledger_upload_id] = id
       Transaction.new(trans_data.to_h)
