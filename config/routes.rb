@@ -12,9 +12,13 @@ Rails.application.routes.draw do
 
   resources :ledgers do
     resources :ledger_uploads do
-      get 'download', on: :member
+      get :download, on: :member
     end
-    get 'download', on: :member
+    member do
+      get :download
+      get :categories, format: :json
+      get :subcategories, format: :json
+    end
   end
 
   resources :category_initializers, only: %i[index destroy] do
