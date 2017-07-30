@@ -81,6 +81,16 @@ class LedgersController < ApplicationController
     send_data @ledger.download_data, filename: "#{@ledger.name}.txt"
   end
 
+  def categories
+    where = ["category REGEXP '.+' AND ledger_id = ?", @ledger.id]
+    @categories = Transaction.distinct.where(*where).pluck(:category)
+  end
+
+  def subcategories
+    where = ["subcategory REGEXP '.+' AND ledger_id = ?", @ledger.id]
+    @subcategories = Transaction.distinct.where(*where).pluck(:subcategory)
+  end
+
   private
 
   def set_ledger
