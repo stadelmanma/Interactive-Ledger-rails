@@ -1,0 +1,5 @@
+<span>
+    <%= content_tag :svg, class: ['icon', "icon-#{name}"] do %>
+        <use xlink:href="symbol-defs.svg#icon-<%= name %>"></use>
+    <% end %>
+</span>
