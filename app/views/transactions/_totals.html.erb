@@ -1,0 +1,17 @@
+<% rowspan = totals[transaction_counter][:rowspan] %>
+
+<%= content_tag :td, id: "row-#{transaction_counter}-week_total", rowSpan: rowspan, class: 'totals-cell' do -%>
+    <%= totals[transaction_counter][:week_total] %>
+<% end %>
+
+<%= content_tag :td, id: "row-#{transaction_counter}-total_deficit", rowSpan: rowspan, class: 'totals-cell' do -%>
+    <%= totals[transaction_counter][:total_deficit] %>
+<% end %>
+
+<%= content_tag :td, id: "row-#{transaction_counter}-category_totals", rowSpan: rowspan, class: 'totals-cell' do -%>
+    <ul>
+        <% totals[transaction_counter][:category_totals].each do |cat, amt| %>
+            <li><span><%= cat + ':' %></span><%= amt %></li>
+        <% end %>
+    </ul>
+<% end %>

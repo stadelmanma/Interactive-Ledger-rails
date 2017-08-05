@@ -1,28 +1,8 @@
-<tr id="row-<%= transaction_counter %>"
-    <% @column_names.each do |col| %>
-        data-<%= col %>="<%=transaction[col] %>"
-    <% end %>
-    >
-    <% transaction.gen_display_hash %>
-    <% @column_names.each do |col| %>
-        <td id="row-<%= transaction_counter.to_s + '-' + col %>">
-            <%= transaction.display_data[col] %>
-        </td>
-    <% end %>
+<%= content_tag :tr, id: "row-#{transaction_counter}", data: transaction.attributes do -%>
+
+    <%= render 'transactions/data', transaction: transaction, columns: @column_names, transaction_counter: transaction_counter %>
+
     <% if @totals[transaction_counter] %>
-        <% rowspan = @totals[transaction_counter][:rowspan] %>
-        <td id="row-<%= transaction_counter.to_s + '-week_total' %>" rowSpan="<%= rowspan %>" class="totals-cell">
-            <%= @totals[transaction_counter][:week_total] %>
-        </td>
-        <td id="row-<%= transaction_counter.to_s + '-total_deficit' %>" rowSpan="<%= rowspan %>" class="totals-cell">
-            <%= @totals[transaction_counter][:total_deficit] %>
-        </td>
-        <td id="row-<%= transaction_counter.to_s + '-category_totals' %>" rowSpan="<%= rowspan %>" class="totals-cell">
-            <ul>
-                <% @totals[transaction_counter][:category_totals].each do |cat, amt| %>
-                    <li><span><%= cat + ':' %></span><%= amt %></li>
-                <% end %>
-            </ul>
-        </td>
+        <%= render 'transactions/totals', totals: @totals, transaction_counter: transaction_counter %>
     <% end %>
-</tr>
+<% end %>
