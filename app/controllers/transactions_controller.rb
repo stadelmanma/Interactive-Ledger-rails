@@ -6,8 +6,6 @@ class TransactionsController < ApplicationController
 
   def duplicates
     @column_names = Transaction.display_columns
-    @transactions = [@transaction].concat(@transaction.possible_dupes)
-    @totals = {}
   end
 
   def destroy
