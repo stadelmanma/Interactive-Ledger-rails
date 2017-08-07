@@ -1,6 +1,7 @@
 <%= form_for [@ledger, @upload] do |f| %>
     <table>
         <tr>
+            <th style="border: none"></th>
             <th>Date</th>
             <th>Description</th>
             <th>Amount</th>
@@ -13,6 +14,11 @@
         </tr>
         <%= f.fields_for(:transactions) do |trans| %>
             <tr>
+                <td style="border: none">
+                    <% unless trans.object.possible_dupes.empty? -%>
+                        <%= link_to '!', [:duplicates, trans.object] %>
+                    <% end %>
+                </td>
                 <td><%= trans.text_field :date, class: 'small'%></td>
                 <td><%= trans.text_field :description %></td>
                 <td><%= trans.text_field :amount, class: 'medium' %></td>
