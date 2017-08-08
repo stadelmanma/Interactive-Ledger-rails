@@ -28,8 +28,13 @@ class Transaction < ApplicationRecord
 
   # checks for transactions sharing the same amount and a date
   def possible_dupes
-    ledger.transactions.where(date: date, amount: amount).reject do |trans|
-      trans.id == id
-    end
+    where = [
+      'id != ?',
+      'ledger_id = ?',
+      'ledger_upload_id != ?',
+      'date = ?',
+      'ROUND(amount, 2) = ?'
+    ].join(' AND ')
+    Transaction.where(where, id, ledger_id, ledger_upload_id, date, amount)
   end
 end
