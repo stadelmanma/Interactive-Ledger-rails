@@ -1,0 +1,27 @@
+<h1>Transaction #<%= transaction.id %></h1>
+
+<div class="transaction--details">
+    <ul>
+        <li><strong>Date:</strong> <%= transaction.date %></li>
+        <li><strong>Description:</strong> <%= transaction.description %></li>
+        <li><strong>Amount:</strong> <%= transaction.amount %></li>
+        <li><strong>Balance:</strong> <%= transaction.balance %></li>
+        <li><strong>Account:</strong> <%= transaction.account %></li>
+        <li><strong>Validated:</strong> <%= transaction.validated ? 'Yes' : 'No' %></li>
+        <li><strong>Category:</strong> <%= transaction.category %></li>
+        <li><strong>Subcategory:</strong> <%= transaction.subcategory %></li>
+        <li><strong>Comments:</strong> <%= transaction.comments %></li>
+
+        <hr/>
+
+        <li>
+            <strong>Leger:</strong>
+            <%= link_to transaction.ledger.name, transaction.ledger %>
+        </li>
+        <li>
+            <strong>Data Upload:</strong>
+            <%= link_to transaction.ledger_upload.data_source, [transaction.ledger, transaction.ledger_upload] %>
+        </li>
+        <li><strong>Uploaded on:</strong> <%= transaction.created_at.localtime.strftime('%Y-%m-%d %H:%M:%S') %></li>
+    </ul>
+</div>

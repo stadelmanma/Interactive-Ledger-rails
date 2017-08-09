@@ -1,0 +1,6 @@
+<% transaction.gen_display_hash %>
+<% columns.each do |col| %>
+    <%= content_tag :td, id: "row-#{transaction_counter}-#{col}" do %>
+        <%= transaction.display_data[col] %>
+    <% end %>
+<% end %>

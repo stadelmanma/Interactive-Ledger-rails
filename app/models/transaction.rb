@@ -25,4 +25,16 @@ class Transaction < ApplicationRecord
     @display_data['balance'] = Transaction.display_number(balance)
     @display_data['validated'] = validated ? 'YES' : 'NO'
   end
+
+  # checks for transactions sharing the same amount and a date
+  def possible_dupes
+    where = [
+      'id != ?',
+      'ledger_id = ?',
+      'ledger_upload_id != ?',
+      'date = ?',
+      'ROUND(amount, 2) = ?'
+    ].join(' AND ')
+    Transaction.where(where, id, ledger_id, ledger_upload_id, date, amount)
+  end
 end

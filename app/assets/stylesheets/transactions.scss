@@ -1,0 +1,16 @@
+/* general styles for transaction related pages and elements */
+.transaction--details {
+    ul {
+        width: 50%;
+        list-style: none;
+
+        li {
+            margin-bottom: 0.25em;
+
+            strong {
+                display: inline-block;
+                width: 10em;
+            }
+        }
+    }
+}

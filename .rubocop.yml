@@ -15,6 +15,11 @@ Rails/Exit:
   Exclude:
     - config/deploy.rb
 
+Metrics/BlockLength:
+  Exclude:
+    - config/deploy.rb
+    - config/routes.rb
+
 Metrics/LineLength:
     Exclude:
       - config/**
@@ -24,7 +29,3 @@ Metrics/LineLength:
 
 Metrics/MethodLength:
     Max: 15
-
-Metrics/BlockLength:
-  Exclude:
-    - config/deploy.rb
