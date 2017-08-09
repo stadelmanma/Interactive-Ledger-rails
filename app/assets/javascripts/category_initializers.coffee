@@ -14,7 +14,7 @@ $(document).on 'turbolinks:load', ->
 #
 # this function handles sending and receiving an AJAX response to add a
 # set of initializer fields field to the form
-addCategoryInitializer = () ->
+@addCategoryInitializer = () ->
     url = '/category_initializers/add-category-initializer';
     #
     success = (html) ->
