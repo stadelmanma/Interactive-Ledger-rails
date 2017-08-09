@@ -4,6 +4,10 @@ class TransactionsController < ApplicationController
 
   def show; end
 
+  def details
+    render partial: 'details', locals: { transaction: @transaction }
+  end
+
   def duplicates
     @column_names = Transaction.display_columns
   end
