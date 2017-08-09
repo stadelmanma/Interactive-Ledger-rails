@@ -22,7 +22,10 @@ Rails.application.routes.draw do
   end
 
   resources :transactions, only: %i[show destroy] do
-    get :duplicates, on: :member
+    member do
+      get :duplicates
+      get :details
+    end
   end
 
   resources :category_initializers, only: %i[index destroy] do
