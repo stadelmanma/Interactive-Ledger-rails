@@ -6,7 +6,7 @@
         <th class="spacer"></th>
     </tr>
 
-    <%= content_tag :tr, id: "row-#{0}", data: @transaction.attributes do -%>
+    <%= content_tag :tr, id: "dupe-row-#{0}", data: @transaction.attributes do -%>
         <%= render 'data', columns: @column_names, transaction: @transaction, transaction_counter: 0 %>
     <% end %>
 
@@ -15,7 +15,7 @@
     </tr>
 
     <% @transaction.possible_dupes.each_with_index do |trans, i| %>
-        <%= content_tag :tr, id: "row-#{i + 1}", data: trans.attributes do -%>
+        <%= content_tag :tr, id: "dupe-row-#{i + 1}", data: trans.attributes do -%>
             <%= render 'data', columns: @column_names, transaction: trans, transaction_counter: i + 1 %>
             <%= content_tag :td, class: 'spacer' do %>
                 <%= link_to 'Delete', trans, method: :delete, data: { confirm: 'Confirm deletion of ledger' } %>
@@ -26,3 +26,5 @@
 </table>
 
 <br>
+
+<div id="transaction-details-container"></div>
