@@ -2,13 +2,26 @@
 # adds an event to disable the fields on a transaction marked for deletion
 $(document).on 'turbolinks:load', ->
     #
+    # add onclick to all comments fields in the budget table view
+    $('.budget').on('click', 'td.comments', (event) ->
+        toggleText(this, $(this.parentNode).data('comments').trim(), 30);
+    );
+    #
+    # shorten comments in all cells initially
+    $('.budget td.comments').each ->
+        event = jQuery.Event('click');
+        event.target = this;
+        fullText = $(this).text().trim();
+        $(this).text(fullText);
+        $('.budget').trigger(event);
+    #
     # adds an onclick event to add another ledger field to the budget form
-    $("#add-ledger-select").on("click", (event) ->
+    $('#add-ledger-select').on('click', (event) ->
         addLedgerSelect();
     );
     #
     # adds an onclick event to add another exepense row to the budget form
-    $("#add-budget-expense").on("click", (event) ->
+    $('#add-budget-expense').on('click', (event) ->
         addBudgetExpense();
     );
 #
