@@ -12,6 +12,21 @@
     </thead>
 
     <tbody>
+        <tr class="section section--start">
+            <%= content_tag :td, '', colSpan: headers.length %>
+        </tr>
+        <tr>
+            <%= content_tag :td, '' %>
+            <%= content_tag :td, 'Initial Balance' %>
+            <%= content_tag :td, '-', class: 'original-amount' %>
+            <%= content_tag :td, '-', class: 'actual-amount' %>
+            <%= content_tag :td, @budget.initial_balance, class: 'balance' %>
+            <%= content_tag :td, '' %>
+        </tr>
+        <tr class="section section--start">
+            <%= content_tag :td, '', colSpan: headers.length %>
+        </tr>
+
         <% process_totals(@budget, @totals).each do |section| %>
             <tr class="section section--start">
                 <%= content_tag :td, '', colSpan: headers.length %>
@@ -23,7 +38,7 @@
                         <%= content_tag :td, section.date_range, rowspan: section.rows.length, class: headers[0] %>
                     <% end %>
                     <% headers[1..-1].each do |attribute| %>
-                        <%= content_tag :td, row.send(attribute), class: attribute %>
+                        <%= content_tag :td, row.send(attribute), class: attribute.dasherize %>
                     <% end %>
                 <% end %>
             <% end %>
