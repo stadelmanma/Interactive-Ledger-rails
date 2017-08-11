@@ -81,6 +81,7 @@ module BudgetViewHelper
 
   # class to manage a single row of data within a section of budget view
   class BudgetRow
+    include ActionView::Helpers::NumberHelper
     attr_accessor :description, :original_amount, :actual_amount,
                   :balance, :comments
 
@@ -90,8 +91,8 @@ module BudgetViewHelper
       validate_options(options, whitelist)
       #
       @description = options.fetch(:description, '')
-      @original_amount = options.fetch(:original_amount, '-')
-      @actual_amount = options.fetch(:actual_amount, '-')
+      @original_amount = options.fetch(:original_amount, 0).to_f
+      @actual_amount = options.fetch(:actual_amount, 0).to_f
       @balance = options.fetch(:balance, 0)
       @comments = options.fetch(:comments, '')
       @comments = [@comments] unless @comments.is_a? Array
@@ -108,15 +109,19 @@ module BudgetViewHelper
     def attributes
       {
         description: @description,
-        original_amount: @original_amount,
-        actual_amount: @actual_amount,
-        balance: @balance,
-        comments: comments
+        original_amount: display_number(@original_amount),
+        actual_amount: display_number(@actual_amount),
+        balance: display_number(@balance),
+        comments: @comments.uniq.join('; ')
       }
     end
 
-    def comments
-      @comments.uniq.join('; ')
+    def display_number(number)
+      if (number * 100).to_i.zero?
+        '-'
+      else
+        number_with_precision(number, delimiter: ',', precision: 2)
+      end
     end
 
     private
@@ -131,6 +136,13 @@ module BudgetViewHelper
 
   # converts the totals hash into an array of budget sections
   def process_totals(budget, totals)
-    totals.values.map { |total| BudgetSection.new(budget, total) }
+    # create the sections
+    sections = totals.values.map { |total| BudgetSection.new(budget, total) }
+    # update balance values
+    sections.map(&:rows).flatten.inject(budget.initial_balance) do |bal, row|
+      row.balance = bal + row.actual_amount
+    end
+    # return sectins
+    sections
   end
 end

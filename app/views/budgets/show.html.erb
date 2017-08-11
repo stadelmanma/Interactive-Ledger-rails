@@ -38,7 +38,7 @@
                         <%= content_tag :td, section.date_range, rowspan: section.rows.length, class: headers[0] %>
                     <% end %>
                     <% headers[1..-1].each do |attribute| %>
-                        <%= content_tag :td, row.send(attribute), class: attribute.dasherize %>
+                        <%= content_tag :td, row.attributes[attribute.to_sym], class: attribute.dasherize %>
                     <% end %>
                 <% end %>
             <% end %>
