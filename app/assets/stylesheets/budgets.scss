@@ -24,11 +24,9 @@
         &.description {
         }
 
-        &.original-amount {
-            text-align: right;
-        }
-
-        &.actual-amount {
+        &.original-amount,
+        &.actual-amount,
+        &.balance {
             text-align: right;
         }
 

@@ -19,6 +19,13 @@
     </div>
 
     <div>
+        <%= f.label :initial_balance do %>
+            <span>Initial Balance:</span>
+            <%= f.text_field :initial_balance %>
+        <% end %>
+    </div>
+
+    <div>
         <%= f.label :budget_ledgers do %>
             <span>Ledgers:</span>
             <ul id="budget-ledgers-container">

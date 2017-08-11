@@ -4,18 +4,22 @@ $(document).on 'turbolinks:load', ->
     #
     # adds an onclick event delegator to watch for clicks in description
     $("#ledger").on("click", "td[id*=-description]", (event) ->
-        toggleText(this, 30);
+        toggleText(this, $(this.parentNode).data('description').trim(), 30);
     );
     #
     # shorten description in all cells initially
-    $("[id*=-description]").each -> toggleText(this, 30)
+    $("#ledger").find('td[id*=-description]').each ->
+        event = jQuery.Event('click');
+        event.target = this;
+        fullText = $(this).text().trim();
+        $(this).text(fullText);
+        $("#ledger").trigger(event);
 #
 # toggles text based on the content length
-@toggleText = (element, len) ->
-    full_content = element.parentNode.dataset.description
-    content_len = element.textContent.length
+@toggleText = (element, fullText, len) ->
+    return if fullText.length <= len;
     #
-    if content_len > len
-        element.textContent = full_content.slice(0, len-4) + '...'
+    if $(element).text().length == fullText.length
+        $(element).text(fullText.slice(0, len-4) + '...');
     else
-        element.textContent = full_content
+        $(element).text(fullText);

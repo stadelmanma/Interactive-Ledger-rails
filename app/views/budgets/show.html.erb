@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<% headers = %w[week description original-amount actual-amount comments] %>
+<% headers = %w[week description original_amount actual_amount balance comments] %>
 
 <table class="budget">
     <thead>
@@ -12,20 +12,40 @@
     </thead>
 
     <tbody>
-        <% @totals.each do |i, total| %>
-            <tr class="section section--start"><td colspan="5"></td></tr>
-            <% rows = convert_totals_to_rows(@budget, total) %>
-                <% rows.each do |row| %>
-                <tr>
-                    <% if row == rows.first %>
-                        <%= content_tag :td, total[:date_range].join(' - '), rowspan: rows.length, class: headers[0] %>
+        <tr class="section section--start">
+            <%= content_tag :td, '', colSpan: headers.length %>
+        </tr>
+        <tr>
+            <%= content_tag :td, '' %>
+            <%= content_tag :td, 'Initial Balance' %>
+            <%= content_tag :td, '-', class: 'original-amount' %>
+            <%= content_tag :td, '-', class: 'actual-amount' %>
+            <%= content_tag :td, @budget.initial_balance, class: 'balance' %>
+            <%= content_tag :td, '' %>
+        </tr>
+        <tr class="section section--start">
+            <%= content_tag :td, '', colSpan: headers.length %>
+        </tr>
+
+        <% process_totals(@budget, @totals).each do |section| %>
+            <tr class="section section--start">
+                <%= content_tag :td, '', colSpan: headers.length %>
+            </tr>
+
+            <% section.rows.each do |row| %>
+                <%= content_tag :tr, data: row.attributes do %>
+                    <% if row == section.rows.first %>
+                        <%= content_tag :td, section.date_range, rowspan: section.rows.length, class: headers[0] %>
                     <% end %>
-                    <% row.each_with_index do |data, i| %>
-                        <%= content_tag :td, data, class: headers[i + 1] %>
+                    <% headers[1..-1].each do |attribute| %>
+                        <%= content_tag :td, row.attributes[attribute.to_sym], class: attribute.dasherize %>
                     <% end %>
-                </tr>
+                <% end %>
             <% end %>
-            <tr class="section section--end"><td colspan="5"></td></tr>
+
+            <tr class="section section--start">
+                <%= content_tag :td, '', colSpan: headers.length %>
+            </tr>
         <% end %>
     </tbody>
 </table>

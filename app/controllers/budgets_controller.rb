@@ -83,6 +83,7 @@ class BudgetsController < ApplicationController
     params.require(:budget).permit(
       :name,
       :description,
+      :initial_balance,
       budget_ledgers_attributes:
         %i[ledger_id id _destroy],
       budget_expenses_attributes:
