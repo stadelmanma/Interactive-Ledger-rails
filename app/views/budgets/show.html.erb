@@ -13,18 +13,24 @@
 
     <tbody>
         <% process_totals(@budget, @totals).each do |section| %>
-            <tr class="section section--start"><%= content_tag :td, '', colSpan: headers.length %></tr>
-                <% section.rows.each do |row| %>
-                    <%= content_tag :tr, data: row.attributes do %>
-                        <% if row == section.rows.first %>
-                            <%= content_tag :td, section.date_range, rowspan: section.rows.length, class: headers[0] %>
-                        <% end %>
-                        <% headers[1..-1].each do |attribute| %>
-                            <%= content_tag :td, row.send(attribute), class: attribute %>
-                        <% end %>
+            <tr class="section section--start">
+                <%= content_tag :td, '', colSpan: headers.length %>
+            </tr>
+
+            <% section.rows.each do |row| %>
+                <%= content_tag :tr, data: row.attributes do %>
+                    <% if row == section.rows.first %>
+                        <%= content_tag :td, section.date_range, rowspan: section.rows.length, class: headers[0] %>
+                    <% end %>
+                    <% headers[1..-1].each do |attribute| %>
+                        <%= content_tag :td, row.send(attribute), class: attribute %>
                     <% end %>
                 <% end %>
-            <tr class="section section--start"><%= content_tag :td, '', colSpan: headers.length %></tr>
+            <% end %>
+
+            <tr class="section section--start">
+                <%= content_tag :td, '', colSpan: headers.length %>
+            </tr>
         <% end %>
     </tbody>
 </table>
