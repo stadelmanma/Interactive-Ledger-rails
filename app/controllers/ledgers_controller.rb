@@ -1,5 +1,6 @@
 # Manages ledger views and user interactions
 class LedgersController < ApplicationController
+  include LedgerSummary
   include TransactionTotals
 
   before_action :set_ledger
@@ -79,6 +80,12 @@ class LedgersController < ApplicationController
 
   def download
     send_data @ledger.download_data, filename: "#{@ledger.name}.txt"
+  end
+
+  def summary
+    @totals = create_totals_hash(@ledger.transactions)
+    @overall_averages = generate_averages(@totals)
+    @overall_totals = generate_totals(@ledger, @totals)
   end
 
   def categories
