@@ -48,8 +48,10 @@ module TransactionTotals
     # add budgeted expenses to the list
     if transaction.category.casecmp('budgeted').zero?
       totals[:budgeted_expenses] << transaction
+      return
     elsif transaction.category.casecmp('deposit').zero?
       totals[:deposits] << transaction
+      return
     end
 
     # increment total deficits
