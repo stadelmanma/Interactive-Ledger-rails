@@ -16,9 +16,10 @@ class LedgersController < ApplicationController
   def show
     @page_heading = "Ledger: #{@ledger.name}"
     @page_links = [
-      { name: 'Back', url: ledgers_path },
+      { name: 'Back', url: root_path },
       { name: 'Upload Data', url: [:edit, @ledger] },
       { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
+      { name: 'View Summary', url: [:summary, @ledger] },
       { name: 'Download Ledger', url: "#{ledger_path}/download",
         options: { method: 'get', data: { turbolinks: false } } }
     ]
@@ -83,7 +84,16 @@ class LedgersController < ApplicationController
   end
 
   def summary
-    @totals = create_totals_hash(@ledger.transactions)
+    @page_heading = "Ledger: #{@ledger.name} Summary"
+    @page_links = [
+      { name: 'Back', url: root_path },
+      { name: 'Upload Data', url: [:edit, @ledger] },
+      { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
+      { name: 'View Summary', url: [:summary, @ledger] },
+      { name: 'Download Ledger', url: "#{ledger_path}/download",
+        options: { method: 'get', data: { turbolinks: false } } }
+    ]
+    @totals = create_totals_hash(@ledger.transactions.order(date: :asc))
     @overall_averages = generate_averages(@totals)
     @overall_totals = generate_totals(@ledger, @totals)
   end
