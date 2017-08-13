@@ -1,0 +1,50 @@
+<br>
+
+<div class="ledger-summary">
+    <table class="total-expenses">
+        <tr><th colspan="2">Total Expenses</th></tr>
+        <tr>
+            <th>Category:</th>
+            <th>Amount:</th>
+        </tr>
+
+        <% @overall_totals[:category_totals].each do |key, amount| %>
+            <% next unless amount.to_f.negative? %>
+            <tr>
+                <td><%= key %></td>
+                <td><%= number_with_precision(amount, delimiter: ',', precision: 2) %></td>
+            </tr>
+        <% end %>
+
+        <tr class="totals-row">
+            <td>Overall Total:</td>
+            <td><%= number_with_precision(@overall_totals[:total_expenses], delimiter: ',', precision: 2) %></td>
+        </tr>
+    </table>
+
+    <table class="total_deposits">
+        <tr><th colspan="2">Total Deposits</th></tr>
+        <tr>
+            <th>Source:</th>
+            <th>Amount:</th>
+        </tr>
+
+        <% @overall_totals[:category_totals].each do |key, amount| %>
+            <% next if amount.to_f.negative? %>
+            <tr>
+                <td><%= key %></td>
+                <td><%= number_with_precision(amount, delimiter: ',', precision: 2) %></td>
+            </tr>
+        <% end %>
+
+        <tr class="totals-row">
+            <td>Overall Total:</td>
+            <td><%= number_with_precision(@overall_totals[:total_deposits], delimiter: ',', precision: 2) %></td>
+        </tr>
+    </table>
+
+    <br>
+
+</div>
+<br>
+<br>
