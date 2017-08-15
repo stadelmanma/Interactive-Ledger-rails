@@ -70,23 +70,31 @@
 
 .ledger-summary {
 
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-around;
+
     table {
-        float: left;
 
-        margin-right: 1em;
+        margin-right: 0 0.5em;
 
-        width: 24%;
-        td {
-            font-size: 85%;
+        // style for description cell in summary tables
+        td:first-of-type {
+            text-align: left;
         }
 
+        td {
+            font-size: 85%;
+
+            text-align: right;
+        }
+
+        // style for overall total/average row
         tr:last-of-type {
             font-weight: bold;
         }
-    }
-
-    br:last-of-type {
-        clear: both;
     }
 }
 
