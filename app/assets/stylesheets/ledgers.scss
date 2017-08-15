@@ -68,6 +68,28 @@
     }
 }
 
+.ledger-summary {
+
+    table {
+        float: left;
+
+        margin-right: 1em;
+
+        width: 24%;
+        td {
+            font-size: 85%;
+        }
+
+        tr:last-of-type {
+            font-weight: bold;
+        }
+    }
+
+    br:last-of-type {
+        clear: both;
+    }
+}
+
 /* Styles for ledger uploads div */
 #previous-uploads {
     position: relative;
