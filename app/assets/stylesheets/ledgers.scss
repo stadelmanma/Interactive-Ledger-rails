@@ -68,6 +68,36 @@
     }
 }
 
+.ledger-summary {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-around;
+
+    table {
+
+        margin-right: 0 0.5em;
+
+        // style for description cell in summary tables
+        td:first-of-type {
+            text-align: left;
+        }
+
+        td {
+            font-size: 85%;
+
+            text-align: right;
+        }
+
+        // style for overall total/average row
+        tr:last-of-type {
+            font-weight: bold;
+        }
+    }
+}
+
 /* Styles for ledger uploads div */
 #previous-uploads {
     position: relative;

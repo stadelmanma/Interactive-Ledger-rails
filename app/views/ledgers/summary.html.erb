@@ -1,0 +1,105 @@
+<br>
+
+<div class="ledger-summary">
+
+    <div>
+        <table class="total-expenses">
+            <tr><th colspan="2">Total Expenses</th></tr>
+            <tr>
+                <th>Category:</th>
+                <th>Amount:</th>
+            </tr>
+
+            <% @overall_totals[:category_totals].each do |key, amount| %>
+                <% next unless amount.to_f.negative? %>
+                <tr>
+                    <td><%= key %></td>
+                    <td><%= number_with_precision(amount, delimiter: ',', precision: 2) %></td>
+                </tr>
+            <% end %>
+
+            <tr class="totals-row">
+                <td>Overall Total:</td>
+                <td><%= number_with_precision(@overall_totals[:total_expenses], delimiter: ',', precision: 2) %></td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <table class="total-deposits">
+            <tr><th colspan="2">Total Deposits</th></tr>
+            <tr>
+                <th>Source:</th>
+                <th>Amount:</th>
+            </tr>
+
+            <% @overall_totals[:category_totals].each do |key, amount| %>
+                <% next if amount.to_f.negative? %>
+                <tr>
+                    <td><%= key %></td>
+                    <td><%= number_with_precision(amount, delimiter: ',', precision: 2) %></td>
+                </tr>
+            <% end %>
+
+            <tr class="totals-row">
+                <td>Overall Total:</td>
+                <td><%= number_with_precision(@overall_totals[:total_deposits], delimiter: ',', precision: 2) %></td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div>
+        <table class="average-expenses">
+            <tr><th colspan="3">Average Expenses (<%= @totals.length %> Weeks)</th></tr>
+            <tr>
+                <th>Source:</th>
+                <th>Average:</th>
+                <th>Average per Week:</th>
+            </tr>
+
+            <% @overall_averages[:category_averages].each do |key, avg_data| %>
+                <% next unless avg_data[1].to_f.negative? %>
+                <tr>
+                    <td><%= "#{key} (#{avg_data[0]})" %></td>
+                    <td><%= number_with_precision(avg_data[1], delimiter: ',', precision: 2) %></td>
+                    <td><%= number_with_precision(avg_data[2], delimiter: ',', precision: 2) %></td>
+                </tr>
+            <% end %>
+
+            <tr class="totals-row">
+                <td colspan="2">Overall Average per Week:</td>
+                <td><%= number_with_precision(@overall_averages[:weekly_average], delimiter: ',', precision: 2) %></td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div>
+        <table>
+            <tr><th colspan="3">Average Deposits (<%= @totals.length %> Weeks)</th></tr>
+            <tr>
+                <th>Source:</th>
+                <th>Average:</th>
+                <th>Average per Week:</th>
+            </tr>
+
+            <% @overall_averages[:category_averages].each do |key, avg_data| %>
+                <% next if avg_data[1].to_f.negative? %>
+                <tr>
+                    <td><%= "#{key} (#{avg_data[0]})" %></td>
+                    <td><%= number_with_precision(avg_data[1], delimiter: ',', precision: 2) %></td>
+                    <td><%= number_with_precision(avg_data[2], delimiter: ',', precision: 2) %></td>
+                </tr>
+            <% end %>
+
+            <tr class="totals-row">
+                <td colspan="2">Overall Average per Week:</td>
+                <td><%= number_with_precision(@overall_averages[:week_averaged_deposits], delimiter: ',', precision: 2) %></td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+<br>
+<br>

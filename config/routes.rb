@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     end
     member do
       get :download
+      get :summary
       get :categories, format: :json
       get :subcategories, format: :json
     end
