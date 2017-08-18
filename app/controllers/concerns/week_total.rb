@@ -21,7 +21,12 @@ module TransactionTotals
 
     # returns the total dollar amount of a single category in the totals hash
     def category_total(category)
-      @category_totals[category].map(&:amount).inject(:+)
+      pat = /#{category}/i
+      @transactions.find_all { |t| t.category.match?(pat) }.sum(&:amount)
+    end
+
+    def categories
+      @transactions.map(&:category).uniq
     end
 
     # returns the total amount spent in a week skipping budgeted items and
