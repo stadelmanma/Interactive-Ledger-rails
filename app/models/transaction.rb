@@ -5,6 +5,9 @@ class Transaction < ApplicationRecord
   belongs_to :ledger
   belongs_to :ledger_upload
 
+  auto_strip_attributes :category, :subcategory, :comments, :account,
+                        nullify: false, squish: true
+
   attr_accessor :display_data
 
   # returns an array of column names to display in order

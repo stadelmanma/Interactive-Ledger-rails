@@ -26,6 +26,9 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# removes whitespace from model attributes
+gem 'auto_strip_attributes'
+
 gem 'codecov', require: false, group: :test
 
 group :development, :test do
