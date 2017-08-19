@@ -32,7 +32,7 @@ class WeekTotal
   # deposits
   def total
     @transactions.sum do |trans|
-      trans.category.match?(/budgeted|deposit/i) ? 0 : trans.amount
+      trans.category.match?(/budgeted|deposit/i) ? 0.0 : trans.amount
     end
   end
 
@@ -55,7 +55,7 @@ class WeekTotal
 
   def initialize(date)
     @date_range = week_date_range(date)
-    @total_deficit = 0
+    @total_deficit = 0.0
     @category_totals = Hash.new { |hash, key| hash[key] = [] }
     @transactions = []
     @skipped_transactions = []

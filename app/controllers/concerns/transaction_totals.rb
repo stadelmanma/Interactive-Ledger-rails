@@ -49,7 +49,7 @@ module TransactionTotals
   end
 
   def calculate_total_deficit(totals)
-    totals.values.inject(0) do |total_deficit, week|
+    totals.values.inject(0.0) do |total_deficit, week|
       week.total_deficit += total_deficit + week.total
     end
   end
