@@ -1,17 +1,17 @@
-<% rowspan = totals[transaction_counter][:rowspan] %>
+<% rowspan =  %>
 
-<%= content_tag :td, id: "row-#{transaction_counter}-week_total", rowSpan: rowspan, class: 'totals-cell' do -%>
-    <%= totals[transaction_counter][:week_total] %>
+<%= content_tag :td, id: "row-#{transaction_counter}-week_total", rowSpan: week_total.rowspan, class: 'totals-cell' do -%>
+    <%= display_value(week_total.total) %>
 <% end %>
 
-<%= content_tag :td, id: "row-#{transaction_counter}-total_deficit", rowSpan: rowspan, class: 'totals-cell' do -%>
-    <%= totals[transaction_counter][:total_deficit] %>
+<%= content_tag :td, id: "row-#{transaction_counter}-total_deficit", rowSpan: week_total.rowspan, class: 'totals-cell' do -%>
+    <%= display_value(week_total.total_deficit) %>
 <% end %>
 
-<%= content_tag :td, id: "row-#{transaction_counter}-category_totals", rowSpan: rowspan, class: 'totals-cell' do -%>
+<%= content_tag :td, id: "row-#{transaction_counter}-category_totals", rowSpan: week_total.rowspan, class: 'totals-cell' do -%>
     <ul>
-        <% totals[transaction_counter][:category_totals].each do |cat, amt| %>
-            <li><span><%= cat + ':' %></span><%= amt %></li>
+        <% week_total.categories.each do |cat| %>
+            <li><span><%= cat + ':' %></span><%= display_value(week_total.category_total(cat)) %></li>
         <% end %>
     </ul>
 <% end %>
