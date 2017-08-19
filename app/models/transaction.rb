@@ -5,6 +5,13 @@ class Transaction < ApplicationRecord
   belongs_to :ledger, inverse_of: :transactions
   belongs_to :ledger_upload, inverse_of: :transactions
 
+  scope(:categories, lambda {
+    distinct.where("category REGEXP '.+'").pluck(:category)
+  })
+  scope(:subcategories, lambda {
+    distinct.where("subcategory REGEXP '.+'").pluck(:category)
+  })
+
   auto_strip_attributes :category, :subcategory, :comments, :account,
                         nullify: false, squish: true
 
