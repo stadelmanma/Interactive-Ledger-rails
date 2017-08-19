@@ -7,7 +7,7 @@ module BudgetViewHelper
     private
 
     def initialize(budget, totals)
-      @date_range = totals[:date_range].join(' - ')
+      @date_range = totals.date_range
       @rows = process_totals(budget, totals)
     end
 
@@ -16,18 +16,18 @@ module BudgetViewHelper
       cat_hash = {}
 
       # initialize budget with planned items first
-      date_range = totals[:date_range][0]..totals[:date_range][1]
-      expected_items = budget.budget_expenses.where(date: date_range)
+      range = @date_range[0]..@date_range[1]
+      expected_items = budget.budget_expenses.where(date: range)
       process_expected_items(expected_items, cat_hash)
 
       # process category totals
-      process_category_totals(totals[:category_totals], cat_hash)
+      process_category_totals(totals.all_category_totals, cat_hash)
 
       # add all expenses
-      process_special_transactions(totals[:budgeted_expenses], cat_hash)
+      process_special_transactions(totals.budgeted_expenses, cat_hash)
 
       # add all deposits
-      process_special_transactions(totals[:deposits], cat_hash)
+      process_special_transactions(totals.deposits, cat_hash)
       #
       cat_hash.values
     end
@@ -91,9 +91,9 @@ module BudgetViewHelper
       validate_options(options, whitelist)
       #
       @description = options.fetch(:description, '')
-      @original_amount = options.fetch(:original_amount, 0).to_f
-      @actual_amount = options.fetch(:actual_amount, 0).to_f
-      @balance = options.fetch(:balance, 0)
+      @original_amount = options.fetch(:original_amount, 0.0)
+      @actual_amount = options.fetch(:actual_amount, 0.0)
+      @balance = options.fetch(:balance, 0.0)
       @comments = options.fetch(:comments, '')
       @comments = [@comments] unless @comments.is_a? Array
     end
@@ -101,27 +101,19 @@ module BudgetViewHelper
     # updates certain attributes from the hash
     def update(options)
       validate_options(options, %i[actual_amount balance comments])
-      @actual_amount += options.fetch(:actual_amount, 0)
-      @balance += options.fetch(:balance, 0)
+      @actual_amount += options.fetch(:actual_amount, 0.0)
+      @balance += options.fetch(:balance, 0.0)
       @comments << options[:comments] if options[:comments]
     end
 
     def attributes
       {
         description: @description,
-        original_amount: display_number(@original_amount),
-        actual_amount: display_number(@actual_amount),
-        balance: display_number(@balance),
+        original_amount: @original_amount,
+        actual_amount: @actual_amount,
+        balance: @balance,
         comments: @comments.uniq.join('; ')
       }
-    end
-
-    def display_number(number)
-      if (number * 100).to_i.zero?
-        '-'
-      else
-        number_with_precision(number, delimiter: ',', precision: 2)
-      end
     end
 
     private
