@@ -18,14 +18,19 @@ class WeekTotal
     @transactions.find_all { |trans| trans.category.match?(/budgeted/i) }
   end
 
+  def categories
+    @transactions.map(&:category).uniq
+  end
+
   # returns the total dollar amount of a single category in the totals hash
   def category_total(category)
     pat = /#{category}/i
     @transactions.find_all { |t| t.category.match?(pat) }.sum(&:amount)
   end
 
-  def categories
-    @transactions.map(&:category).uniq
+  # returns a hash of the category and amount of the total
+  def all_category_totals
+    Hash[categories.map { |c| [c, category_total(c)] }]
   end
 
   # returns the total amount spent in a week skipping budgeted items and
