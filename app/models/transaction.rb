@@ -2,8 +2,8 @@
 class Transaction < ApplicationRecord
   include ActionView::Helpers::NumberHelper
 
-  belongs_to :ledger
-  belongs_to :ledger_upload
+  belongs_to :ledger, inverse_of: :transactions
+  belongs_to :ledger_upload, inverse_of: :transactions
 
   auto_strip_attributes :category, :subcategory, :comments, :account,
                         nullify: false, squish: true

@@ -4,7 +4,8 @@ class LedgerUpload < ApplicationRecord
   include LedgerUploadHelper
 
   belongs_to :ledger, inverse_of: :ledger_uploads, touch: true
-  has_many :transactions, dependent: :destroy
+
+  has_many :transactions, inverse_of: :ledger_upload, dependent: :destroy
   accepts_nested_attributes_for :transactions, allow_destroy: true
 
   # need to catch the uploaded file ActionDispatch before type casting
