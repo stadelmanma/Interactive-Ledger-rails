@@ -3,6 +3,6 @@
     <%= render 'transactions/data', transaction: transaction, columns: @column_names, transaction_counter: transaction_counter %>
 
     <% if @totals[transaction_counter] %>
-        <%= render 'transactions/totals', totals: @totals, transaction_counter: transaction_counter %>
+        <%= render 'transactions/totals', week_total: @totals[transaction_counter], transaction_counter: transaction_counter %>
     <% end %>
 <% end %>

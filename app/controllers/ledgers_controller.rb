@@ -6,23 +6,13 @@ class LedgersController < ApplicationController
   before_action :set_ledger
 
   def index
-    @page_heading = 'Listing Available Ledgers'
-    @page_links = [
-      { name: 'New Ledger', url: new_ledger_path }
-    ]
-    @ledgers = Ledger.all
+    redirect_to root_path
   end
 
   def show
     @page_heading = "Ledger: #{@ledger.name}"
-    @page_links = [
-      { name: 'Back', url: root_path },
-      { name: 'Upload Data', url: [:edit, @ledger] },
-      { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
-      { name: 'View Summary', url: [:summary, @ledger] },
-      { name: 'Download Ledger', url: "#{ledger_path}/download",
-        options: { method: 'get', data: { turbolinks: false } } }
-    ]
+    @page_links = ledger_page_links
+    #
     @transactions = Transaction.where(ledger_id: @ledger.id).order(date: :asc)
     @column_names = Transaction.display_columns
     @totals = create_totals_hash(@transactions)
@@ -32,29 +22,41 @@ class LedgersController < ApplicationController
   def new
     @page_heading = 'New Ledger'
     @page_links = [
-      { name: 'Back', url: ledgers_path }
+      { name: 'Back', url: root_path }
     ]
     @ledger = Ledger.new
   end
 
   def edit
     @page_heading = 'Edit Ledger'
-    @page_links = [
-      { name: 'Back', url: ledgers_path }
-    ]
+    @page_links = ledger_page_links
+  end
+
+  def summary
+    @page_heading = "Ledger: #{@ledger.name} Summary"
+    @page_links = ledger_page_links
+    @totals = create_totals_hash(@ledger.transactions.order(date: :asc))
+    @overall_averages = generate_averages(@totals)
+    @overall_totals = generate_totals(@ledger, @totals)
+  end
+
+  def download
+    send_data @ledger.download_data, filename: "#{@ledger.name}.txt"
+  end
+
+  def categories
+    @categories = @ledger.transactions.categories
+  end
+
+  def subcategories
+    @subcategories = @ledger.transactions.subcategories
   end
 
   def create
     @ledger = Ledger.new(ledger_params)
-
+    #
     if @ledger.save
-      # upload any new data and if so, go to the upload#edit view
-      upload = @ledger.upload_data
-      if upload
-        redirect_to [:edit, @ledger, upload]
-      else
-        redirect_to @ledger
-      end
+      upload_and_redirect
     else
       render 'new'
     end
@@ -62,13 +64,7 @@ class LedgersController < ApplicationController
 
   def update
     if @ledger.update(ledger_params)
-      # upload any new data and if so, go to the upload#edit view
-      upload = @ledger.upload_data
-      if upload
-        redirect_to [:edit, @ledger, upload]
-      else
-        redirect_to @ledger
-      end
+      upload_and_redirect
     else
       render 'edit'
     end
@@ -76,36 +72,7 @@ class LedgersController < ApplicationController
 
   def destroy
     @ledger.destroy
-    redirect_to ledgers_path
-  end
-
-  def download
-    send_data @ledger.download_data, filename: "#{@ledger.name}.txt"
-  end
-
-  def summary
-    @page_heading = "Ledger: #{@ledger.name} Summary"
-    @page_links = [
-      { name: 'Back', url: root_path },
-      { name: 'Upload Data', url: [:edit, @ledger] },
-      { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
-      { name: 'View Summary', url: [:summary, @ledger] },
-      { name: 'Download Ledger', url: "#{ledger_path}/download",
-        options: { method: 'get', data: { turbolinks: false } } }
-    ]
-    @totals = create_totals_hash(@ledger.transactions.order(date: :asc))
-    @overall_averages = generate_averages(@totals)
-    @overall_totals = generate_totals(@ledger, @totals)
-  end
-
-  def categories
-    where = ["category REGEXP '.+' AND ledger_id = ?", @ledger.id]
-    @categories = Transaction.distinct.where(*where).pluck(:category)
-  end
-
-  def subcategories
-    where = ["subcategory REGEXP '.+' AND ledger_id = ?", @ledger.id]
-    @subcategories = Transaction.distinct.where(*where).pluck(:subcategory)
+    redirect_to root_path
   end
 
   private
@@ -120,5 +87,26 @@ class LedgersController < ApplicationController
       :data_source,
       ledger_uploads_attributes: %i[data_source upload_format account]
     )
+  end
+
+  def ledger_page_links
+    [
+      { name: 'Back', url: root_path },
+      { name: 'Upload Data', url: [:edit, @ledger] },
+      { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
+      { name: 'View Summary', url: [:summary, @ledger] },
+      { name: 'Download Ledger', url: "#{ledger_path}/download",
+        options: { method: 'get', data: { turbolinks: false } } }
+    ]
+  end
+
+  # upload any new data and if so, go to the upload#edit
+  def upload_and_redirect
+    upload = @ledger.upload_data
+    if upload
+      redirect_to [:edit, @ledger, upload]
+    else
+      redirect_to @ledger
+    end
   end
 end

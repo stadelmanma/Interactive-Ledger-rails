@@ -35,10 +35,10 @@
             <% section.rows.each do |row| %>
                 <%= content_tag :tr, data: row.attributes do %>
                     <% if row == section.rows.first %>
-                        <%= content_tag :td, section.date_range, rowspan: section.rows.length, class: headers[0] %>
+                        <%= content_tag :td, section.date_range.join(' - '), rowspan: section.rows.length, class: headers[0] %>
                     <% end %>
                     <% headers[1..-1].each do |attribute| %>
-                        <%= content_tag :td, row.attributes[attribute.to_sym], class: attribute.dasherize %>
+                        <%= content_tag :td, display_value(row.attributes[attribute.to_sym], dash_zero_value: true), class: attribute.dasherize %>
                     <% end %>
                 <% end %>
             <% end %>

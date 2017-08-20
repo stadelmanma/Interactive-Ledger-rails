@@ -44,6 +44,8 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     arel (7.1.4)
     ast (2.3.0)
+    auto_strip_attributes (2.1.0)
+      activerecord (>= 3.0)
     bindex (0.5.0)
     builder (3.2.3)
     byebug (9.0.6)
@@ -209,6 +211,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-import
+  auto_strip_attributes
   byebug
   capistrano
   capistrano-bundler

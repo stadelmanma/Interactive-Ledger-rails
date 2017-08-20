@@ -15,58 +15,25 @@ module TransactionTotals
   # Returns a hash where the key's are indicies to output week totals
   # the rowspan is set so totals cells will span an entire week
   def create_totals_hash(transactions)
-    totals = { 0 => { total_deficit: 0 } }
-    current_total = 0
+    totals = {}
+    week_total = nil
     #
-    # loop over all transactions
+    # loop over transactions
     transactions.each_with_index do |transaction, i|
       #
       # create new entry for each week
       if new_week?(transactions, i)
-        initialize_week_total(transactions, totals, current_total, i)
-        current_total = i
+        week_total = WeekTotal.new(transaction.date)
+        totals[i] = week_total
       end
-      update_totals(totals, current_total, transaction)
+      week_total << transaction
     end
-    #
-    format_totals(totals)
+    # set total deficit values for each total
+    calculate_total_deficit(totals)
+    totals
   end
 
-  # Increment the provided totals hash with transaction data
-  def update_totals(totals, current_total, transaction)
-    totals[current_total][:rowspan] += 1
-
-    # preventing totals from being incremented in some cases
-    return if skip_transaction?(transaction)
-
-    # increment totals
-    update_week_total(transaction, totals[current_total])
-    update_category_totals(transaction, totals[current_total])
-  end
-
-  def update_week_total(transaction, totals)
-    # add budgeted expenses to the list
-    if transaction.category.casecmp('budgeted').zero?
-      totals[:budgeted_expenses] << transaction
-      return
-    elsif transaction.category.casecmp('deposit').zero?
-      totals[:deposits] << transaction
-      return
-    end
-
-    # increment total deficits
-    totals[:week_total] += transaction.amount
-    totals[:total_deficit] += transaction.amount
-  end
-
-  def update_category_totals(transaction, totals)
-    category = transaction.category.blank? ? 'UNKNOWN' : transaction.category
-    if totals[:category_totals][category]
-      totals[:category_totals][category] += transaction.amount
-    else
-      totals[:category_totals][category] = transaction.amount
-    end
-  end
+  private
 
   # test if a date pair crosses a week boundary
   def new_week?(transactions, i)
@@ -81,43 +48,9 @@ module TransactionTotals
     curr_wk != test_wk
   end
 
-  # Sets the inital values for weekly totals
-  def initialize_week_total(transactions, totals, current_total, i)
-    totals[i] = {
-      rowspan: 0,
-      date_range: week_date_range(transactions[i]),
-      week_total: 0,
-      total_deficit: totals[current_total][:total_deficit],
-      category_totals: {},
-      budgeted_expenses: [],
-      deposits: []
-    }
-  end
-
-  def week_date_range(transaction)
-    [transaction.date.beginning_of_week, transaction.date.end_of_week]
-  end
-
-  # Returns 'true' is criteria are met to exclude the transaction from
-  # incrementing the totals hash
-  def skip_transaction?(transaction)
-    if transaction.amount.blank?
-      true
-    elsif transaction.category =~ /discover/i
-      true
+  def calculate_total_deficit(totals)
+    totals.values.inject(0.0) do |total_deficit, week|
+      week.total_deficit += total_deficit + week.total
     end
-  end
-
-  # Formats the numbers in the totals hash for ledger display
-  def format_totals(totals)
-    totals.each do |key, value|
-      totals[key] = if value.class == Hash
-                      format_totals(value)
-                    else
-                      Transaction.display_number(value)
-                    end
-    end
-    #
-    totals
   end
 end
