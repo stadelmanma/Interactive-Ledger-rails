@@ -4,18 +4,14 @@ class BudgetsController < ApplicationController
   before_action :set_budget, only: %i[show edit update destroy]
 
   def index
-    @page_heading = 'Budgets'
-    @page_links = [
-      { name: 'New Budget', url: new_budget_path }
-    ]
-    @budgets = Budget.all
+    redirect_to root_path
   end
 
   def show
     @page_heading = "Budget: #{@budget.name}"
     @page_links = [
-      { name: 'Edit', url: edit_budget_path(@budget) },
-      { name: 'Back', url: budgets_path }
+      { name: 'Back', url: root_path },
+      { name: 'Edit', url: [:edit, @budget] }
     ]
     @transactions = @budget.transactions.order(date: :asc)
     @totals = create_totals_hash(@transactions)
@@ -24,7 +20,7 @@ class BudgetsController < ApplicationController
   def new
     @page_heading = 'New Budget'
     @page_links = [
-      { name: 'Back', url: budgets_path }
+      { name: 'Back', url: root_path }
     ]
     @budget = Budget.new
   end
@@ -32,8 +28,8 @@ class BudgetsController < ApplicationController
   def edit
     @page_heading = 'Editing Budget'
     @page_links = [
-      { name: 'Show', url: @budget },
-      { name: 'Back', url: budgets_path }
+      { name: 'Back', url: root_path },
+      { name: 'Show', url: @budget }
     ]
   end
 
