@@ -2,7 +2,7 @@
 module DisplayHelper
   include ActionView::Helpers::NumberHelper
 
-  def display_value(value, options)
+  def display_value(value, options = {})
     case value.class.to_s
     when 'Float'
       display_number(value, options)
@@ -11,7 +11,7 @@ module DisplayHelper
     end
   end
 
-  def display_number(number, options)
+  def display_number(number, options = {})
     if options[:dash_zero_value] && (number * 100).to_i.zero?
       '-'
     else
