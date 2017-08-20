@@ -24,8 +24,7 @@ module LedgerSummary
 
   def generate_averages(totals)
     # calculate weekly average in advance
-    weekly_average = totals.values.map { |t| t[:week_total].to_f }
-    weekly_average = weekly_average.inject(:+).to_f / totals.length
+    weekly_average = totals.values.map(&:total).inject(:+) / totals.length
     #
     data = {
       weekly_average: weekly_average,
@@ -43,22 +42,22 @@ module LedgerSummary
     # step over all weekly totals in the ledger
     totals.values.each do |week_total|
       # pull in totals from each category excluding budgeted items and deposits
-      week_total[:category_totals].each do |key, amount|
+      week_total.all_category_totals.each do |key, amount|
         next if key =~ /deposit|budgeted/i
         #
-        data[key] += amount.to_f
+        data[key] += amount
       end
 
       # process budgeted items and deposit using subcategory as key
-      (week_total[:budgeted_expenses] + week_total[:deposits]).each do |trans|
-        data[trans.subcategory] += trans.amount.to_f
+      (week_total.budgeted_expenses + week_total.deposits).each do |trans|
+        data[trans.subcategory] += trans.amount
       end
     end
     # return overall totals for each category
-    sort_category_totals(data)
+    sort_all_category_totals(data)
   end
 
-  def sort_category_totals(data)
+  def sort_all_category_totals(data)
     Hash[data.to_a.sort { |a, b| b[1].abs <=> a[1].abs }]
   end
 
@@ -68,20 +67,20 @@ module LedgerSummary
     # step over all weekly totals in the ledger
     totals.values.each do |week_total|
       # pull in totals from each category excluding budgeted items and deposits
-      week_total[:category_totals].each do |key, amount|
+      week_total.all_category_totals.each do |key, amount|
         next if key =~ /deposit|budgeted/i
         #
         data[key][0] += 1
-        data[key][1] += amount.to_f
-        data[key][2] += amount.to_f
+        data[key][1] += amount
+        data[key][2] += amount
       end
 
       # process budgeted items and deposit using subcategory as key
-      (week_total[:budgeted_expenses] + week_total[:deposits]).each do |trans|
+      (week_total.budgeted_expenses + week_total.deposits).each do |trans|
         key = trans.subcategory
         data[key][0] += 1
-        data[key][1] += trans.amount.to_f
-        data[key][2] += trans.amount.to_f
+        data[key][1] += trans.amount
+        data[key][2] += trans.amount
       end
     end
     # calculate averages
@@ -97,7 +96,7 @@ module LedgerSummary
   def week_averaged_deposits(totals)
     sum = 0.0
     totals.values.each do |week_total|
-      week_total[:deposits].each { |trans| sum += trans.amount.to_f }
+      week_total.deposits.each { |trans| sum += trans.amount }
     end
     # average out
     sum / totals.length
