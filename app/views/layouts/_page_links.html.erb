@@ -1,4 +1,13 @@
 <% @page_links.each do |link| %>
-    <%= link_to link[:name], link[:url], link[:options] %>
+    <%# Add the link text content to the data hash %>
+    <% link[:options] = {} unless link[:options] %>
+    <% link[:options][:data] = {} unless link[:options][:data] %>
+    <% link[:options].fetch(:data, {}).merge!(name: link[:name].parameterize) %>
+
+    <% if link[:url].present? %>
+        <%= link_to link[:name], link[:url], link[:options] %>
+    <% else %>
+        <%= content_tag :a, link[:name], link[:options] %>
+    <% end %>
     <%= "|" unless link.equal? @page_links.last %>
 <% end %>
