@@ -3,16 +3,13 @@ class CategoryInitializersController < ApplicationController
   before_action :set_initializers
 
   def index
-    @page_heading = 'Listing All Initializers'
-    @page_links = [
-      { name: 'Edit Initializers', url: edit_category_initializers_path }
-    ]
+    redirect_to root_path
   end
 
   def edit
     @page_heading = 'Editing Initializers'
     @page_links = [
-      { name: 'Show Initializers', url: category_initializers_path }
+      { name: 'Back', url: root_path }
     ]
   end
 

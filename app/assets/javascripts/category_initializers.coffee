@@ -2,7 +2,19 @@
 # adds event to create a new set of category initializers fields
 $(document).on 'turbolinks:load', ->
     #
-    $("#add-category-initializer").on("click", (event) ->
+    # add onclick to show initializers on the home page
+    $('a[data-name=show-initializers]').on('click', (event) ->
+        if $('#category-initializers-index').is(':hidden')
+            $(this).text('Hide Initializers');
+            $('a[data-name=edit-initializers]').removeClass('hidden');
+            $('#category-initializers-index').show();
+        else
+            $(this).text('Show Initializers');
+            $('a[data-name=edit-initializers]').addClass('hidden');
+            $('#category-initializers-index').hide();
+    );
+    #
+    $('#add-category-initializer').on('click', (event) ->
         addCategoryInitializer();
     );
     #
