@@ -4,6 +4,10 @@
     <% link[:options][:data] = {} unless link[:options][:data] %>
     <% link[:options].fetch(:data, {}).merge!(name: link[:name].parameterize) %>
 
-    <%= link_to link[:name], link[:url], link[:options] %>
+    <% if link[:url].present? %>
+        <%= link_to link[:name], link[:url], link[:options] %>
+    <% else %>
+        <%= content_tag :a, link[:name], link[:options] %>
+    <% end %>
     <%= "|" unless link.equal? @page_links.last %>
 <% end %>
