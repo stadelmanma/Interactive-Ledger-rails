@@ -76,7 +76,7 @@ module LedgerSummary
       end
     end
     # calculate averages and return data hash
-    calculate_averages(data)
+    calculate_averages(data, totals.length)
   end
 
   def update_averages_entry(data, key, amount)
@@ -85,11 +85,11 @@ module LedgerSummary
     data[key][2] += amount
   end
 
-  def calculate_averages(data)
+  def calculate_averages(data, nweeks)
     data.each do |key, cat_data|
       sum = cat_data[1]
       data[key][1] = sum / cat_data[0]
-      data[key][2] = sum / totals.length
+      data[key][2] = sum / nweeks
     end
     # return overall averages for each category
     data
