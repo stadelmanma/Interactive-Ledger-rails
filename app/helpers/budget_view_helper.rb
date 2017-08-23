@@ -51,7 +51,7 @@ module BudgetViewHelper
     # Adds all category totals to the hash
     def process_category_totals(cat_totals, cat_hash)
       cat_totals.each do |category, amount|
-        next if category =~ /budgeted|deposit/i
+        next if category =~ /^(budgeted|deposit)$/i
         #
         if cat_hash[category]
           cat_hash[category].update(actual_amount: amount)
