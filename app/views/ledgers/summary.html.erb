@@ -4,21 +4,30 @@
 
     <div>
         <table class="total-expenses">
-            <tr><th colspan="2">Total Expenses</th></tr>
+            <tr><th colspan="3">Total Expenses</th></tr>
             <tr>
-                <th>Category:</th>
+                <th colspan="2">Category:</th>
                 <th>Amount:</th>
             </tr>
 
             <% CategorySummary.sort_summaries_by(@overall_totals[:expense_summaries], :sum).each do |key, summary| %>
-                <tr>
-                    <td><%= key %></td>
+                <tr data-key="<%= key.parameterize %>">
+                    <td colspan="2"><%= key %></td>
                     <td><%= display_value(summary.sum) %></td>
                 </tr>
+                <% if summary.subcategory_summaries %>
+                    <% summary.subcategory_summaries.each do |sub_key, sub_summary| %>
+                        <tr data-parent-key="<%= key.parameterize %>">
+                            <td></td>
+                            <td><%= sub_key %></td>
+                            <td><%= display_value(sub_summary.sum) %></td>
+                        </tr>
+                    <% end %>
+                <% end %>
             <% end %>
 
             <tr class="totals-row">
-                <td>Overall Total:</td>
+                <td colspan="2">Overall Total:</td>
                 <td><%= display_value(@overall_totals[:total_expenses]) %></td>
             </tr>
         </table>
@@ -49,23 +58,33 @@
 
     <div>
         <table class="average-expenses">
-            <tr><th colspan="3">Average Expenses (<%= @totals.length %> Weeks)</th></tr>
+            <tr><th colspan="4">Average Expenses (<%= @totals.length %> Weeks)</th></tr>
             <tr>
-                <th>Source:</th>
+                <th colspan="2">Category:</th>
                 <th>Average:</th>
                 <th>Average per Week:</th>
             </tr>
 
             <% CategorySummary.sort_summaries_by(@overall_totals[:expense_summaries], :average).each do |key, summary| %>
-                <tr>
-                    <td><%= "#{key} (#{summary.transactions.length})" %></td>
-                    <td><%= number_with_precision(summary.average, delimiter: ',', precision: 2) %></td>
-                    <td><%= number_with_precision(summary.average_per_week, delimiter: ',', precision: 2) %></td>
+                <tr data-key="<%= key.parameterize %>">
+                    <td colspan="2"><%= "#{key} (#{summary.transactions.length})" %></td>
+                    <td><%= display_value(summary.average) %></td>
+                    <td><%= display_value(summary.average_per_week) %></td>
                 </tr>
+                <% if summary.subcategory_summaries %>
+                    <% summary.subcategory_summaries(sort_by: :average).each do |sub_key, sub_summary| %>
+                        <tr data-parent-key="<%= key.parameterize %>">
+                            <td></td>
+                            <td><%= "#{sub_key} (#{sub_summary.transactions.length})" %></td>
+                            <td><%= display_value(sub_summary.average) %></td>
+                            <td><%= display_value(sub_summary.average_per_week) %></td>
+                        </tr>
+                    <% end %>
+                <% end %>
             <% end %>
 
             <tr class="totals-row">
-                <td colspan="2">Overall Average per Week:</td>
+                <td colspan="3">Overall Average per Week:</td>
                 <td><%= display_value(@overall_totals[:weekly_average]) %></td>
             </tr>
         </table>
