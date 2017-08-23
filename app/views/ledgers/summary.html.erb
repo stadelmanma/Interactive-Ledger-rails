@@ -10,11 +10,10 @@
                 <th>Amount:</th>
             </tr>
 
-            <% @overall_totals[:category_totals].each do |key, amount| %>
-                <% next unless amount.negative? %>
+            <% CategorySummary.sort_summaries_by(@overall_totals[:expense_summaries], :sum).each do |key, summary| %>
                 <tr>
                     <td><%= key %></td>
-                    <td><%= display_value(amount) %></td>
+                    <td><%= display_value(summary.sum) %></td>
                 </tr>
             <% end %>
 
@@ -33,11 +32,10 @@
                 <th>Amount:</th>
             </tr>
 
-            <% @overall_totals[:category_totals].each do |key, amount| %>
-                <% next if amount.negative? %>
+            <% CategorySummary.sort_summaries_by(@overall_totals[:deposit_summaries], :sum).each do |key, summary| %>
                 <tr>
                     <td><%= key %></td>
-                    <td><%= display_value(amount) %></td>
+                    <td><%= display_value(summary.sum) %></td>
                 </tr>
             <% end %>
 
@@ -58,18 +56,17 @@
                 <th>Average per Week:</th>
             </tr>
 
-            <% @overall_averages[:category_averages].each do |key, avg_data| %>
-                <% next unless avg_data[1].negative? %>
+            <% CategorySummary.sort_summaries_by(@overall_totals[:expense_summaries], :average).each do |key, summary| %>
                 <tr>
-                    <td><%= "#{key} (#{avg_data[0]})" %></td>
-                    <td><%= display_value(avg_data[1]) %></td>
-                    <td><%= display_value(avg_data[2]) %></td>
+                    <td><%= "#{key} (#{summary.transactions.length})" %></td>
+                    <td><%= number_with_precision(summary.average, delimiter: ',', precision: 2) %></td>
+                    <td><%= number_with_precision(summary.average_per_week, delimiter: ',', precision: 2) %></td>
                 </tr>
             <% end %>
 
             <tr class="totals-row">
                 <td colspan="2">Overall Average per Week:</td>
-                <td><%= display_value(@overall_averages[:weekly_average]) %></td>
+                <td><%= display_value(@overall_totals[:weekly_average]) %></td>
             </tr>
         </table>
     </div>
@@ -84,18 +81,17 @@
                 <th>Average per Week:</th>
             </tr>
 
-            <% @overall_averages[:category_averages].each do |key, avg_data| %>
-                <% next if avg_data[1].negative? %>
+            <% CategorySummary.sort_summaries_by(@overall_totals[:deposit_summaries], :average).each do |key, summary| %>
                 <tr>
-                    <td><%= "#{key} (#{avg_data[0]})" %></td>
-                    <td><%= number_with_precision(avg_data[1], delimiter: ',', precision: 2) %></td>
-                    <td><%= number_with_precision(avg_data[2], delimiter: ',', precision: 2) %></td>
+                    <td><%= "#{key} (#{summary.transactions.length})" %></td>
+                    <td><%= number_with_precision(summary.average, delimiter: ',', precision: 2) %></td>
+                    <td><%= number_with_precision(summary.average_per_week, delimiter: ',', precision: 2) %></td>
                 </tr>
             <% end %>
 
             <tr class="totals-row">
                 <td colspan="2">Overall Average per Week:</td>
-                <td><%= number_with_precision(@overall_averages[:week_averaged_deposits], delimiter: ',', precision: 2) %></td>
+                <td><%= number_with_precision(@overall_totals[:week_averaged_deposits], delimiter: ',', precision: 2) %></td>
             </tr>
         </table>
     </div>
