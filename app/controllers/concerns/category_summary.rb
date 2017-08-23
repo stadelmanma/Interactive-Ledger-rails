@@ -36,12 +36,17 @@ class CategorySummary
     average(@nweeks)
   end
 
-  def subcategory_summaries
-    data = @transactions.map(&:subcategory).uniq.map do |name|
+  def subcategory_summaries(sort_by: :sum)
+    # get unique list of sub cats and return if the only one is blank
+    sub_cats = @transactions.map(&:subcategory).uniq
+    return nil if sub_cats.length == 1 && sub_cats[0].blank?
+
+    # step over all sub cats to build hash
+    data = sub_cats.map do |name|
       [name, SubcategorySummary.new(name, @transactions, @nweeks)]
     end
     #
-    Hash[data]
+    self.class.sort_summaries_by(Hash[data], sort_by)
   end
 
   private
@@ -59,6 +64,6 @@ class SubcategorySummary < CategorySummary
   end
 
   def subcategory_summaries
-    raise NoMethodError, 'This method is not supported'
+    nil
   end
 end
