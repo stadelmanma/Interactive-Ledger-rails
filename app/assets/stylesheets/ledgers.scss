@@ -80,6 +80,12 @@
 
         margin-right: 0 0.5em;
 
+        tr {
+            a {
+                float: right;
+            }
+        }
+
         // style for description cell in summary tables
         td:first-of-type {
             text-align: left;
