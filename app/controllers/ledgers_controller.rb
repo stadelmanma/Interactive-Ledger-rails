@@ -36,7 +36,6 @@ class LedgersController < ApplicationController
     @page_heading = "Ledger: #{@ledger.name} Summary"
     @page_links = ledger_page_links
     @totals = create_totals_hash(@ledger.transactions.order(date: :asc))
-    @overall_averages = generate_averages(@totals)
     @overall_totals = generate_totals(@ledger, @totals)
   end
 

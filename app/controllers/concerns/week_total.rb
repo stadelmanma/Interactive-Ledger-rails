@@ -15,7 +15,7 @@ class WeekTotal
 
   # returns all 'budgeted' items
   def budgeted_expenses
-    @transactions.find_all { |trans| trans.category.match?(/budgeted/i) }
+    @transactions.find_all { |trans| trans.category.match?(/^budgeted$/i) }
   end
 
   def categories
@@ -37,7 +37,7 @@ class WeekTotal
   # deposits
   def total
     @transactions.sum do |trans|
-      trans.category.match?(/budgeted|deposit/i) ? 0.0 : trans.amount
+      trans.category.match?(/^(budgeted|deposit)$/i) ? 0.0 : trans.amount
     end
   end
 
@@ -75,7 +75,7 @@ class WeekTotal
   def skip_transaction?(transaction)
     if transaction.amount.blank?
       true
-    elsif transaction.category =~ /discover/i
+    elsif transaction.category.match?(/^Discover$/i)
       true
     end
   end
