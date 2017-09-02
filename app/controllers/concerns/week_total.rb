@@ -24,8 +24,7 @@ class WeekTotal
 
   # returns the total dollar amount of a single category in the totals hash
   def category_total(category)
-    pat = /#{category}/i
-    @transactions.find_all { |t| t.category.match?(pat) }.sum(&:amount)
+    CategorySummary.new(category, @transactions)
   end
 
   # returns a hash of the category and amount of the total
