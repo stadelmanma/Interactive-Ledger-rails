@@ -9,15 +9,15 @@ This is a lightweight expense tracking and reporting application that allows the
 Data file parsers are currently housed in `app/helpers/ledger_upload_helper.rb` and inherit from the `DefaultFormat` class. The current API to add new file format parsers is not ideal and needs to be re-factored into a more user friendly format in the future.
 
 ### Ledger Screenshot
-![ledger image](/public/ledger-screenshot "Example Ledger")
+![ledger image](/public/ledger-screenshot.png "Example Ledger")
 
 ### Budget Screenshot
-![budget image](/public/budget-screenshot "Example Budget")
+![budget image](/public/budget-screenshot.png "Example Budget")
 
 ### Category Initializers
 Category Initializers are used to automatically assign a category and optionally a subcategory to any expenses during initial upload. The description is checked by a regular expression pattern match in order of the priority assigned to the initializer with higher priority Initializers tested first. The search is stopped after the first match is found.
 
-![category initializers image](/public/category-initializers-screenshot "Category Initializers")
+![category initializers image](/public/category-initializers-screenshot.png "Category Initializers")
 
 
 ## Dependencies
