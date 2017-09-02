@@ -9,5 +9,5 @@
 <div id="category-initializers-index" style="display: none;">
     <h1>Category Initializers</h1>
 
-    <%= render 'category_initializers/index', initializers: CategoryInitializer.all %>
+    <%= render 'category_initializers/index', initializers: CategoryInitializer.all.order(priority: :desc) %>
 </div>
