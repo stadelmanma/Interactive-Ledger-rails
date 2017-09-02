@@ -28,8 +28,7 @@ class BudgetsController < ApplicationController
   def edit
     @page_heading = 'Editing Budget'
     @page_links = [
-      { name: 'Back', url: root_path },
-      { name: 'Show', url: @budget }
+      { name: 'Back', url: @budget }
     ]
   end
 
