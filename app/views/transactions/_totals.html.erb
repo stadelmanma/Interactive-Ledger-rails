@@ -1,5 +1,3 @@
-<% rowspan =  %>
-
 <%= content_tag :td, id: "row-#{transaction_counter}-week_total", rowSpan: week_total.rowspan, class: 'totals-cell' do -%>
     <%= display_value(week_total.total) %>
 <% end %>
@@ -10,8 +8,28 @@
 
 <%= content_tag :td, id: "row-#{transaction_counter}-category_totals", rowSpan: week_total.rowspan, class: 'totals-cell' do -%>
     <ul>
-        <% week_total.categories.each do |cat| %>
-            <li><span><%= cat + ':' %></span><%= display_value(week_total.category_total(cat)) %></li>
+        <% week_total.all_category_totals.each do |name, cat_summary| %>
+            <li>
+                    <span>
+                        <% if cat_summary.subcategory_summaries %>
+                            <%= content_tag :icon, render('/shared/icon', name: 'plus'), class: 'show-subcategories' %>
+                            <%= content_tag :icon, render('/shared/icon', name: 'minus'), class: 'hide-subcategories', style: 'display: none' %>
+                        <% else %>
+                            <%= content_tag :icon, render('/shared/icon', name: 'plus'), style: 'visibility: hidden;' %>
+                        <% end %>
+
+                        <%= name + ':' %>
+                    </span>
+                    <%= display_value(cat_summary.sum) %>
+
+                    <% if cat_summary.subcategory_summaries %>
+                        <ul class="subcategory-summary">
+                            <% cat_summary.subcategory_summaries.each do |sub_key, sub_summary| %>
+                                <li><%= (sub_key.blank? ? '(blank)' : sub_key) + ':' %> <%= display_value(sub_summary.sum) %></li>
+                            <% end %>
+                        </ul>
+                    <% end %>
+            </li>
         <% end %>
     </ul>
 <% end %>

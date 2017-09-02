@@ -56,6 +56,15 @@
     }
     .totals-cell {
         background-color: white;
+
+        .subcategory-summary {
+
+            display: none;
+
+            margin: 0px;
+
+            padding-left: 2em;
+        }
     }
 
     /* Interactive styles (placed last so the override the others) */
