@@ -12,6 +12,7 @@ class LedgersController < ApplicationController
   def show
     @page_heading = "Ledger: #{@ledger.name}"
     @page_links = ledger_page_links
+    @page_links[0][:url] = root_path
     #
     @transactions = Transaction.where(ledger_id: @ledger.id).order(date: :asc)
     @column_names = Transaction.display_columns
@@ -90,7 +91,7 @@ class LedgersController < ApplicationController
 
   def ledger_page_links
     [
-      { name: 'Back', url: root_path },
+      { name: 'Back', url: @ledger },
       { name: 'Upload Data', url: [:edit, @ledger] },
       { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
       { name: 'View Summary', url: [:summary, @ledger] },
