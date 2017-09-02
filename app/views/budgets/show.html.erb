@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<% headers = %w[week description original_amount actual_amount balance comments] %>
+<% headers = %w[week description anticipated_amount actual_amount balance comments] %>
 
 <table class="budget">
     <thead>
@@ -18,7 +18,7 @@
         <tr>
             <%= content_tag :td, '' %>
             <%= content_tag :td, 'Initial Balance' %>
-            <%= content_tag :td, '-', class: 'original-amount' %>
+            <%= content_tag :td, '-', class: 'anticipated-amount' %>
             <%= content_tag :td, '-', class: 'actual-amount' %>
             <%= content_tag :td, @budget.initial_balance, class: 'balance' %>
             <%= content_tag :td, '' %>

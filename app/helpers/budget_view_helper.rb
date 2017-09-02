@@ -41,7 +41,7 @@ module BudgetViewHelper
         key = exp.description
         args = {
           description: exp.description,
-          original_amount: exp.amount,
+          anticipated_amount: exp.amount,
           comments: exp.comments
         }
         cat_hash[key] = BudgetRow.new(**args)
@@ -82,16 +82,17 @@ module BudgetViewHelper
   # class to manage a single row of data within a section of budget view
   class BudgetRow
     include ActionView::Helpers::NumberHelper
-    attr_accessor :description, :original_amount, :actual_amount,
+    attr_accessor :description, :anticipated_amount, :actual_amount,
                   :balance, :comments
 
     # creates a budget row using the options hash
     def initialize(options)
-      whitelist = %i[description original_amount actual_amount balance comments]
+      whitelist = %i[description anticipated_amount actual_amount balance
+                     comments]
       validate_options(options, whitelist)
       #
       @description = options.fetch(:description, '')
-      @original_amount = options.fetch(:original_amount, 0.0)
+      @anticipated_amount = options.fetch(:anticipated_amount, 0.0)
       @actual_amount = options.fetch(:actual_amount, nil)
       @balance = options.fetch(:balance, 0.0)
       @comments = options.fetch(:comments, '')
@@ -112,7 +113,7 @@ module BudgetViewHelper
     def attributes
       {
         description: @description,
-        original_amount: @original_amount,
+        anticipated_amount: @anticipated_amount,
         actual_amount: @actual_amount,
         balance: @balance,
         comments: @comments.uniq.join('; ')
@@ -135,7 +136,7 @@ module BudgetViewHelper
     sections = totals.values.map { |total| BudgetSection.new(budget, total) }
     # update balance values
     sections.map(&:rows).flatten.inject(budget.initial_balance) do |bal, row|
-      row.balance = bal + (row.actual_amount || row.original_amount)
+      row.balance = bal + (row.actual_amount || row.anticipated_amount)
     end
     # return sectins
     sections
