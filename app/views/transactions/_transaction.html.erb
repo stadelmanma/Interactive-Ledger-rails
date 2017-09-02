@@ -1,4 +1,4 @@
-<%= content_tag :tr, id: "row-#{transaction_counter}", data: transaction.attributes do -%>
+<%= content_tag :tr, id: "row-#{transaction_counter}", class: 'transaction', data: transaction.attributes do -%>
 
     <%= render 'transactions/data', transaction: transaction, columns: @column_names, transaction_counter: transaction_counter %>
 
