@@ -9,6 +9,9 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  # Eager load all parsers so `all_parsers` works correctly in development
+  Dir.glob('app/parsers/*').map { |f| load f }
+
   # Show full error reports.
   config.consider_all_requests_local = true
 
