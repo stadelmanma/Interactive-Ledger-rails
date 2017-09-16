@@ -19,6 +19,15 @@ module LedgerUploadHelper
     transactions
   end
 
+  # Returns a list of avilable parsers
+  def parser_options # doesn't work yet, nor does parser#name
+    opts = all_parsers.map do |parser|
+      parser_name = parser.name.chomp('Parser')
+      [parser_name, parser_name.underscore]
+    end
+    options_for_select(opts)
+  end
+
   def all_parsers
     [DefaultParser].concat DefaultParser.subclasses
   end
