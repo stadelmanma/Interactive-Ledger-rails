@@ -58,7 +58,7 @@
             <br>
             <%= upload.label :upload_format do %>
                 <span>Data Format:</span>
-                <%= upload.select :upload_format, options_for_select([['Native', 'default'], ['Chessie', 'chessie'], ['Discover', 'discover']]) %>
+                <%= upload.select :upload_format, parser_options %>
             <% end %>
         <% end %>
     </div>
