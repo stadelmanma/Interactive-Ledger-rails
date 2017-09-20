@@ -9,6 +9,12 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  # Eager load all parsers so `all_parsers` works correctly in development
+  config.eager_load_paths += Dir['app/parsers/*.rb']
+  ActionDispatch::Reloader.to_prepare do
+    Dir['app/parsers/*.rb'].each { |file| require_dependency file }
+  end
+
   # Show full error reports.
   config.consider_all_requests_local = true
 
