@@ -11,7 +11,7 @@ Rails.application.configure do
 
   # Eager load all parsers so `all_parsers` works correctly in development
   config.eager_load_paths += Dir['app/parsers/*.rb']
-  ActionDispatch::Reloader.to_prepare do
+  ActiveSupport::Reloader.to_prepare do
     Dir['app/parsers/*.rb'].each { |file| require_dependency file }
   end
 
