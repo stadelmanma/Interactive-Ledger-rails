@@ -9,7 +9,7 @@ class Transaction < ApplicationRecord
     distinct.where("category REGEXP '.+'").pluck(:category)
   })
   scope(:subcategories, lambda {
-    distinct.where("subcategory REGEXP '.+'").pluck(:category)
+    distinct.where("subcategory REGEXP '.+'").pluck(:subcategory)
   })
 
   auto_strip_attributes :category, :subcategory, :comments, :account,
