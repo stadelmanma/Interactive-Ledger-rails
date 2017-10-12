@@ -10,7 +10,7 @@ class LedgerUploadsController < ApplicationController
       { name: 'Show Ledger', url: @ledger },
       { name: 'Upload Data', url: [:edit, @ledger] }
     ]
-    @uploads = @ledger.ledger_uploads
+    @uploads = @ledger.ledger_uploads.order(created_at: :desc)
   end
 
   def show
