@@ -1,0 +1,2 @@
+class CategoryExclusion < ApplicationRecord
+end
