@@ -1,1 +1,21 @@
+<div id="previous-uploads">
+    <h4>Recent Uploads</h4>
+    <% if @ledger.persisted? %>
+        <%= link_to 'View All', [ @ledger, :ledger_uploads] %>
+    <% end %>
+    <ul>
+        <% @ledger.ledger_uploads.order(created_at: :desc).limit(5).each do |upload| %>
+            <% next unless upload.id %>
+            <li>
+                <span>Data Source:</span><%= upload.data_source %>
+                <br>
+                <span>Uploaded on:</span><%= upload.created_at.localtime %>
+                <br>
+                <%= link_to 'Modify Transactions', [:edit, @ledger, upload] %>
+                <hr>
+            </li>
+        <% end %>
+    </ul>
+</div>
+
 <%= render 'form' %>
