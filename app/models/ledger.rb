@@ -9,6 +9,13 @@ class Ledger < ApplicationRecord
                                   attributes['data_source'].blank?
                                 }
 
+  has_many :category_exclusions, inverse_of: :ledger, dependent: :destroy
+  accepts_nested_attributes_for :category_exclusions,
+                                reject_if: proc { |attributes|
+                                  chk = %i[category excluded_from]
+                                  attributes.values_at(*chk).any?(&:blank?)
+                                }
+
   has_many :budget_ledgers, inverse_of: :ledger, dependent: :destroy
 
   has_many :budgets, through: :budget_ledgers
