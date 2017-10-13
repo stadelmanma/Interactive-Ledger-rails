@@ -20,6 +20,20 @@
             <span>Name:</span>
             <%= f.text_field :name %>
          <% end %>
+
+         <%= f.label :category_exclusions do %>
+            Category Exclusions:
+            <br />
+             <% locals = {
+               parent_model: @ledger,
+               child_index: nil,
+               exclusions: @ledger.category_exclusions
+             } %>
+             <div id="category-exclusions-container">
+                 <%= render 'category_exclusions/form_fields', locals %>
+             </div>
+             <a id="add-category-exclusion">Add Exclusion</a>
+         <% end %>
     </div>
 
     <br>
@@ -35,7 +49,7 @@
                 <span>Data Source:</span>
                 <%= upload.file_field :data_source %>
             <% end %>
-            
+
             <%= upload.label :upload_format do %>
                 <span>Data Format:</span>
                 <%= upload.select :upload_format, parser_options %>
