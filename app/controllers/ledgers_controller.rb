@@ -14,7 +14,7 @@ class LedgersController < ApplicationController
     @page_links = ledger_page_links
     @page_links[0][:url] = root_path
     #
-    @transactions = Transaction.where(ledger_id: @ledger.id).order(date: :asc)
+    @transactions = @ledger.transactions.order(date: :asc)
     @column_names = Transaction.display_columns
     @totals = create_totals_hash(@transactions)
     @totals_column_names = totals_column_names
