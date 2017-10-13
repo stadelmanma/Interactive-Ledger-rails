@@ -36,4 +36,8 @@ Rails.application.routes.draw do
       get 'add-category-initializer'
     end
   end
+
+  controller :category_exclusions do
+    get 'category_exclusions/form_fields'
+  end
 end
