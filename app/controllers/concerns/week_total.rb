@@ -45,14 +45,9 @@ class WeekTotal
     # add the transaction to appropriate array
     if skip_transaction?(transaction)
       @skipped_transactions << transaction
-      return
     else
       @transactions << transaction
     end
-
-    # add transaction to a category
-    category = transaction.category.blank? ? 'UNKNOWN' : transaction.category
-    @category_totals[category] << transaction
   end
 
   private
@@ -60,7 +55,6 @@ class WeekTotal
   def initialize(date)
     @date_range = week_date_range(date)
     @total_deficit = 0.0
-    @category_totals = Hash.new { |hash, key| hash[key] = [] }
     @transactions = []
     @skipped_transactions = []
   end
@@ -74,7 +68,7 @@ class WeekTotal
   def skip_transaction?(transaction)
     if transaction.amount.blank?
       true
-    elsif transaction.category.match?(/^Discover$/i)
+    elsif transaction.excluded_from?('week_total')
       true
     end
   end
