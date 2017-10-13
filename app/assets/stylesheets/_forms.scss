@@ -5,24 +5,28 @@ form > div, .form-fields {
         border-bottom: solid 1px;
     }
 
+    label {
+        display: block;
+
+        padding-bottom: 1em;
+
+        span {
+            display: inline-block;
+
+            width: 8em;
+
+            padding-left: 0.5em;
+        }
+
+        ul {
+            margin: 0em;
+
+            list-style: none;
+        }
+    }
+
     &.actions, &.field {
         margin-bottom: 10px;
-    }
-}
-
-form > label, .form-label {
-    display: block;
-
-    padding-bottom: 1em;
-
-    span {
-        display: inline-block;
-        width: 8em;
-    }
-
-    ul {
-        margin: 0em;
-        list-style: none;
     }
 }
 
