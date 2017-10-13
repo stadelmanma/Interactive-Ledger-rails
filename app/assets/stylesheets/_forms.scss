@@ -1,84 +1,77 @@
-form {
-    div {
-        h4 {
-            width: 33%;
+form > div, .form-fields {
+    h4 {
+        width: 33%;
 
-            border-bottom: solid 1px;
-        }
-
-        &.actions, &.field {
-            margin-bottom: 10px;
-        }
+        border-bottom: solid 1px;
     }
 
-    label {
-        display: block;
+    &.actions, &.field {
+        margin-bottom: 10px;
+    }
+}
 
-        padding-bottom: 1em;
+form > label, .form-label {
+    display: block;
 
-        span {
-            display: inline-block;
-            width: 8em;
-        }
+    padding-bottom: 1em;
 
-        ul {
-            margin: 0em;
-            list-style: none;
-        }
+    span {
+        display: inline-block;
+        width: 8em;
     }
 
-    input, select {
-        &.small {
-            width: 5em;
-        }
+    ul {
+        margin: 0em;
+        list-style: none;
+    }
+}
 
-        &.medium {
-            width: 7em;
-        }
-
-        &.large {
-            width: 10em;
-        }
-
-        &.disabled {
-            color: rgba(0, 0, 0, 0.5);
-            pointer-events: none;
-        }
+input, select {
+    &.small {
+        width: 5em;
     }
 
-    #notice {
-        color: green;
+    &.medium {
+        width: 7em;
     }
 
-    .field_with_errors {
-        padding: 2px;
-        background-color: red;
-        display: table;
+    &.large {
+        width: 10em;
     }
 
-    #error_explanation {
-        width: 450px;
-        border: 2px solid red;
-        padding: 7px;
-        padding-bottom: 0;
-        margin-bottom: 20px;
-        background-color: #f0f0f0;
+    &.disabled {
+        color: rgba(0, 0, 0, 0.5);
+        pointer-events: none;
+    }
+}
 
-        h2 {
-            text-align: left;
-            font-weight: bold;
-            padding: 5px 5px 5px 15px;
-            font-size: 12px;
-            margin: -7px;
-            margin-bottom: 0;
-            background-color: #c00;
-            color: #fff;
-        }
+.field_with_errors {
+    padding: 2px;
+    background-color: red;
+    display: table;
+}
 
-        ul li {
-            font-size: 12px;
-            list-style: square;
-        }
+#error_explanation {
+    width: 450px;
+    border: 2px solid red;
+    padding: 7px;
+    padding-bottom: 0;
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+
+    h2 {
+        text-align: left;
+        font-weight: bold;
+        padding: 5px 5px 5px 15px;
+        font-size: 12px;
+        margin: -7px;
+        margin-bottom: 0;
+        background-color: #c00;
+        color: #fff;
     }
 
+    ul li {
+        font-size: 12px;
+        list-style: square;
+    }
 }
