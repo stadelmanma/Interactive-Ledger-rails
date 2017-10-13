@@ -1,3 +1,9 @@
+<% exclusion_opts = [
+    ['All', 'all'],
+    ['Weekly Totals', 'week_total'],
+    ['Ledger Summaries', 'ledger_summary']
+] %>
+
 <%= fields_for parent_model do |f| %>
     <%= f.fields_for :category_exclusions, exclusions, child_index: child_index  do |exc| %>
         <div class='form-fields'>
@@ -6,7 +12,7 @@
                 <%= exc.select :category, Transaction.categories.sort.collect { |c| [c.titleize, c] } %>
 
                 <span>Excluded From:</span>
-                <%= exc.select :excluded_from, [['All', 'all']], placeholder: true %>
+                <%= exc.select :excluded_from, exclusion_opts, placeholder: true %>
 
                 <% if exc.object.persisted? %>
                     <span>Delete:</span> <%= exc.check_box :_destroy%>
