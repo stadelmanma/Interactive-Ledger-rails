@@ -40,7 +40,7 @@ class Ledger < ApplicationRecord
   #
   # @return [ActiveRecord_Relation<Transaction>]
   #
-  def transactions_excluding(*exclusions)
+  def transactions_not_excluded_from(*exclusions)
     # we always want to exclude 'all' because it should be excluded from
     # everywhere.
     exclusions << 'all' unless exclusions.include? 'all'
