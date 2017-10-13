@@ -36,12 +36,16 @@ class Ledger < ApplicationRecord
   # Returns all transactions except those with a category excluded
   # by the category exclusions group passed in.
   #
-  # @param [String, Array<String>]  exclusion'excluded_from' values to match
+  # @param [Array<String>] exclusions 'excluded_from' values to match
   #
   # @return [ActiveRecord_Relation<Transaction>]
   #
-  def transactions_excluding(exclusion = 'all')
-    excluded_cats = category_exclusions.where(excluded_from: exclusion)
+  def transactions_excluding(*exclusions)
+    # we always want to exclude 'all' because it should be excluded from
+    # everywhere.
+    exclusions << 'all' unless exclusions.include? 'all'
+    #
+    excluded_cats = category_exclusions.where(excluded_from: exclusions)
     transactions.where.not(category: excluded_cats.pluck(:category))
   end
 end
