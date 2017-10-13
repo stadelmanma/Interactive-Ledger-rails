@@ -48,4 +48,21 @@ class Ledger < ApplicationRecord
     excluded_cats = category_exclusions.where(excluded_from: exclusions)
     transactions.where.not(category: excluded_cats.pluck(:category))
   end
+
+  # Checks if an individual transaction is excluded from the group
+  #
+  # @param [Transaction] transaction to check
+  # @param [Array<String>] exclusions 'excluded_from' values to match
+  #
+  # @return [Boolean]
+  #
+  def transaction_excluded_from?(transaction, *exclusions)
+    # we always want to exclude 'all' because it should be excluded from
+    # everywhere.
+    exclusions << 'all' unless exclusions.include? 'all'
+    excluded_cats = category_exclusions.where(excluded_from: exclusions)
+
+    # Check if transaction category is in exclusion set
+    transaction.category.in? excluded_cats.pluck(:category)
+  end
 end
