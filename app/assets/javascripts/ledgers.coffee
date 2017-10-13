@@ -2,6 +2,11 @@
 # Calls functions after page has completely loaded
 $(document).on 'turbolinks:load', ->
     #
+    # adds an onclick event to add category exclusion fields to the ledger form
+    $('#add-category-exclusion').on('click', (event) ->
+        addCategoryExclusion();
+    );
+    #
     # adds an onclick event delegator to watch for clicks in description
     $("#ledger").on("click", "td[id*=-description]", (event) ->
         toggleText(this, $(this.parentNode).data('description').trim(), 30);
@@ -34,6 +39,30 @@ $(document).on 'turbolinks:load', ->
     # add handlers to ledger-summary 'more' links
     $('.ledger-summary table a').each ->
         $(this).click(showSummarySubcategories.bind(null, this));
+#
+# this function handles sending and receiving an AJAX response to add a ledger
+# field to the form
+@addCategoryExclusion = () ->
+    container = $('#category-exclusions-container')
+    url = '/category_exclusions/form_fields?child_index='
+    url += container.find('div').length
+    #
+    success = (html) ->
+        $(html).appendTo(container)
+    #
+    failure = (_, type, exception) ->
+        console.error(type)
+        console.dir(exception)
+    #
+    args = {
+        type: 'GET',
+        dataType: 'html',
+        error: failure,
+        success: success,
+        url: url
+    }
+    #
+    $.ajax(args)
 #
 # toggles text based on the content length
 @toggleText = (element, fullText, len) ->

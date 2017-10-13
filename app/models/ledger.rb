@@ -9,6 +9,14 @@ class Ledger < ApplicationRecord
                                   attributes['data_source'].blank?
                                 }
 
+  has_many :category_exclusions, inverse_of: :ledger, dependent: :destroy
+  accepts_nested_attributes_for :category_exclusions,
+                                allow_destroy: true,
+                                reject_if: proc { |attributes|
+                                  chk = %i[category excluded_from]
+                                  attributes.values_at(*chk).any?(&:blank?)
+                                }
+
   has_many :budget_ledgers, inverse_of: :ledger, dependent: :destroy
 
   has_many :budgets, through: :budget_ledgers
@@ -23,5 +31,38 @@ class Ledger < ApplicationRecord
 
   def download_data
     to_tab_delim(transactions)
+  end
+
+  # Returns all transactions except those with a category excluded
+  # by the category exclusions group passed in.
+  #
+  # @param [Array<String>] exclusions 'excluded_from' values to match
+  #
+  # @return [ActiveRecord_Relation<Transaction>]
+  #
+  def transactions_not_excluded_from(*exclusions)
+    # we always want to exclude 'all' because it should be excluded from
+    # everywhere.
+    exclusions << 'all' unless exclusions.include? 'all'
+    #
+    excluded_cats = category_exclusions.where(excluded_from: exclusions)
+    transactions.where.not(category: excluded_cats.pluck(:category))
+  end
+
+  # Checks if an individual transaction is excluded from the group
+  #
+  # @param [Transaction] transaction to check
+  # @param [Array<String>] exclusions 'excluded_from' values to match
+  #
+  # @return [Boolean]
+  #
+  def transaction_excluded_from?(transaction, *exclusions)
+    # we always want to exclude 'all' because it should be excluded from
+    # everywhere.
+    exclusions << 'all' unless exclusions.include? 'all'
+    excluded_cats = category_exclusions.where(excluded_from: exclusions)
+
+    # Check if transaction category is in exclusion set
+    transaction.category.in? excluded_cats.pluck(:category)
   end
 end

@@ -36,6 +36,18 @@ class Transaction < ApplicationRecord
     @display_data['validated'] = validated ? 'YES' : 'NO'
   end
 
+  # Calls the ledger method to check if this is an excluded transactions
+  # passing `self` into the methd.
+  # @see Ledger#transaction_excluded_from?
+  #
+  # @param [Array<String>] exclusions 'excluded_from' values to match
+  #
+  # @return [Boolean]
+  #
+  def excluded_from?(*exclusions)
+    ledger.transaction_excluded_from?(self, *exclusions)
+  end
+
   # checks for transactions sharing the same amount and a date
   def possible_dupes
     where = [
