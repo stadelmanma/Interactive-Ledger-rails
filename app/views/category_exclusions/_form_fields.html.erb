@@ -10,6 +10,10 @@
 
                 <% if exc.object.persisted? %>
                     <span>Delete:</span> <%= exc.check_box :_destroy%>
+                <% else %>
+                    <a class="remove" onclick="$(this).closest('.form-fields').remove()">
+                        <%= render 'shared/icon', name: 'cross' %>
+                    </a>
                 <% end %>
             </label>
         </div>
