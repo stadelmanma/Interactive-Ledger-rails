@@ -8,7 +8,7 @@ module LedgerSummary
 
   def generate_totals(ledger, totals)
     nweeks = number_of_weeks(ledger)
-    transactions = ledger.transactions.where.not(category: 'Discover')
+    transactions = ledger.transactions_not_excluded_from('ledger_summary')
     deposits = CategorySummary.new('Deposit', transactions, nweeks)
     #
     {
