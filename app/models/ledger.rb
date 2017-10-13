@@ -32,4 +32,16 @@ class Ledger < ApplicationRecord
   def download_data
     to_tab_delim(transactions)
   end
+
+  # Returns all transactions except those with a category excluded
+  # by the category exclusions group passed in.
+  #
+  # @param [String, Array<String>]  exclusion'excluded_from' values to match
+  #
+  # @return [ActiveRecord_Relation<Transaction>]
+  #
+  def transactions_excluding(exclusion = 'all')
+    excluded_cats = category_exclusions.where(excluded_from: exclusion)
+    transactions.where.not(category: excluded_cats.pluck(:category))
+  end
 end
