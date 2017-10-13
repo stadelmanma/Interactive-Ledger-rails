@@ -85,6 +85,8 @@ class LedgersController < ApplicationController
     params.require(:ledger).permit(
       :name,
       :data_source,
+      category_exclusions_attributes:
+        %i[category excluded_from ledger_id id _destroy],
       ledger_uploads_attributes: %i[data_source upload_format account]
     )
   end
