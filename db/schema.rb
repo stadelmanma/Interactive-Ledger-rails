@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171014020433) do
+ActiveRecord::Schema.define(version: 20171014025103) do
 
   create_table "budget_expenses", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.date "date"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20171014020433) do
     t.string "excluded_from", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["excluded_from"], name: "index_category_exclusions_on_excluded_from", type: :fulltext
     t.index ["ledger_id"], name: "index_category_exclusions_on_ledger_id"
   end
 
@@ -85,6 +86,7 @@ ActiveRecord::Schema.define(version: 20171014020433) do
     t.float "balance", limit: 24
     t.string "account"
     t.integer "ledger_upload_id"
+    t.index ["category"], name: "index_transactions_on_category", type: :fulltext
     t.index ["ledger_id"], name: "index_transactions_on_ledger_id"
     t.index ["ledger_upload_id"], name: "index_transactions_on_ledger_upload_id"
   end
