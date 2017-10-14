@@ -50,13 +50,13 @@ module BudgetViewHelper
 
     # Adds all category totals to the hash
     def process_category_totals(cat_totals, cat_hash)
-      cat_totals.each do |category, amount|
+      cat_totals.each do |category, cat_summary|
         next if category =~ /^(budgeted|deposit)$/i
         #
         if cat_hash[category]
-          cat_hash[category].update(actual_amount: amount)
+          cat_hash[category].update(actual_amount: cat_summary.sum)
         else
-          args = { description: category, actual_amount: amount }
+          args = { description: category, actual_amount: cat_summary.sum }
           cat_hash[category] = BudgetRow.new(**args)
         end
       end
