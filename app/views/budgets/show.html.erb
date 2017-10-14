@@ -20,7 +20,7 @@
             <%= content_tag :td, 'Initial Balance' %>
             <%= content_tag :td, '-', class: 'anticipated-amount' %>
             <%= content_tag :td, '-', class: 'actual-amount' %>
-            <%= content_tag :td, @budget.initial_balance, class: 'balance' %>
+            <%= content_tag :td, display_value(@budget.initial_balance), class: 'balance' %>
             <%= content_tag :td, '' %>
         </tr>
         <tr class="section section--start">
