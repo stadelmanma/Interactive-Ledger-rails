@@ -17,7 +17,9 @@
                 <% if exp.object.persisted? %>
                     Delete: <%= exp.check_box :_destroy%>
                 <% else %>
-                    <a onclick="this.parentNode.parentNode.remove()">X</a>
+                    <a onclick="this.parentNode.parentNode.remove()">
+                        <%= render 'shared/icon', name: 'cross' %>
+                    </a>
                 <% end %>
             </td>
         </tr>
