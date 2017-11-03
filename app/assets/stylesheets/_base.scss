@@ -33,6 +33,58 @@ a {
     }
 }
 
+button, .button, input[type=submit] {
+    &:hover {
+        box-shadow: 0px 0px 1px hsl(206, 0%, 56%);
+        color: hsl(0, 0%, 25%);
+    }
+
+    &:active {
+        background-image: linear-gradient(180deg, hsl(206, 0%, 93%) 75%, hsl(206, 0%, 100%) 100%);
+        // move button down slightly so it's "pressed"
+        transform: translate(0, 1px);
+    }
+
+    background-color: hsl(207, 0%, 21%);
+    background-image: linear-gradient(0deg, hsl(206, 0%, 93%) 0%, hsl(206, 0%, 100%) 100%);
+    border: 1px solid hsl(206, 0%, 67%);
+    border-radius: 5px;
+    color: hsl(0, 0%, 25%);
+    display: inline-block;
+    font-size: 14px;
+    margin: 3px;
+    padding: 4px 12px;
+    text-decoration: none;
+}
+
+/* Blue button
+button, .button {
+    &:hover {
+        box-shadow: 0px 0px 1px #2b638f;
+    }
+
+    &:active {
+        background-image: linear-gradient(0deg, rgb(88,154,204) 0%, rgb(90,150,199) 100%);
+        // move button down slightly so it's "pressed"
+        transform: translate(0, 1px);
+    }
+
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    text-shadow: 0px  -1px 0px rgba(0,0,0,.5);
+    font-weight: bold;
+    background-color: #538fbe;
+    background-image: linear-gradient(0deg, rgb(79,142,191) 0%, rgb(102,166,214) 100%);
+    padding: 4px 12px;
+    font-size: 12px;
+    border: 1px solid #2d6898;
+    border-radius: 5px;
+    background-image: linear-gradient(bottom, rgb(73,132,180) 0%, rgb(97,155,203) 100%);
+    //box-shadow: 0px 6px 0px #2b638f, 0px 3px 15px rgba(0,0,0,.4);
+}
+*/
+
 .hidden {
     display: none !important;
 }
