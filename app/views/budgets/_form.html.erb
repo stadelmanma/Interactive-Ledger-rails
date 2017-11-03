@@ -31,7 +31,7 @@
             <ul id="budget-ledgers-container">
                 <%= render 'ledger_select', budget: budget, budget_ledgers: budget.budget_ledgers, child_index: nil %>
             </ul>
-            <a id="add-ledger-select">Add Ledger</a>
+            <a id="add-ledger-select" class="button">Add Ledger</a>
         <% end %>
     </div>
 
@@ -50,7 +50,7 @@
                 </tr>
                 <%= render 'budget_expense', budget: budget, budget_expenses: budget.budget_expenses.order(date: :asc), child_index: nil %>
             </table>
-            <a id="add-budget-expense">Add Expense</a>
+            <a id="add-budget-expense" class="button">Add Expense</a>
         <% end %>
     </div>
 
