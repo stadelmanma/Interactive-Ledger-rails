@@ -8,7 +8,9 @@
             <% if initializer.persisted? %>
                 Delete: <%= check_box_tag 'category_initializers[][_destroy]', '1', initializer._destroy.present? %>
             <% else %>
-                <a onclick="this.parentNode.parentNode.remove()">X</a>
+                <a class="remove" onclick="this.parentNode.parentNode.remove()">
+                    <%= render 'shared/icon', name: 'cross' %>
+                </a>
             <% end %>
         </td>
     </tr>
