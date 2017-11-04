@@ -109,18 +109,27 @@
             <% CategorySummary.sort_summaries_by(@overall_totals[:deposit_summaries], :average).each do |key, summary| %>
                 <tr>
                     <td><%= "#{key} (#{summary.transactions.length})" %></td>
-                    <td><%= number_with_precision(summary.average, delimiter: ',', precision: 2) %></td>
-                    <td><%= number_with_precision(summary.average_per_week, delimiter: ',', precision: 2) %></td>
+                    <td><%= display_value(summary.average) %></td>
+                    <td><%= display_value(summary.average_per_week) %></td>
                 </tr>
             <% end %>
 
             <tr class="totals-row">
                 <td colspan="2">Overall Average per Week:</td>
-                <td><%= number_with_precision(@overall_totals[:week_averaged_deposits], delimiter: ',', precision: 2) %></td>
+                <td><%= display_value(@overall_totals[:week_averaged_deposits]) %></td>
             </tr>
         </table>
     </div>
-
 </div>
+
+<div class="ledger-summary-charts">
+    <% categories = @ledger.transactions.pluck(:category).uniq.sort %>
+    <% data = categories.each_with_object({}) { |cat, hash| hash[cat] = {} } %>
+    <% data = @totals.values.each_with_object(data) { |t, hash| categories.each { |cat| hash[cat][t.date_range[1]] = display_value(t.category_total(cat).sum.abs) } } %>
+    <% data = data.except('Discover', 'Budgeted', 'Deposit') %>
+    <% data = data.map { |k, v| { name: k, data: v } } %>
+    <%= area_chart data, stacked: true, xtitle: "Date", ytitle: "Category Total [$]"  %>
+<div>
+
 <br>
 <br>
