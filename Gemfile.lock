@@ -67,6 +67,7 @@ GEM
       capistrano (~> 3.7)
       capistrano-bundler
       puma (~> 3.4)
+    chartkick (2.2.5)
     codecov (0.1.10)
       json
       simplecov
@@ -224,6 +225,7 @@ DEPENDENCIES
   capistrano-rails
   capistrano-rvm
   capistrano3-puma
+  chartkick
   codecov
   coffee-rails (~> 4.2)
   jbuilder (~> 2.5)
