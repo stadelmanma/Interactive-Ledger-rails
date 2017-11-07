@@ -129,7 +129,14 @@
     <% data = data.except('Discover', 'Budgeted', 'Deposit') %>
     <% data = data.map { |k, v| { name: k, data: v } } %>
     <%= area_chart data, stacked: true, xtitle: "Date", ytitle: "Category Total [$]", library: { scales: { yAxes: [{ ticks: { stepSize: 100 } }] } }  %>
-<div>
+</div>
+
+<div class="ledger-summary-charts">
+    <% data = CategorySummary.sort_summaries_by(@overall_totals[:expense_summaries], :average_per_week).map do |key, summary| %>
+        <% [key, display_value(summary.average_per_week.abs)] %>
+    <% end %>
+    <%= bar_chart Hash[data[0..20]], xtitle: 'Average per Week [$]', library: { scales: { xAxes:[{ gridLines: { display: true }, ticks: { stepSize: 25 } }], yAxes:[{ gridLines: { display: true } }] } } %>
+</div>
 
 <br>
 <br>
