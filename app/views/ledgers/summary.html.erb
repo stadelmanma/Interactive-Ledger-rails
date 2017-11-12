@@ -133,9 +133,11 @@
 
 <div class="ledger-summary-charts">
     <% data = CategorySummary.sort_summaries_by(@overall_totals[:expense_summaries], :average_per_week).map do |key, summary| %>
-        <% [key, display_value(summary.average_per_week.abs).to_s.delete(',')] %>
+        <% [key, summary.average_per_week.abs] %>
     <% end %>
-    <%= bar_chart Hash[data[0..20]], xtitle: 'Average per Week [$]', library: { scales: { xAxes:[{ gridLines: { display: true }, ticks: { stepSize: 25 } }], yAxes:[{ gridLines: { display: true } }] } } %>
+    <% data[21] = ['Other', data[21..-1].sum {|v| v[1]}] %>
+    <% data = data.map { |name, val| [name, display_value(val).to_s.delete(',')] } %>
+    <%= bar_chart Hash[data[0..21]], xtitle: 'Average per Week [$]', library: { scales: { xAxes:[{ gridLines: { display: true }, ticks: { stepSize: 25 } }], yAxes:[{ gridLines: { display: true } }] } } %>
 </div>
 
 <div class="ledger-summary-charts">
