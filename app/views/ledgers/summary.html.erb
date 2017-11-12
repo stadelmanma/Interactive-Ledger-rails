@@ -151,6 +151,21 @@
     <%= area_chart data, stacked: true, xtitle: "Date", ytitle: "Category Total [$]", library: { scales: { yAxes: [{ ticks: { stepSize: 10000 } }] } }  %>
 </div>
 
+<div class="ledger-summary-charts">
+    <% subcats = @ledger.transactions.where(category: 'Deposit').pluck(:subcategory).uniq.sort.each_with_object({}) { |subcat, hash| hash[subcat] = {} } %>
+    <% dates =  @ledger.transactions.where(category: 'Deposit').pluck(:date).uniq.sort %>
+    <% trans = @ledger.transactions.where(category: 'Deposit') %>
+    <% data = dates.each_with_object(subcats) { |d, hash| hash.each { |sc, h| h[d] = 0 } } %>
+    <% data = trans.each_with_object(data) { |t, hash| hash[t.subcategory][t.date] = t.amount }%>
+    <% data = data.map.with_object({}) do |(subcat, subcat_data), plt_data| %>
+        <% memo = 0 %>
+        <% plt_data[subcat] = Hash[subcat_data.map { |date, value| [date, value = memo = value + memo]  }] %>
+    <% end %>
+    <% data = data.map do |subcat, subcat_data| %>
+        <% { name: subcat, data: subcat_data.transform_values { |n| display_value(n).to_s.delete(',') } } %>
+    <% end %>
+    <%= area_chart data, stacked: true, xtitle: "Date", ytitle: "Deposits [$]", library: { scales: { yAxes: [{ ticks: { stepSize: 10000 } }] } }  %>
+</div>
 
 <br>
 <br>
