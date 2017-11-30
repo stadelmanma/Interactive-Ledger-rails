@@ -135,7 +135,7 @@
     <% data = CategorySummary.sort_summaries_by(@overall_totals[:expense_summaries], :average_per_week).map do |key, summary| %>
         <% [key, summary.average_per_week.abs] %>
     <% end %>
-    <% data[21] = ['Other', data[21..-1].sum {|v| v[1]}] %>
+    <% data[21] = ['All Other Categories', data[21..-1].sum {|v| v[1]}] %>
     <% data = data.map { |name, val| [name, display_value(val).to_s.delete(',')] } %>
     <%= bar_chart Hash[data[0..21]], xtitle: 'Average per Week [$]', library: { scales: { xAxes:[{ gridLines: { display: true }, ticks: { stepSize: 25 } }], yAxes:[{ gridLines: { display: true } }] } } %>
 </div>
