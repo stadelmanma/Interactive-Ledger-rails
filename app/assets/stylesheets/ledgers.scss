@@ -85,6 +85,12 @@
 
     justify-content: space-around;
 
+    &--chart {
+        margin: 1em 0em;
+
+        border: solid 1px hsl(206, 0%, 75%);
+    }
+
     table {
 
         margin-right: 0 0.5em;
