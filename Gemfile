@@ -42,8 +42,13 @@ gem 'activerecord-import'
 # removes whitespace from model attributes
 gem 'auto_strip_attributes'
 
-# Provides code coverage information gathered during testing
-gem 'codecov', require: false, group: :test
+# Use chartkick to generate graphs of data
+gem 'chartkick'
+
+group :test do
+  # Provides code coverage information gathered during testing
+  gem 'codecov', require: false
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger

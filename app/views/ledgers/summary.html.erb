@@ -109,18 +109,65 @@
             <% CategorySummary.sort_summaries_by(@overall_totals[:deposit_summaries], :average).each do |key, summary| %>
                 <tr>
                     <td><%= "#{key} (#{summary.transactions.length})" %></td>
-                    <td><%= number_with_precision(summary.average, delimiter: ',', precision: 2) %></td>
-                    <td><%= number_with_precision(summary.average_per_week, delimiter: ',', precision: 2) %></td>
+                    <td><%= display_value(summary.average) %></td>
+                    <td><%= display_value(summary.average_per_week) %></td>
                 </tr>
             <% end %>
 
             <tr class="totals-row">
                 <td colspan="2">Overall Average per Week:</td>
-                <td><%= number_with_precision(@overall_totals[:week_averaged_deposits], delimiter: ',', precision: 2) %></td>
+                <td><%= display_value(@overall_totals[:week_averaged_deposits]) %></td>
             </tr>
         </table>
     </div>
-
 </div>
+
+<div class="ledger-summary--chart">
+    <% categories = @ledger.transactions.pluck(:category).uniq.sort %>
+    <% data = categories.each_with_object({}) { |cat, hash| hash[cat] = {} } %>
+    <% data = @totals.values.each_with_object(data) { |t, hash| categories.each { |cat| hash[cat][t.date_range[1]] = display_value(t.category_total(cat).sum.abs).to_s.delete(',') } } %>
+    <% data = data.except('Discover', 'Budgeted', 'Deposit') %>
+    <% data = data.map { |k, v| { name: k, data: v } } %>
+    <%= area_chart data, stacked: true, xtitle: "Date", ytitle: "Category Total [$]", library: { scales: { yAxes: [{ ticks: { stepSize: 100 } }] } }  %>
+</div>
+
+<div class="ledger-summary--chart">
+    <% data = CategorySummary.sort_summaries_by(@overall_totals[:expense_summaries], :average_per_week).map do |key, summary| %>
+        <% [key, summary.average_per_week.abs] %>
+    <% end %>
+    <% data[21] = ['All Other Categories', data[21..-1].sum {|v| v[1]}] %>
+    <% data = data.map { |name, val| [name, display_value(val).to_s.delete(',')] } %>
+    <%= bar_chart Hash[data[0..21]], xtitle: 'Average per Week [$]', library: { scales: { xAxes:[{ gridLines: { display: true }, ticks: { stepSize: 25 } }], yAxes:[{ gridLines: { display: true } }] } } %>
+</div>
+
+<div class="ledger-summary--chart">
+    <% categories = @ledger.transactions.pluck(:category).uniq.sort %>
+    <% data = categories.each_with_object({}) { |cat, hash| hash[cat] = {} } %>
+    <% data = @totals.values.each_with_object(data) { |t, hash| categories.each { |cat| hash[cat][t.date_range[1]] = t.category_total(cat).sum.abs } } %>
+    <% data = data.map.with_object({}) do |(cat, cat_data), plt_data| %>
+        <% memo = 0 %>
+        <% plt_data[cat] = Hash[cat_data.map { |date, value| [date, value = memo = value + memo]  }] %>
+    <% end %>
+    <% data = data.except('Discover', 'Deposit') %>
+    <% data = data.map { |k, v| { name: k, data: v.transform_values { |n| display_value(n).to_s.delete(',') } } } %>
+    <%= area_chart data, stacked: true, xtitle: "Date", ytitle: "Category Total [$]", library: { scales: { yAxes: [{ ticks: { stepSize: 10000 } }] } }  %>
+</div>
+
+<div class="ledger-summary--chart">
+    <% subcats = @ledger.transactions.where(category: 'Deposit').pluck(:subcategory).uniq.sort.each_with_object({}) { |subcat, hash| hash[subcat] = {} } %>
+    <% dates =  @ledger.transactions.where(category: 'Deposit').pluck(:date).uniq.sort %>
+    <% trans = @ledger.transactions.where(category: 'Deposit') %>
+    <% data = dates.each_with_object(subcats) { |d, hash| hash.each { |sc, h| h[d] = 0 } } %>
+    <% data = trans.each_with_object(data) { |t, hash| hash[t.subcategory][t.date] = t.amount }%>
+    <% data = data.map.with_object({}) do |(subcat, subcat_data), plt_data| %>
+        <% memo = 0 %>
+        <% plt_data[subcat] = Hash[subcat_data.map { |date, value| [date, value = memo = value + memo]  }] %>
+    <% end %>
+    <% data = data.map do |subcat, subcat_data| %>
+        <% { name: subcat, data: subcat_data.transform_values { |n| display_value(n).to_s.delete(',') } } %>
+    <% end %>
+    <%= area_chart data, stacked: true, xtitle: "Date", ytitle: "Deposits [$]", library: { scales: { yAxes: [{ ticks: { stepSize: 10000 } }] } }  %>
+</div>
+
 <br>
 <br>
