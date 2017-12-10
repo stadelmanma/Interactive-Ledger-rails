@@ -14,7 +14,7 @@
         </div>
     <% end %>
 
-    <div>
+    <%= content_tag :div do %>
         <h4>Ledger Parameters</h4>
         <%= f.label :name do %>
             <span>Name:</span>
@@ -34,7 +34,7 @@
              </div>
              <a id="add-category-exclusion" class="button">Add Exclusion</a>
          <% end %>
-    </div>
+    <% end unless upload %>
 
     <br>
     <div>

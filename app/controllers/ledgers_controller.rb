@@ -94,7 +94,7 @@ class LedgersController < ApplicationController
   def ledger_page_links
     [
       { name: 'Back', url: @ledger },
-      { name: 'Upload Data', url: [:edit, @ledger] },
+      { name: 'Upload Data', url: [:edit, @ledger, { upload: true }] },
       { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
       { name: 'View Summary', url: [:summary, @ledger] },
       { name: 'Download Ledger', url: "#{ledger_path}/download",
