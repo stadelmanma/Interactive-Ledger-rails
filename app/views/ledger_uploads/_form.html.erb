@@ -34,5 +34,6 @@
     </table>
     <br>
     <%= f.submit %>
+    <%= f.submit name: 'continue_editing', value: 'Save & Continue' %>
     <%= link_to 'Delete Ledger Upload', [@ledger, @upload], method: :delete, class: 'button', data: { confirm: 'Confirm deletion of upload' } %>
 <% end %>
