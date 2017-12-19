@@ -33,13 +33,15 @@ class LedgerUploadsController < ApplicationController
       { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
       { name: 'View Upload', url: [@ledger, @upload] }
     ]
+    #
+    render 'edit'
   end
 
   def update
-    if @upload.update(upload_params)
+    if @upload.update(upload_params) && params[:continue_editing].blank?
       redirect_to [@ledger, @upload]
     else
-      render 'edit'
+      edit
     end
   end
 
