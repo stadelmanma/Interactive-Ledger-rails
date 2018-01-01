@@ -24,7 +24,7 @@ module TransactionTotals
       # create new entry for each week
       if new_week?(transactions, i)
         week_total = WeekTotal.new(transaction.date)
-        totals[i] = week_total
+        totals[transaction.id] = week_total
       end
       week_total << transaction
     end
