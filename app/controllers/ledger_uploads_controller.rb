@@ -8,7 +8,7 @@ class LedgerUploadsController < ApplicationController
     @page_heading = "Listing Uploads For Ledger #{@ledger.name}"
     @page_links = [
       { name: 'Show Ledger', url: @ledger },
-      { name: 'Upload Data', url: [:edit, @ledger] }
+      { name: 'Upload Data', url: [:edit, @ledger, { upload: true }] }
     ]
     @uploads = @ledger.ledger_uploads.order(created_at: :desc)
   end
