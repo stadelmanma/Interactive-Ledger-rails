@@ -19,7 +19,9 @@
     <% end %>
   </tr>
 
-  <%= render partial: 'transactions/transaction', collection: @upload.transactions %>
+  <%= render partial: 'transactions/transaction',
+             collection: @upload.transactions,
+             locals: { column_names: @column_names, week_totals: {} } %>
 
 </table>
 
