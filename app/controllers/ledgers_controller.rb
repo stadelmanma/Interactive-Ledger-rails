@@ -14,9 +14,10 @@ class LedgersController < ApplicationController
     @page_links = ledger_page_links
     @page_links[0][:url] = root_path
     #
-    @transactions = @ledger.transactions.order(date: :asc)
+    @all_transactions = @ledger.transactions.order(date: :asc)
+    @transactions = @all_transactions.where('date >= ?', oldest_displayed_date)
     @column_names = Transaction.display_columns
-    @totals = create_totals_hash(@transactions)
+    @totals = create_totals_hash(@all_transactions)
     @totals_column_names = totals_column_names
   end
 
@@ -100,6 +101,16 @@ class LedgersController < ApplicationController
       { name: 'Download Ledger', url: "#{ledger_path}/download",
         options: { method: 'get', data: { turbolinks: false } } }
     ]
+  end
+
+  # Returns a date approximately 12 weeks before the oldest date in the
+  # transactions data for a given ledger.
+  #
+  # @return [Date]
+  #
+  def oldest_displayed_date
+    return 0 if params[:show_all].present?
+    (@ledger.transactions.maximum(:date) - 6.weeks).beginning_of_week
   end
 
   # upload any new data and if so, go to the upload#edit
