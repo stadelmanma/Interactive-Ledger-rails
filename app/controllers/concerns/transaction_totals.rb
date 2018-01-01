@@ -24,7 +24,7 @@ module TransactionTotals
       # create new entry for each week
       if new_week?(transactions, i)
         week_total = WeekTotal.new(transaction.date)
-        totals[i] = week_total
+        totals[transaction.id] = week_total
       end
       week_total << transaction
     end
@@ -41,11 +41,8 @@ module TransactionTotals
     return true if i.zero?
     return false if i == transactions.length
     #
-    curr_wk = transactions[i][:date].strftime('%U').to_i
-    test_wk = transactions[i - 1][:date].strftime('%U').to_i
-
     # return true if week numbers are different
-    curr_wk != test_wk
+    transactions[i - 1][:date].cweek != transactions[i][:date].cweek
   end
 
   def calculate_total_deficit(totals)

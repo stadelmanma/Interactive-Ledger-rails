@@ -1,8 +1,13 @@
-<%= content_tag :tr, id: "row-#{transaction_counter}", class: 'transaction', data: transaction.attributes do -%>
+<%= content_tag :tr, id: "row-#{transaction_counter}",
+                     class: 'transaction',
+                     data: transaction.attributes do -%>
 
-    <%= render 'transactions/data', transaction: transaction, columns: @column_names, transaction_counter: transaction_counter %>
+    <%= render 'transactions/data', transaction: transaction,
+                                    columns: column_names,
+                                    transaction_counter: transaction_counter %>
 
-    <% if @totals[transaction_counter] %>
-        <%= render 'transactions/totals', week_total: @totals[transaction_counter], transaction_counter: transaction_counter %>
+    <% if week_totals[transaction.id] %>
+        <%= render 'transactions/totals',  week_total: week_totals[transaction.id],
+                                           transaction_counter: transaction_counter %>
     <% end %>
 <% end %>

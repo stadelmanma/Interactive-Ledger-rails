@@ -12,19 +12,25 @@ class LedgersController < ApplicationController
   def show
     @page_heading = "Ledger: #{@ledger.name}"
     @page_links = ledger_page_links
-    @page_links[0][:url] = root_path
     #
-    @transactions = @ledger.transactions.order(date: :asc)
+    if params[:show_all]
+      @page_links[0] = { name: 'Show Less Transactions', url: @ledger }
+    else
+      @page_links[0] = {
+        name: 'Show All Transactions', url: [@ledger, show_all: true]
+      }
+    end
+    #
+    @all_transactions = @ledger.transactions.order(date: :asc)
+    @transactions = @all_transactions.where('date >= ?', oldest_displayed_date)
     @column_names = Transaction.display_columns
-    @totals = create_totals_hash(@transactions)
+    @totals = create_totals_hash(@all_transactions)
     @totals_column_names = totals_column_names
   end
 
   def new
     @page_heading = 'New Ledger'
-    @page_links = [
-      { name: 'Back', url: root_path }
-    ]
+    @page_links = [{ name: 'Back', url: root_path }]
     @ledger = Ledger.new
   end
 
@@ -53,9 +59,7 @@ class LedgersController < ApplicationController
   end
 
   def create
-    @ledger = Ledger.new(ledger_params)
-    #
-    if @ledger.save
+    if (@ledger = Ledger.create(ledger_params))
       upload_and_redirect
     else
       render 'new'
@@ -94,12 +98,22 @@ class LedgersController < ApplicationController
   def ledger_page_links
     [
       { name: 'Back', url: @ledger },
+      { name: 'All Uploads', url: [@ledger, :ledger_uploads] },
+      { name: 'Show Summary', url: [:summary, @ledger] },
       { name: 'Upload Data', url: [:edit, @ledger, { upload: true }] },
-      { name: 'View All Uploads', url: [@ledger, :ledger_uploads] },
-      { name: 'View Summary', url: [:summary, @ledger] },
-      { name: 'Download Ledger', url: "#{ledger_path}/download",
+      { name: 'Download Data', url: "#{ledger_path}/download",
         options: { method: 'get', data: { turbolinks: false } } }
     ]
+  end
+
+  # Returns a date approximately 12 weeks before the oldest date in the
+  # transactions data for a given ledger.
+  #
+  # @return [Date]
+  #
+  def oldest_displayed_date
+    return 0 if params[:show_all].present?
+    (@ledger.transactions.maximum(:date) - 6.weeks).beginning_of_week
   end
 
   # upload any new data and if so, go to the upload#edit
