@@ -55,6 +55,27 @@ namespace :puma do
   before :start, :make_dirs
 end
 
+namespace :db do
+  desc 'Syncs the development database with the production database'
+  task :sync_dev do
+    file_path = "/tmp/#{fetch(:stage)}-dump.sql"
+    on roles(:app) do
+      within current_path do
+        with rails_env: (fetch(:rails_env) || fetch(:stage)) do
+          execute :rake, "'db:data:dump[#{file_path}]'"
+        end
+      end
+      #
+      download! file_path, file_path
+    end
+    #
+    run_locally do
+      info 'Updating development database'
+      execute "bundle exec rake 'db:data:import[#{file_path}]'"
+    end
+  end
+end
+
 namespace :deploy do
   desc 'Make sure local git is in sync with remote.'
   task :check_revision do
