@@ -2,7 +2,7 @@
     <%= f.fields_for :budget_expenses, budget_expenses, child_index: child_index do |exp| %>
         <tr>
             <td>
-                <%= exp.date_select :date %>
+                <%= exp.date_field :date %>
             </td>
             <td>
                 <%= exp.text_field :description, class: 'medium' %>
