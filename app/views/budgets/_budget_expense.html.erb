@@ -14,13 +14,20 @@
                 <%= exp.text_field :comments %>
             </td>
             <td>
-                <% if exp.object.persisted? %>
-                    Delete: <%= exp.check_box :_destroy%>
-                <% else %>
-                    <a class="remove" onclick="this.parentNode.parentNode.remove()">
-                        <%= render 'shared/icon', name: 'cross' %>
-                    </a>
-                <% end %>
+                    <% if exp.object.persisted? %>
+                        Delete: <%= exp.check_box :_destroy%>
+                    <% else %>
+                        <a class="remove" onclick="this.parentNode.parentNode.remove()">
+                            <%= render 'shared/icon', name: 'cross' %>
+                        </a>
+                    <% end %>
+
+                    <button type="button" class="dupe-expense-fields">Repeat</button>
+                    <select class="dupe-expense-fields">
+                        <option value="weekly">Every Week</option>
+                        <option value="biweekly">Every Two Weeks</option>
+                        <option value="monthly">Every Month</option>
+                    </select>
             </td>
         </tr>
     <% end %>
