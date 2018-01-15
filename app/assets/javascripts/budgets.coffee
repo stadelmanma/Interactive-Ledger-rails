@@ -48,7 +48,7 @@ $(document).on 'turbolinks:load', ->
 #
 # this function handles sending and receiving an AJAX response to add another
 # row of budget expense fields field to the form
-@addBudgetExpense = (dateIncrement, initialDate) ->
+@addBudgetExpense = (dateIncrement, expenseParams) ->
     table = $('#budget-expenses-container')
     childIndex = $(table).find('tr').length - 1
     #
@@ -71,7 +71,7 @@ $(document).on 'turbolinks:load', ->
         data: {
             child_index: childIndex,
             date_increment: dateIncrement,
-            initial_date: initialDate
+            budget: {budget_expenses_attributes: expenseParams}
         }
     }
     #
@@ -81,11 +81,17 @@ $(document).on 'turbolinks:load', ->
 # Implements repeat row N times functionality during creation of budget
 # expenses.
 @repeatExpenseEvery = () ->
+    row = $(this).closest('tr')
     period = $(this).val()
-    dateStr = $(this).closest('tr').find('input[name*=date]').val()
+    #
+    # pull data from the inputs in the row
+    data = {}
+    $($(row).find('input[name]').serializeArray()).each (index, obj) ->
+        name = obj.name.match(/\[([a-zA-Z_]+?)\]$/)[1]
+        data[name] = obj.value;
     #
     # increment date
-    if (isNaN(new Date(dateStr)))
+    if (isNaN(new Date(data['date'])))
         return
     else if (period == 'weekly')
         increment = '7.days'
@@ -96,4 +102,4 @@ $(document).on 'turbolinks:load', ->
     else
         return
     #
-    addBudgetExpense(increment, dateStr)
+    addBudgetExpense(increment, data)

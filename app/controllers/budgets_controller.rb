@@ -62,15 +62,17 @@ class BudgetsController < ApplicationController
   end
 
   def add_budget_expense
-    if params[:initial_date] && params[:date_increment]
+    if params[:budget] && params[:date_increment]
+      expense_params = budget_params[:budget_expenses_attributes]
       increment, unit = params[:date_increment].split('.')
       increment = increment.to_i.send(unit)
-      initial_date = Date.parse(params[:initial_date]) + increment
+      initial_date = Date.parse(expense_params[:date]) + increment
       end_date = (initial_date + 1.year).beginning_of_year
       #
       date_range = (initial_date.to_datetime.to_i)..(end_date.to_datetime.to_i)
       expenses = date_range.step(increment).map do |date|
-        BudgetExpense.new(date: Time.zone.at(date))
+        expense_params[:date] = Time.zone.at(date)
+        BudgetExpense.new(expense_params)
       end
     else
       expenses = [BudgetExpense.new]
