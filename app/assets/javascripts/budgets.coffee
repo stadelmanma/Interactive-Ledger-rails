@@ -24,6 +24,17 @@ $(document).on 'turbolinks:load', ->
     $('#add-budget-expense').on('click', (event) ->
         addBudgetExpense();
     );
+    #
+    # handles inline forms on Budget#show
+    rows = $('table.budget').find('tr[data-budget-expense-id]')
+    rows.find('td.description, td.anticipated-amount').each (_,  cell) ->
+        $(cell).dblclick () ->
+            row = $(this).closest('tr')
+            #
+            # Don't add form fields if form is active
+            return if row.closest('table').find('tr[data-active-form]').length > 0
+            setupInlineExpenseForm(row)
+
 #
 # this function handles sending and receiving an AJAX response to add a ledger
 # field to the form
@@ -103,3 +114,54 @@ $(document).on 'turbolinks:load', ->
         return
     #
     addBudgetExpense(increment, data)
+
+#
+# Creates a single field form on the Budget#show view
+@setupInlineExpenseForm = (row) ->
+    row.attr('data-active-form', true)
+    row.append('<td><input type="submit" value="Update" /></td>')
+    row.append('<td><input type="reset" value="Cancel" /></td>')
+    #
+    descCell = $(row).find('td.description')
+    amtCell = $(row).find('td.anticipated-amount')
+    submitButton = $(row).find('input[type=submit]')
+    cancelButton = $(row).find('input[type=reset]')
+    #
+    # create fields
+    descCell.empty()
+    descCell.append('<input type="text" name="description" />')
+    descCell.find('input').val($(row).data('description'))
+    #
+    amtCell.empty()
+    amtCell.append('<input type="text" name="anticipated_amount" />')
+    amtCell.find('input').val($(row).data('anticipatedAmount'))
+    #
+    # add listeners to buttons
+    submitButton.click(submitInlineExpenseForm.bind(null, row))
+    cancelButton.click(resetInlineExpenseForm.bind(null, row))
+#
+# submits the inline expense form
+@submitInlineExpenseForm = (row) ->
+    #
+    # pull data from the inputs in the row
+    data = { budget_expense_id: $(row).data('budgetExpenseId') }
+    $($(row).find('input[name]').serializeArray()).each (index, obj) ->
+        name = obj.name.match(/\[([a-zA-Z_]+?)\]$/)[1]
+        data[name] = obj.value;
+    #
+    console.log(data)
+
+#
+# clear the inline expense form
+@resetInlineExpenseForm = (row) ->
+    descCell = $(row).find('td.description')
+    amtCell = $(row).find('td.anticipated-amount')
+    submitButton = $(row).find('input[type=submit]')
+    cancelButton = $(row).find('input[type=reset]')
+    #
+    # remove form elements
+    row.removeAttr('data-active-form')
+    $(submitButton).closest('td').remove()
+    $(cancelButton).closest('td').remove()
+    descCell.text($(row).data('description'))
+    amtCell.text($(row).data('anticipatedAmount'))
