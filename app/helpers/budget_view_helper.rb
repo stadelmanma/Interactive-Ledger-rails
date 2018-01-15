@@ -6,12 +6,8 @@ module BudgetViewHelper
 
     private
 
-    def initialize(budget, totals)
-      dates = totals.date_range
-      dates << budget.budget_expenses.minimum(:date)
-      dates << budget.budget_expenses.maximum(:date)
-      #
-      @date_range = [dates.min, dates.max]
+    def initialize(budget, date_range, totals = nil)
+      @date_range = date_range
       @rows = process_totals(budget, totals)
     end
 
@@ -23,6 +19,9 @@ module BudgetViewHelper
       range = @date_range[0]..@date_range[1]
       expected_items = budget.budget_expenses.where(date: range)
       process_expected_items(expected_items, cat_hash)
+
+      # return early if the totals hash doesn't exist
+      return cat_hash.values unless totals
 
       # process category totals
       process_category_totals(totals.all_category_totals, cat_hash)
@@ -136,13 +135,38 @@ module BudgetViewHelper
 
   # converts the totals hash into an array of budget sections
   def process_totals(budget, totals)
+    #
+    # setup weeks starts hash
+    week_starts = get_week_starts(budget, totals)
+    all_totals = Hash[week_starts.map { |date| [date, nil] }]
+    #
+    # fill in an existing totals
+    totals.values.each { |total| all_totals[total.date_range[0]] = total }
+    #
     # create the sections
-    sections = totals.values.map { |total| BudgetSection.new(budget, total) }
+    sections = all_totals.map do |week_st, total|
+      week_en = week_st.end_of_week
+      BudgetSection.new(budget, [week_st, week_en], total)
+    end
+    #
     # update balance values
     sections.map(&:rows).flatten.inject(budget.initial_balance) do |bal, row|
       row.balance = bal + (row.actual_amount || row.anticipated_amount)
     end
     # return sectins
     sections
+  end
+
+  def get_week_starts(budget, totals)
+    #
+    # determine date range
+    st_date = [
+      totals.values.first&.date_range&.fetch(0) || Time.zone.today,
+      budget.budget_expenses.minimum(:date)
+    ].min.beginning_of_year.to_datetime.to_i
+    #
+    en_date = Time.zone.at(st_date).end_of_year.to_datetime.to_i
+    #
+    (st_date..en_date).step(1.week).map { |d| Time.zone.at(d).to_date }
   end
 end
