@@ -7,7 +7,11 @@ module BudgetViewHelper
     private
 
     def initialize(budget, totals)
-      @date_range = totals.date_range
+      dates = totals.date_range
+      dates << budget.budget_expenses.minimum(:date)
+      dates << budget.budget_expenses.maximum(:date)
+      #
+      @date_range = [dates.min, dates.max]
       @rows = process_totals(budget, totals)
     end
 
