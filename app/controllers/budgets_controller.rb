@@ -66,10 +66,10 @@ class BudgetsController < ApplicationController
     if params[:budget] && params[:date_increment]
       exp_params = budget_params[:budget_expenses_attributes]
       inc = increment(params[:date_increment])
-      start_date = Date.parse(expense_params[:date]) + inc
-      end_date = (initial_date + 1.year).beginning_of_year
+      start_date = Date.parse(exp_params[:date]) + inc
+      end_date = (start_date + 1.year).beginning_of_year
       #
-      expenses = expenses_over_date_rang(start_date, end_date, inc, exp_params)
+      expenses = expenses_over_date_range(start_date, end_date, inc, exp_params)
     else
       expenses = [BudgetExpense.new]
     end
@@ -91,11 +91,11 @@ class BudgetsController < ApplicationController
     inc.to_i.send(unit)
   end
 
-  def expenses_over_date_range(initial_date, end_date, increment, exp_params)
-    date_range = (initial_date.to_datetime.to_i)..(end_date.to_datetime.to_i)
+  def expenses_over_date_range(start_date, end_date, increment, exp_params)
+    date_range = (start_date.to_datetime.to_i)..(end_date.to_datetime.to_i)
     #
     date_range.step(increment).map do |date|
-      expense_params[:date] = Time.zone.at(date)
+      exp_params[:date] = Time.zone.at(date)
       BudgetExpense.new(exp_params)
     end
   end
