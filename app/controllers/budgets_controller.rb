@@ -81,7 +81,7 @@ class BudgetsController < ApplicationController
     render partial: 'budget_expense',
            locals: { budget: Budget.new,
                      budget_expenses: expenses,
-                     child_index: params[:child_index] }
+                     child_index: params[:child_index].to_i }
   end
 
   private
