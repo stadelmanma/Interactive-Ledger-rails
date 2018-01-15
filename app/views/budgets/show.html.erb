@@ -2,7 +2,7 @@
 
 <% headers = %w[week description anticipated_amount actual_amount balance comments] %>
 
-<table class="budget">
+<table class="budget" data-budget-id="<%= @budget.id %>">
     <thead>
         <tr>
             <% headers.each do |text| %>

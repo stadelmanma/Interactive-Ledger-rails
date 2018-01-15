@@ -133,7 +133,7 @@ $(document).on 'turbolinks:load', ->
     descCell.find('input').val($(row).data('description'))
     #
     amtCell.empty()
-    amtCell.append('<input type="text" name="anticipated_amount" />')
+    amtCell.append('<input type="text" name="amount" />')
     amtCell.find('input').val($(row).data('anticipatedAmount'))
     #
     # add listeners to buttons
@@ -144,12 +144,28 @@ $(document).on 'turbolinks:load', ->
 @submitInlineExpenseForm = (row) ->
     #
     # pull data from the inputs in the row
-    data = { budget_expense_id: $(row).data('budgetExpenseId') }
-    $($(row).find('input[name]').serializeArray()).each (index, obj) ->
-        name = obj.name.match(/\[([a-zA-Z_]+?)\]$/)[1]
-        data[name] = obj.value;
+    budgetId = $(row).closest('table').data('budgetId')
+    data = { id: $(row).data('budgetExpenseId') }
+    console.log($(row).find('input[name]'))
+    $(row).find('input[name]').each (_, input) ->
+        data[input.name] = input.value
     #
-    console.log(data)
+    # send data to server
+    success = window.reload
+    #
+    failure = (_, type, exception) ->
+        console.error(type)
+        console.dir(exception)
+    #
+    args = {
+        type: 'POST',
+        error: failure,
+        success: success,
+        url: "/budgets/#{budgetId}",
+        data: {_method: 'PATCH', budget: {budget_expenses_attributes: {0: data}}}
+    }
+    #
+    $.ajax(args)
 
 #
 # clear the inline expense form
