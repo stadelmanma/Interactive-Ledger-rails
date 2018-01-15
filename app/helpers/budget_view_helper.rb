@@ -45,7 +45,8 @@ module BudgetViewHelper
         args = {
           description: exp.description,
           anticipated_amount: exp.amount,
-          comments: exp.comments
+          comments: exp.comments,
+          budget_expense_id: exp.id
         }
         cat_hash[key] = BudgetRow.new(**args)
       end
@@ -54,7 +55,7 @@ module BudgetViewHelper
     # Adds all category totals to the hash
     def process_category_totals(cat_totals, cat_hash)
       cat_totals.each do |category, cat_summary|
-        next if category =~ /^(budgeted|deposit)$/i
+        next if category.match?(/^(budgeted|deposit)$/i)
         #
         if cat_hash[category]
           cat_hash[category].update(actual_amount: cat_summary.sum)
@@ -91,7 +92,7 @@ module BudgetViewHelper
     # creates a budget row using the options hash
     def initialize(options)
       whitelist = %i[description anticipated_amount actual_amount balance
-                     comments]
+                     comments budget_expense_id]
       validate_options(options, whitelist)
       #
       @description = options.fetch(:description, '')
@@ -100,6 +101,7 @@ module BudgetViewHelper
       @balance = options.fetch(:balance, 0.0)
       @comments = options.fetch(:comments, '')
       @comments = [@comments] unless @comments.is_a? Array
+      @budget_expense_id = options[:budget_expense_id]
     end
 
     # updates certain attributes from the hash
@@ -119,7 +121,8 @@ module BudgetViewHelper
         anticipated_amount: @anticipated_amount,
         actual_amount: @actual_amount,
         balance: @balance,
-        comments: @comments.uniq.join('; ')
+        comments: @comments.uniq.join('; '),
+        budget_expense_id: @budget_expense_id
       }
     end
 
