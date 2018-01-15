@@ -48,21 +48,52 @@ $(document).on 'turbolinks:load', ->
 #
 # this function handles sending and receiving an AJAX response to add another
 # row of budget expense fields field to the form
-@addBudgetExpense = () ->
-    url = '/budgets/add-budget-expense?child_index='
-    url += $('#budget-expenses-container').find('tr').length - 1
+@addBudgetExpense = (dateIncrement, initialDate) ->
+    table = $('#budget-expenses-container')
+    childIndex = $(table).find('tr').length - 1
     #
     success = (html) ->
-        $(html).appendTo('#budget-expenses-container')
+        row = $(html).appendTo(table)
+        repeatButton = $(row).find('button.dupe-expense-fields')
+        repeatSelect = $(row).find('select.dupe-expense-fields')
+        #
+        $(repeatButton).click(repeatExpenseEvery.bind(repeatSelect))
     failure = (_, type, exception) ->
         console.error(type)
         console.dir(exception)
+    #
     args = {
         type: 'GET',
         dataType: 'html',
         error: failure,
         success: success,
-        url: url
+        url: '/budgets/add-budget-expense',
+        data: {
+            child_index: childIndex,
+            date_increment: dateIncrement,
+            initial_date: initialDate
+        }
     }
     #
     $.ajax(args)
+
+#
+# Implements repeat row N times functionality during creation of budget
+# expenses.
+@repeatExpenseEvery = () ->
+    period = $(this).val()
+    dateStr = $(this).closest('tr').find('input[name*=date]').val()
+    #
+    # increment date
+    if (isNaN(new Date(dateStr)))
+        return
+    else if (period == 'weekly')
+        increment = '7.days'
+    else if (period == 'biweekly')
+        increment = '14.days'
+    else if (period == 'monthly')
+        increment = '1.month'
+    else
+        return
+    #
+    addBudgetExpense(increment, dateStr)
