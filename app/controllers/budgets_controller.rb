@@ -105,6 +105,8 @@ class BudgetsController < ApplicationController
       :name,
       :description,
       :initial_balance,
+      :start_date,
+      :end_date,
       budget_ledgers_attributes:
         %i[ledger_id id _destroy],
       budget_expenses_attributes:
