@@ -164,9 +164,10 @@ module BudgetViewHelper
     #
     # determine date range
     st_date = [
-      totals.values.first&.date_range&.fetch(0) || Time.zone.today,
-      budget.budget_expenses.minimum(:date)
-    ].min.beginning_of_year.to_datetime.to_i
+      totals.values.first&.date_range&.fetch(0),
+      budget.budget_expenses.minimum(:date),
+      Time.zone.today
+    ].compact.min.beginning_of_year.to_datetime.to_i
     #
     en_date = Time.zone.at(st_date).end_of_year.to_datetime.to_i
     #
