@@ -140,7 +140,7 @@ module BudgetViewHelper
   def process_totals(budget, totals)
     #
     # setup weeks starts hash
-    week_starts = get_week_starts(budget, totals)
+    week_starts = get_week_starts(budget)
     all_totals = Hash[week_starts.map { |date| [date, nil] }]
     #
     # fill in an existing totals
@@ -160,16 +160,11 @@ module BudgetViewHelper
     sections
   end
 
-  def get_week_starts(budget, totals)
+  def get_week_starts(budget)
     #
     # determine date range
-    st_date = [
-      totals.values.first&.date_range&.fetch(0),
-      budget.budget_expenses.minimum(:date),
-      Time.zone.today
-    ].compact.min.beginning_of_year.to_datetime.to_i
-    #
-    en_date = Time.zone.at(st_date).end_of_year.to_datetime.to_i
+    st_date = budget.start_date.beginning_of_week.to_datetime.to_i
+    en_date = budget.end_date.end_of_week.to_datetime.to_i
     #
     (st_date..en_date).step(1.week).map { |d| Time.zone.at(d).to_date }
   end
