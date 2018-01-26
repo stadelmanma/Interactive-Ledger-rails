@@ -3,10 +3,10 @@ lock '3.9.1'
 
 set :application, 'InteractiveLedger'
 
-set :repo_url, 'git@github.com:stadelmanma/Interactive-Ledger-rails.git'
+set :repo_url, `git remote get-url origin`.strip
 set :branch, 'master'
 set :scm_passphrase, ''
-set :user, 'mstadelman'
+set :user, ENV['RPI_USER']
 
 set :stages, %w[staging production]
 set :default_stage, 'production'
@@ -21,7 +21,8 @@ set :use_sudo,        false
 set :stage,           :production
 set :deploy_via,      :remote_cache
 set :deploy_to,       "/var/www/#{fetch(:application)}"
-set :puma_bind,       "unix:///var/run/#{fetch(:application)}/#{fetch(:application)}.sock"
+set :puma_socket_dir, "/var/run/#{fetch(:application)}"
+set :puma_bind,       "unix://#{fetch(:puma_socket_dir)}/#{fetch(:application)}.sock"
 set :puma_state,      "#{shared_path}/tmp/pids/puma.state"
 set :puma_pid,        "#{shared_path}/tmp/pids/puma.pid"
 set :puma_access_log, "#{release_path}/log/puma.error.log"
@@ -32,18 +33,20 @@ set :puma_worker_timeout, nil
 set :puma_init_active_record, true # Change to true if using ActiveRecord
 
 # custom cap tasks
-desc 'Check that we can access everything'
-task :check_write_permissions do
-  on roles(:all) do |host|
-    if test("[ -w #{fetch(:deploy_to)} ]")
-      info "#{fetch(:deploy_to)} is writable on #{host}"
-    else
-      error "#{fetch(:deploy_to)} is not writable on #{host}"
-    end
-  end
-end
 
 namespace :puma do
+  desc 'Check that socket directory exists and is writable'
+  task :check_write_permissions do
+    on roles(:all) do |host|
+      if test("[ -w #{fetch(:puma_socket_dir)} ]")
+        info "#{fetch(:puma_socket_dir)} is writable on #{host}"
+      else
+        error "#{fetch(:puma_socket_dir)} is not writable on #{host}"
+        exit
+      end
+    end
+  end
+
   desc 'Create Directories for Puma Pids and Socket'
   task :make_dirs do
     on roles(:app) do
@@ -52,7 +55,9 @@ namespace :puma do
     end
   end
 
+  before :start, :check_write_permissions
   before :start, :make_dirs
+  before :restart, :check_write_permissions
 end
 
 namespace :db do
@@ -83,6 +88,18 @@ namespace :deploy do
       unless `git rev-parse HEAD` == `git rev-parse origin/master`
         puts 'WARNING: HEAD is not the same as origin/master'
         puts 'Run `git push` to sync changes.'
+        exit
+      end
+    end
+  end
+
+  desc 'Check that we can access everything'
+  task :check_write_permissions do
+    on roles(:all) do |host|
+      if test("[ -w #{fetch(:deploy_to)} ]")
+        info "#{fetch(:deploy_to)} is writable on #{host}"
+      else
+        error "#{fetch(:deploy_to)} is not writable on #{host}"
         exit
       end
     end
@@ -130,6 +147,7 @@ namespace :deploy do
   end
 
   before :starting,     :check_revision
+  before :starting,     :check_write_permissions
   after  :finishing,    :compile_assets
   after  :finishing,    :cleanup
 end
