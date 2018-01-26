@@ -8,10 +8,6 @@ AllCops:
 Rails:
   Enabled: true
 
-Rails/Output:
-  Exclude:
-    - config/deploy.rb
-
 Rails/Exit:
   Exclude:
     - config/deploy.rb
