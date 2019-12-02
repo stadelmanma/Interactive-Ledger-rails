@@ -70,7 +70,7 @@ GEM
       capistrano (~> 3.7)
       capistrano-bundler
       puma (~> 3.4)
-    chartkick (3.0.2)
+    chartkick (3.3.0)
     codecov (0.1.14)
       json
       simplecov
